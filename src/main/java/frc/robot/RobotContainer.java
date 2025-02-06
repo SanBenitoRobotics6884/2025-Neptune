@@ -16,14 +16,13 @@ ClimbCommandUp m_ClimbCommandUp = new ClimbCommandUp();
 ClimbStop m_ClimbStop = new ClimbStop();
   public RobotContainer() {
     configureBindings();
-if(m_XboxController.getBButtonPressed()){
+if(m_XboxController.getLeftBumperButtonPressed()){
   m_ClimbCommand.schedule();
-  
 }
 if (m_XboxController.getAButtonPressed()) {
   m_ClimbStop.schedule();
 }
-if (m_XboxController.getLeftBumperButtonPressed()) {
+if (m_XboxController.getLeftBumperButtonReleased()) {
   m_ClimbCommandUp.schedule();
 }
 

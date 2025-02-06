@@ -18,14 +18,13 @@ public class ClimbCommandUp extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    m_climbsubsystem.m_climbMotor.set(.1);
+    m_climbsubsystem.m_climbMotor.setPosition(.25);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    m_climbsubsystem.m_climbMotor.set(.1);
   }
 
   // Called once the command ends or is interrupted.

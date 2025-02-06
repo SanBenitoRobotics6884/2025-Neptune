@@ -19,7 +19,7 @@ public class ClimbCommand extends Command {
   @Override
   public void initialize() {
     m_climbsubsystem.m_climbMotor.set(-.1);
-    
+    m_climbsubsystem.m_climbMotor.setPosition(-.25);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
