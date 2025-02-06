@@ -21,6 +21,7 @@ public class ClimbSubsystem extends SubsystemBase {
     m_climbMotor = new TalonFX(0);
     m_climbMotor.optimizeBusUtilization();
     encoder = new Encoder(0, 0);
+    encoder.setDistancePerPulse(1.0);
     pidController = new PIDController(0, 0, 0);
   }
 

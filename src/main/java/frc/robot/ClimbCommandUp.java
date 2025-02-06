@@ -4,25 +4,29 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClimbCommandUp extends Command {
   public final ClimbSubsystem m_climbsubsystem = new ClimbSubsystem();
-  /** Creates a new ClimbCommandUp. */
+  
   public ClimbCommandUp() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climbsubsystem.m_climbMotor.set(.1);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+
+    m_climbsubsystem.m_climbMotor.set(.1);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
