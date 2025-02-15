@@ -5,27 +5,32 @@
 package frc.robot.Subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import static frc.robot.Constants.Elevator.*;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  public TalonFX m_motor1;
- // private TalonFX m_moter2;
-  private RelativeEncoder relativeEncoder_1;
-  // private RelativeEncoder relativeEncoder_2;
-  public double setpoint;
+  private TalonFX m_motor1 = new TalonFX(MOTOR_1_ID);
+  // private TalonFX m_moter2;
+
+  private AbsoluteEncoder relativeEncoder_1;
+  // private RelativeEncoder relativeEncodor_2;
+
+  public double m_setpoint;
+
   public XboxController xboxController;
   private PIDController pidController;
-  public ElevatorSubsystem() {
-    pidController = new PIDController(0.5, 0.01, 0);
-    pidController.setTolerance(0.2);
-    m_motor1.set(pidController.calculate(relativeEncoder_1.getPosition(),setpoint));
 
-    if (xboxController.getAButtonPressed()) {
+  public ElevatorSubsystem() {
+    pidController = new PIDController(Kp, Ki, Kd);
+    pidController.setTolerance(ERROR_TOLERANCE);
+    m_motor1.set(pidController.calculate(relativeEncoder_1.getPosition(),m_setpoint));
+    
+    /** if (xboxController.getAButtonPressed()) {
       setpoint = 1;
     }
 
@@ -43,29 +48,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     if (xboxController.getRightBumperButtonPressed()) {
       setpoint = 5;
+    } */
+  }
 
+  public void setSetpoit(double setpoint) {
+    m_setpoint = setpoint;
+  }
 
-      
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-    }
-
- 
-
-
+  @Override
   public void periodic() {
-  pidController.atSetpoint();
+    pidController.atSetpoint();
   }
 }
