@@ -29,8 +29,8 @@ public final class Constants {
         COTSNeoSwerveConstants.SDSMK4i(driveGearRatios.SDSMK4i_L2);
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(12); //TODO: This must be tuned to specific robot
-        public static final double wheelBase = Units.inchesToMeters(12); //TODO: This must be tuned to specific robot
+        public static final double trackWidth = Units.inchesToMeters(27); //TODO: This must be tuned to specific robot
+        public static final double wheelBase = Units.inchesToMeters(21.5); //TODO: This must be tuned to specific robot
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
         public static final double driveRevToMeters =  wheelCircumference / (chosenModule.driveGearRatio);
