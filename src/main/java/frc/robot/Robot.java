@@ -5,7 +5,7 @@
 package frc.robot;
 
 import org.littletonrobotics.junction.LoggedRobot;
-
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -28,7 +28,6 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-
     hardwareConfigs = new HardwareConfigs();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -58,7 +57,9 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledPeriodic() {}
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+  @Override
+  public void disabledExit() {}
+
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
@@ -72,6 +73,8 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {}
+
+  public void autonomousExit() {}
 
   @Override
   public void teleopInit() {
@@ -94,7 +97,20 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().cancelAll();
   }
 
+  public void teleopExit() {}
+
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+  @Override
+  public void testInit() {
+    CommandScheduler.getInstance().cancelAll();
+  }
+
+  @Override
+  public void testPeriodic() {}
+
+  @Override
+  public void testExit() {}
 }

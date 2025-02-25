@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -26,6 +30,9 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    ClimbCommand m_ClimbCommand = new ClimbCommand();
+    ClimbCommandUp m_ClimbCommandUp = new ClimbCommandUp();
+    ClimbStop m_ClimbStop = new ClimbStop();
 
    /* Driver Controls */
 	private final int translationAxis = 1;
@@ -51,6 +58,8 @@ public class RobotContainer {
     /* AutoChooser */
     private final SendableChooser<Command> autoChooser;
 
+
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -67,6 +76,16 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+
+        if(m_XboxController.getLeftBumperButtonPressed()){
+          m_ClimbCommand.schedule();
+        }
+        if (m_XboxController.getAButtonPressed()) {
+          m_ClimbStop.schedule();
+        }
+        if (m_XboxController.getLeftBumperButtonReleased()) {
+          m_ClimbCommandUp.schedule();
+        }
 
 
         //Pathplanner commands - templates
@@ -115,4 +134,10 @@ public class RobotContainer {
         // An ExampleCommand will run in autonomous
         return autoChooser.getSelected();
     }
+
+  private void configureBindings() {}
+
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
+  }
 }
