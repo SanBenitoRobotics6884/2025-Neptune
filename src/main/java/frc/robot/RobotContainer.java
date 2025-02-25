@@ -32,6 +32,9 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(0);
     ClimbCommand m_ClimbCommand = new ClimbCommand();
     ClimbCommandUp m_ClimbCommandUp = new ClimbCommandUp();
+    private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
+    private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
+
     ClimbStop m_ClimbStop = new ClimbStop();
 
    /* Driver Controls */
@@ -135,7 +138,16 @@ public class RobotContainer {
         return autoChooser.getSelected();
     }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    new JoystickButton(m_joystick, 1)
+      .whileTrue(m_CoralOutIntakeCommand);
+    new JoystickButton(m_joystick, 10)
+      .onTrue(m_coralOutIntakeSybsystem.toHighPosotion());
+    new JoystickButton(m_joystick, 11)
+      .onTrue(m_coralOutIntakeSybsystem.toMidPosotion());
+    new JoystickButton(m_joystick, 12)
+      .onTrue(m_coralOutIntakeSybsystem.toLowPosotion());
+  }
 
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
