@@ -18,6 +18,7 @@ import edu.wpi.first.math.util.Units;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants.driveGearRatios;
+
 public final class Constants {
     public static final double stickDeadband = 0.1;
 

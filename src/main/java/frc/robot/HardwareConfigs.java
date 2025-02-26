@@ -1,17 +1,26 @@
 package frc.robot;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 public final class HardwareConfigs {
   
     public CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
     public SparkMaxConfig swerveAngleSparkConfig =  new SparkMaxConfig();
     public SparkMaxConfig swerveDriveSparkConfig =  new SparkMaxConfig();
+    public TalonFXConfiguration swerveDriveTalonConfig = new TalonFXConfiguration();
 
     public HardwareConfigs(){
-       /** Swerve CANCoder Configuration */
+        CurrentLimitsConfigs currentLimits = new CurrentLimitsConfigs();
+        //currentLimits.supplyCurrentLimit = 40.0;
+        //currentLimits.supplyCurrenThreshold = 40.0;
+        //currentLimits.supplyTimeThreshold = 0.0;
+        //currentLimits.supplyCurrentLimitEnable = true;
+        swerveDriveTalonConfig.CurrentLimits = currentLimits;
+
+        /** Swerve CANCoder Configuration */
        swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.cancoderInvert;
 
        //Swerve angle motor config

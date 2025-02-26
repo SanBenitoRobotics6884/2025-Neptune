@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.Commands.*;
+import frc.robot.Subsystems.*;
 
 import frc.robot.Constants.CoralOutIntake;
 import frc.robot.Subsystems.CoralOutIntakeSybsystem;
@@ -34,12 +34,12 @@ import frc.robot.Commands.CoralOutIntakeCommand;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
-    ClimbCommand m_ClimbCommand = new ClimbCommand();
-    ClimbCommandUp m_ClimbCommandUp = new ClimbCommandUp();
-    private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
-    private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
+    //ClimbCommand m_ClimbCommand = new ClimbCommand();
+    //ClimbCommandUp m_ClimbCommandUp = new ClimbCommandUp();
+    //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
+    //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
 
-    ClimbStop m_ClimbStop = new ClimbStop();
+    //ClimbStop m_ClimbStop = new ClimbStop();
 
    /* Driver Controls */
 	private final int translationAxis = 1;
@@ -63,7 +63,7 @@ public class RobotContainer {
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */
-    private final SendableChooser<Command> autoChooser;
+    //private final SendableChooser<Command> autoChooser;
 
 
 
@@ -104,7 +104,7 @@ public class RobotContainer {
         
         //Auto chooser
         //autoChooser = AutoBuilder.buildAutoChooser("New Auto"); // Default auto will be `Commands.none()`
-        SmartDashboard.putData("Auto Mode", autoChooser);
+        //SmartDashboard.putData("Auto Mode", autoChooser);
     }
 
     /**
@@ -139,21 +139,18 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return autoChooser.getSelected();
+        //return autoChooser.getSelected();
+      return Commands.print("No command configured");
     }
 
   private void configureBindings() {
-    new JoystickButton(driver, 1)
+    /*new JoystickButton(driver, 1)
       .whileTrue(m_CoralOutIntakeCommand);
     new JoystickButton(driver, 10)
       .onTrue(m_coralOutIntakeSybsystem.toHighPosotion());
     new JoystickButton(driver, 11)
       .onTrue(m_coralOutIntakeSybsystem.toMidPosotion());
     new JoystickButton(driver, 12)
-      .onTrue(m_coralOutIntakeSybsystem.toLowPosotion());
-  }
-
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+      .onTrue(m_coralOutIntakeSybsystem.toLowPosotion());*/
   }
 }

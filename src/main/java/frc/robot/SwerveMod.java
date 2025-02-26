@@ -13,6 +13,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -20,7 +21,6 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.ctre.phoenix6.hardware.TalonFX;
 /**
  * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder absolute encoders.
  */
@@ -28,9 +28,9 @@ public class SwerveMod{
     private HardwareConfigs hardwareConfigs;
 
     /** Which module # is this? (0,1,2,3...) */
-    private int moduleNumber;
+    public int moduleNumber;
 
-    /** Offset from your absolute encoder to “zero” the angle */
+    /** Offset from your absolute encoder to "zero" the angle */
     private Rotation2d angleOffset;
 
     /** SparkMax for the steering (angle) NEO */
@@ -80,7 +80,7 @@ public class SwerveMod{
 
     private void configEncoders() {
         // For drive motor (TalonFX), start integrated sensor at 0
-        mDriveMotor.setRotorPosition(0.0);
+        mDriveMotor.setPosition(0.0);
 
         // For angle motor (SparkMax), we will zero to the absolute CANcoder reading
         resetToAbsolute();
@@ -205,7 +205,7 @@ public class SwerveMod{
         // Check how you have your TalonFX sensor configured:
         //  - If your velocity is in rotations/second, you need to convert it to m/s
         //  - If it’s in m/s already (via sensorCoefficient), then you can just use it
-        double driveVelocity = mDriveMotor.getVelocity().getValue();
+        double driveVelocity = mDriveMotor.getVelocity().getValue().magnitude();
         Rotation2d angle     = getAngle();
 
         return new SwerveModuleState(driveVelocity, angle);
@@ -218,7 +218,7 @@ public class SwerveMod{
      */
     public SwerveModulePosition getPosition() {
         // Convert TalonFX sensor reading to meters
-        double driveDistance = mDriveMotor.getPosition().getValue();
+        double driveDistance = mDriveMotor.getPosition().getValue().magnitude();
         Rotation2d angle     = getAngle();
         return new SwerveModulePosition(driveDistance, angle);
     }

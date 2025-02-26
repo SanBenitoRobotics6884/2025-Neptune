@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.LoggedRobot;
+//import org.littletonrobotics.junction.LoggedRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends LoggedRobot {
+public class Robot extends TimedRobot {
   public static HardwareConfigs hardwareConfigs;
 
   private Command m_autonomousCommand;
@@ -40,7 +40,7 @@ public class Robot extends LoggedRobot {
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
-  @Override
+  //@Override
   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
