@@ -30,7 +30,7 @@ public final class Constants {
 
         public static final COTSNeoSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
         COTSNeoSwerveConstants.SDSMK4i(driveGearRatios.SDSMK4i_L2);
-        public static final COTSTalonFXSwerveConstants driveModule = COTSTalonFXSwerveConstants.WCP.SwerveXStandard.KrakenX60(1);
+        public static final COTSTalonFXSwerveConstants driveModule = COTSTalonFXSwerveConstants.WCP.SwerveXStandard.KrakenX60((6.75 / 1.0));
 
         /* Drivetrain Constants */
         public static final double trackWidth = Units.inchesToMeters(27); //TODO: This must be tuned to specific robot

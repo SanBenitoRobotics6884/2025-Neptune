@@ -119,6 +119,7 @@ public class SwerveMod{
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
+        System.out.println("Desired Speed: " + desiredState.speedMetersPerSecond);
         double speedMps = desiredState.speedMetersPerSecond;
         if(isOpenLoop){
             driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
@@ -127,7 +128,8 @@ public class SwerveMod{
         else {
             driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
             driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-            mDriveMotor.setControl(driveVelocity);
+            System.out.println("Desired Velocity: " + driveVelocity.Velocity);
+            mDriveMotor.setControl(driveVelocity.withSlot(0));
         }
     }
 
