@@ -6,9 +6,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.lib.util.swerveUtil.CTREModuleState;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
-
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -104,8 +102,7 @@ public class SwerveMod{
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         // 1) Optimize the commanded angle to avoid unnecessary rotation
         // desiredState = CTREModuleState.optimize(desiredState, getState().angle);
-        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
-
+        // desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
         // 2) Set the steering angle (SparkMax)
         setAngle(desiredState);
@@ -113,7 +110,6 @@ public class SwerveMod{
         // 3) Set the drive speed (TalonFX)
         setSpeed(desiredState, isOpenLoop);
 
-        // Debug
         SmartDashboard.putNumber("Desired angle (deg) - Mod " + moduleNumber,
                                  desiredState.angle.getDegrees());
     }

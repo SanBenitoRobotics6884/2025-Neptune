@@ -4,7 +4,6 @@
 
 package frc.robot.Subsystems;
 
-import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.AbsoluteEncoder;
 
@@ -22,7 +21,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX mMotor;
   // private TalonFX m_moter2;
 
-  private AbsoluteEncoder relativeEncoder_1;
+  // private AbsoluteEncoder relativeEncoder_1;
   // private RelativeEncoder relativeEncodor_2;
 
   public double m_setpoint;
