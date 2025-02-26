@@ -119,16 +119,18 @@ public class SwerveMod{
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
-        SmartDashboard.putNumber("Desired Speed " + moduleNumber + " - " + desiredState.speedMetersPerSecond);
+        SmartDashboard.putNumber("Desired Speed " + moduleNumber, desiredState.speedMetersPerSecond);
         double speedMps = desiredState.speedMetersPerSecond;
         if(isOpenLoop){
             driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
             mDriveMotor.setControl(driveDutyCycle);
+            SmartDashboard.putNumber("Desired Duty Cycle " + moduleNumber, driveDutyCycle.Output);
+            System.out.println("Desired Duty Cycle: " + driveDutyCycle.Output);
         }
         else {
             driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
             driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-            SmartDashboard.putNumber("Desired Velocity " + moduleNumber + " - " + driveVelocity.Velocity);
+            SmartDashboard.putNumber("Desired Velocity " + moduleNumber, driveVelocity.Velocity);
             System.out.println("Desired Velocity: " + driveVelocity.Velocity);
             mDriveMotor.setControl(driveVelocity.withSlot(0));
         }
@@ -210,7 +212,7 @@ public class SwerveMod{
      */
     public SwerveModuleState getState(){
         return new SwerveModuleState(
-            Conversions.RPSToMPS(mDriveMotor.getVelocity().getValue(), Constants.Swerve.wheelCircumference),
+            Conversions.RPSToMPS(mDriveMotor.getVelocity().getValueAsDouble(), Constants.Swerve.wheelCircumference),
             getAngle()
         );
     }
@@ -221,7 +223,7 @@ public class SwerveMod{
      */
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
-            Conversions.rotationsToMeters(mDriveMotor.getPosition().getValue(), Constants.Swerve.wheelCircumference),
+            Conversions.rotationsToMeters(mDriveMotor.getPosition().getValueAsDouble(), Constants.Swerve.wheelCircumference),
             getAngle()
         );
     }

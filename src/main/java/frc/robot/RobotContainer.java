@@ -118,18 +118,18 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
 
     //Heading lock bindings
-        forwardHold.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.forwardHold)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        );
-        backwardHold.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.backwardHold)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        );
-        DynamicLock.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.DynamicLock)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        );
+        // forwardHold.onTrue(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.forwardHold)).onFalse(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+        // );
+        // backwardHold.onTrue(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.backwardHold)).onFalse(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+        // );
+        // DynamicLock.onTrue(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.DynamicLock)).onFalse(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+        // );
     } 
 
     /**

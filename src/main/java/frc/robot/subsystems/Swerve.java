@@ -58,7 +58,6 @@ public class Swerve extends SubsystemBase {
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
-        System.out.println(getPose().getX());
 
 
         AutoBuilder.configure(
@@ -92,7 +91,8 @@ public class Swerve extends SubsystemBase {
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        SmartDashboard.putNumber("Get Rotation",rotation);
+        
+        SmartDashboard.putBoolean("isOpenLoop", isOpenLoop);
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
