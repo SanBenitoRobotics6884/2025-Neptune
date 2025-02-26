@@ -9,22 +9,37 @@ import frc.lib.util.swerveUtil.CTREModuleState;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+// SparkMax imports (REVLib for NEO angle motor)
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
 public class SwerveMod {
     private HardwareConfigs hardwareConfigs;
 
+    /** Which module # is this? (0,1,2,3...) */
     private int moduleNumber;
+
+    /** Offset from your absolute encoder to “zero” the angle */
     private Rotation2d angleOffset;
 
-    // TalonFX for angle & drive
-    private TalonFX mAngleMotor;
+    /** SparkMax for the steering (angle) NEO */
+    private SparkMax mAngleMotor;
+    private RelativeEncoder relAngleEncoder;
+
+    /** TalonFX for the drive */
     private TalonFX mDriveMotor;
 
-    // CANcoder for absolute angle
+    /** CTRE CANcoder for absolute angle measurement */
     private CANcoder angleEncoder;
 
     public SwerveMod(int moduleNumber, SwerveModuleConstants moduleConstants) {
@@ -32,140 +47,184 @@ public class SwerveMod {
         this.moduleNumber    = moduleNumber;
         this.angleOffset     = moduleConstants.angleOffset;
 
-        /* Absolute angle encoder (CANcoder) */
+        // -----------------------------------------------------
+        // Absolute angle encoder (CTRE CANcoder)
+        // -----------------------------------------------------
         angleEncoder = new CANcoder(moduleConstants.cancoderID, "rio");
+        // Apply your CANcoder config (sensorCoefficient, magnetOffset, etc.)
         angleEncoder.getConfigurator().apply(hardwareConfigs.swerveCANcoderConfig);
 
-        /* Angle Motor (TalonFX) */
-        mAngleMotor = new TalonFX(moduleConstants.angleMotorID, "rio");
-        mAngleMotor.getConfigurator().apply(hardwareConfigs.swerveAngleTalonConfig);
+        // -----------------------------------------------------
+        // Angle (steering) Motor – NEO w/ SparkMax
+        // -----------------------------------------------------
+        mAngleMotor = new SparkMax(moduleConstants.angleMotorID, MotorType.kBrushless);
+        // Load your SparkMax angle config (PID, current limit, ramp, etc.)
+        mAngleMotor.configure(
+            hardwareConfigs.swerveAngleSparkConfig,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kPersistParameters
+        );
+        relAngleEncoder = mAngleMotor.getEncoder();
 
-        /* Drive Motor (TalonFX) */
+        // -----------------------------------------------------
+        // Drive Motor – TalonFX
+        // -----------------------------------------------------
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "rio");
+        // Load your TalonFX drive config (PID, current limit, etc.)
         mDriveMotor.getConfigurator().apply(hardwareConfigs.swerveDriveTalonConfig);
 
-        // Initialize sensors
+        // Initialize encoders
         configEncoders();
     }
 
     private void configEncoders() {
-        // Make sure the integrated sensors start at 0 or the desired absolute position
+        // For drive motor (TalonFX), start integrated sensor at 0
         mDriveMotor.setRotorPosition(0.0);
-        resetToAbsolute(); // set angle motor’s integrated sensor to match CANcoder
+
+        // For angle motor (SparkMax), we will zero to the absolute CANcoder reading
+        resetToAbsolute();
     }
 
     /**
-     * Main control entry point:
-     * 1) Optimize SwerveModuleState (to avoid rotating more than 90 deg, etc.)
-     * 2) Set angle
-     * 3) Set drive speed (open-loop or closed-loop).
+     * Called every cycle to command the swerve module.
+     *
+     * @param desiredState The target angle (in SwerveModuleState.angle) and speed (in speedMetersPerSecond)
+     * @param isOpenLoop   If true, run drive motor in simple duty cycle mode; otherwise run velocity closed-loop.
      */
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        // Optimize reference state
+        // 1) Optimize the commanded angle to avoid unnecessary rotation
         desiredState = CTREModuleState.optimize(desiredState, getState().angle);
 
+        // 2) Set the steering angle (SparkMax)
         setAngle(desiredState);
+
+        // 3) Set the drive speed (TalonFX)
         setSpeed(desiredState, isOpenLoop);
 
-        SmartDashboard.putNumber("Desired angle (deg) [" + moduleNumber + "]",
+        // Debug
+        SmartDashboard.putNumber("Desired angle (deg) - Mod " + moduleNumber,
                                  desiredState.angle.getDegrees());
     }
 
-    /**
-     * Sets drive motor, either open-loop (percent output) or closed-loop (velocity).
-     */
+    // -----------------------------------------------------
+    // Drive control (TalonFX)
+    // -----------------------------------------------------
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
-        double speed = desiredState.speedMetersPerSecond;
+        double speedMps = desiredState.speedMetersPerSecond;
 
+        // If open loop, just do percentage output
         if (isOpenLoop) {
-            // Open-loop: percent output vs. max speed
-            double percentOutput = speed / Constants.Swerve.maxSpeed;
+            double percentOutput = speedMps / Constants.Swerve.maxSpeed;
             mDriveMotor.setControl(new DutyCycleOut(percentOutput));
         } else {
-            // Closed-loop: velocity control in your configured sensor units
-            // Make sure your hardware config or code converts from m/s to “sensor units per 100ms” or “rotations/sec”
+            // If closed loop, you likely want to convert m/s → sensor units or set up the
+            // TalonFX so that it interprets velocity in m/s with your sensorCoefficient
             mDriveMotor.setControl(
-                new VelocityVoltage(speed)
-                    .withSlot(0) // use whichever closed-loop slot you have tuned
+                new VelocityVoltage(speedMps)
+                    .withSlot(0) // use whichever slot is for velocity PID
             );
         }
     }
 
-    /**
-     * Sets angle using position closed-loop.
-     * Exits early if the wheel speed is nearly zero to avoid “twitching”.
-     */
+    // -----------------------------------------------------
+    // Angle control (SparkMax)
+    // -----------------------------------------------------
     private void setAngle(SwerveModuleState desiredState) {
+        // If the module is barely driving, don’t waste time spinning the angle
         if (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) {
-            // If drive speed is very small, don’t bother reorienting
-            mAngleMotor.setControl(new DutyCycleOut(0.0));
+            // Optionally hold position or just stop sending commands:
+            mAngleMotor.stopMotor();
             return;
         }
 
-        // We want the final angle in degrees:
+        // We want to steer the module to the desired angle in degrees
         double targetAngleDeg = desiredState.angle.getDegrees();
 
-        // In Phoenix 6, if your sensor coefficient is set so that
-        // 1 rotation of the motor = 360 sensor units, you can pass degrees directly.
-        // Otherwise, you’ll need to convert from degrees → sensor units or rotations.
-        mAngleMotor.setControl(
-            new PositionVoltage(targetAngleDeg)
-                .withSlot(0) // whichever slot has your angle PID gains
+        // By default, SparkMax’s RelativeEncoder is in rotations
+        // If you want to use degrees, you could set a conversion factor:
+        //   relAngleEncoder.setPositionConversionFactor(360.0);
+        // Then your angle = relAngleEncoder.getPosition() would be degrees
+        // If so, then passing targetAngleDeg to setReference() is correct.
+
+        SparkClosedLoopController angleController = mAngleMotor.getClosedLoopController();
+        angleController.setReference(
+            targetAngleDeg,         // setpoint
+            ControlType.kPosition,  // position closed-loop
+            ClosedLoopSlot.kSlot0   // uses PID slot 0
         );
     }
 
-    /**
-     * Returns the module's *integrated* angle (from the TalonFX sensor),
-     * as a Rotation2d.
-     */
+    // -----------------------------------------------------
+    // Sensor reading / getters
+    // -----------------------------------------------------
+    /** Current angle from the NEO (SparkMax integrated encoder), as a Rotation2d. */
     private Rotation2d getAngle() {
-        // If your sensor is configured for “degrees” via sensorCoefficient=360,
-        // then getPosition().getValue() is already in degrees. Otherwise, convert as needed.
-        double angleDeg = mAngleMotor.getPosition().getValue();
+        // If you set setPositionConversionFactor(360.0) for the angle SparkMax,
+        // then relAngleEncoder.getPosition() is in degrees.
+        double angleDeg = relAngleEncoder.getPosition();
         return Rotation2d.fromDegrees(angleDeg);
     }
 
-    /**
-     * Returns the absolute angle from the CANcoder.
-     */
+    /** Absolute angle from the CANcoder, always in the [0,360) domain if you convert rotations → degrees. */
     public Rotation2d getCANcoder() {
-        // By default, CANcoder returns [0.0, 1.0) rotations. Convert to degrees or keep as rotations:
-        double absolutePosRot = angleEncoder.getAbsolutePosition().getValueAsDouble();
-        // Convert rotations to degrees:
-        return Rotation2d.fromDegrees(absolutePosRot * 360.0);
+        double absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
+        double absPositionDeg = absPositionRot * 360.0;
+        return Rotation2d.fromDegrees(absPositionDeg);
     }
 
     /**
-     * Reset the TalonFX’s integrated angle sensor so that it matches the absolute CANcoder angle,
-     * minus your known mechanical offset.
+     * Resets the SparkMax’s integrated steering encoder to the absolute angle, minus the known offset.
+     * This is typically called once at robot init.
      */
     public void resetToAbsolute() {
-        double absoluteAngleDeg = getCANcoder().getDegrees();
-        double adjustedAngleDeg = absoluteAngleDeg - angleOffset.getDegrees();
+        double absAngleDeg   = getCANcoder().getDegrees();
+        double adjustedAngle = absAngleDeg - angleOffset.getDegrees();
 
-        // If sensorCoefficient is 360 = 1 full rotation, setRotorPosition() can take degrees directly:
-        // Otherwise, convert degrees → rotations or sensor ticks as needed.
-        mAngleMotor.setRotorPosition(adjustedAngleDeg);
+        // If your SparkMax is set to a 1:1 factor in rotations (the default),
+        // then calling setPosition(X) is in rotations. So if we want to store
+        // everything in degrees, we must setPosition(X / 360).
+        // But if you already setPositionConversionFactor(360.0), then
+        // setPosition(adjustedAngle) is correct.
+        //
+        // For example:
+        // relAngleEncoder.setPositionConversionFactor(360.0); // 1 rotation = 360 degrees
+        // => setPosition in degrees:
+        relAngleEncoder.setPosition(adjustedAngle);
+
+        // If you do NOT set that conversion factor, you’d do:
+        // relAngleEncoder.setPosition(adjustedAngle / 360.0);
     }
 
+    /**
+     * Returns the module’s overall state:
+     *  - Speed (m/s) read from the TalonFX
+     *  - Angle read from the SparkMax
+     */
     public SwerveModuleState getState() {
-        // Velocity from the integrated drive sensor
-        // Make sure you convert from raw sensor units → m/s
-        double driveVel = mDriveMotor.getVelocity().getValue();
-        Rotation2d angle = getAngle();
+        // Check how you have your TalonFX sensor configured:
+        //  - If your velocity is in rotations/second, you need to convert it to m/s
+        //  - If it’s in m/s already (via sensorCoefficient), then you can just use it
+        double driveVelocity = mDriveMotor.getVelocity().getValue();
+        Rotation2d angle     = getAngle();
 
-        return new SwerveModuleState(driveVel, angle);
+        return new SwerveModuleState(driveVelocity, angle);
     }
 
+    /**
+     * Returns the module’s position:
+     *  - Drive distance (meters) from the TalonFX integrated sensor
+     *  - Angle from SparkMax
+     */
     public SwerveModulePosition getPosition() {
-        // Position from drive motor integrated sensor
-        // Again, ensure you convert from rotations (or ticks) → meters
-        double drivePos = mDriveMotor.getPosition().getValue();
-        Rotation2d angle = getAngle();
-
-        return new SwerveModulePosition(drivePos, angle);
+        // Convert TalonFX sensor reading to meters
+        double driveDistance = mDriveMotor.getPosition().getValue();
+        Rotation2d angle     = getAngle();
+        return new SwerveModulePosition(driveDistance, angle);
     }
 
+    // -----------------------------------------------------
+    // Boilerplate
+    // -----------------------------------------------------
     public int getModuleNumber() {
         return moduleNumber;
     }
