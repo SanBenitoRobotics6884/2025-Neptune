@@ -13,12 +13,31 @@ public final class HardwareConfigs {
     public TalonFXConfiguration swerveDriveTalonConfig = new TalonFXConfiguration();
 
     public HardwareConfigs(){
-        CurrentLimitsConfigs currentLimits = new CurrentLimitsConfigs();
-        //currentLimits.supplyCurrentLimit = 40.0;
-        //currentLimits.supplyCurrenThreshold = 40.0;
-        //currentLimits.supplyTimeThreshold = 0.0;
-        //currentLimits.supplyCurrentLimitEnable = true;
-        swerveDriveTalonConfig.CurrentLimits = currentLimits;
+        /** Swerve Drive Motor Configuration */
+        /* Motor Inverts and Neutral Mode */
+        swerveDriveTalonConfig.MotorOutput.Inverted = Constants.Swerve.driveMotorInvert;
+        swerveDriveTalonConfig.MotorOutput.NeutralMode = Constants.Swerve.driveNeutralMode;
+
+        /* Gear Ratio Config */
+        swerveDriveTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.driveGearRatio;
+
+        /* Current Limiting */
+        swerveDriveTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.driveEnableCurrentLimit;
+        swerveDriveTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.driveCurrentLimit;
+        swerveDriveTalonConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Swerve.driveCurrentThreshold;
+        swerveDriveTalonConfig.CurrentLimits.SupplyTimeThreshold = Constants.Swerve.driveCurrentThresholdTime;
+
+        /* PID Config */
+        swerveDriveTalonConfig.Slot0.kP = Constants.Swerve.driveKP;
+        swerveDriveTalonConfig.Slot0.kI = Constants.Swerve.driveKI;
+        swerveDriveTalonConfig.Slot0.kD = Constants.Swerve.driveKD;
+
+        /* Open and Closed Loop Ramping */
+        swerveDriveTalonConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
+        swerveDriveTalonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
+
+        swerveDriveTalonConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
+        swerveDriveTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
 
         /** Swerve CANCoder Configuration */
        swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.cancoderInvert;

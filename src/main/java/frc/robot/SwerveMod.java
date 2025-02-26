@@ -42,6 +42,9 @@ public class SwerveMod{
 
     /** CTRE CANcoder for absolute angle measurement */
     private CANcoder angleEncoder;
+    private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
+    private final VelocityVoltage driveVelocity = new VelocityVoltage(0);
+
 
     public SwerveMod(int moduleNumber, SwerveModuleConstants moduleConstants) {
         this.hardwareConfigs = Robot.hardwareConfigs;
@@ -73,6 +76,7 @@ public class SwerveMod{
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "rio");
         // Load your TalonFX drive config (PID, current limit, etc.)
         mDriveMotor.getConfigurator().apply(hardwareConfigs.swerveDriveTalonConfig);
+        mDriveMotor.getConfigurator().setPosition(0.0);
 
         // Initialize encoders
         configEncoders();
@@ -94,7 +98,9 @@ public class SwerveMod{
      */
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         // 1) Optimize the commanded angle to avoid unnecessary rotation
-        desiredState = CTREModuleState.optimize(desiredState, getState().angle);
+        // desiredState = CTREModuleState.optimize(desiredState, getState().angle);
+        desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
+
 
         // 2) Set the steering angle (SparkMax)
         setAngle(desiredState);
@@ -107,23 +113,16 @@ public class SwerveMod{
                                  desiredState.angle.getDegrees());
     }
 
-    // -----------------------------------------------------
-    // Drive control (TalonFX)
-    // -----------------------------------------------------
-    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
+    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
         double speedMps = desiredState.speedMetersPerSecond;
-
-        // If open loop, just do percentage output
-        if (isOpenLoop) {
-            double percentOutput = speedMps / Constants.Swerve.maxSpeed;
-            mDriveMotor.setControl(new DutyCycleOut(percentOutput));
-        } else {
-            // If closed loop, you likely want to convert m/s → sensor units or set up the
-            // TalonFX so that it interprets velocity in m/s with your sensorCoefficient
-            mDriveMotor.setControl(
-                new VelocityVoltage(speedMps)
-                    .withSlot(0) // use whichever slot is for velocity PID
-            );
+        if(isOpenLoop){
+            driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
+            mDriveMotor.setControl(driveDutyCycle);
+        }
+        else {
+            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
+            driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
+            mDriveMotor.setControl(driveVelocity);
         }
     }
 
@@ -201,26 +200,22 @@ public class SwerveMod{
      *  - Speed (m/s) read from the TalonFX
      *  - Angle read from the SparkMax
      */
-    public SwerveModuleState getState() {
-        // Check how you have your TalonFX sensor configured:
-        //  - If your velocity is in rotations/second, you need to convert it to m/s
-        //  - If it’s in m/s already (via sensorCoefficient), then you can just use it
-        double driveVelocity = mDriveMotor.getVelocity().getValue().magnitude();
-        Rotation2d angle     = getAngle();
-
-        return new SwerveModuleState(driveVelocity, angle);
+    public SwerveModuleState getState(){
+        return new SwerveModuleState(
+            Conversions.RPSToMPS(mDriveMotor.getVelocity().getValue(), Constants.Swerve.wheelCircumference),
+            getAngle()
+        );
     }
-
     /**
      * Returns the module’s position:
      *  - Drive distance (meters) from the TalonFX integrated sensor
      *  - Angle from SparkMax
      */
-    public SwerveModulePosition getPosition() {
-        // Convert TalonFX sensor reading to meters
-        double driveDistance = mDriveMotor.getPosition().getValue().magnitude();
-        Rotation2d angle     = getAngle();
-        return new SwerveModulePosition(driveDistance, angle);
+    public SwerveModulePosition getPosition(){
+        return new SwerveModulePosition(
+            Conversions.rotationsToMeters(mDriveMotor.getPosition().getValue(), Constants.Swerve.wheelCircumference),
+            getAngle()
+        );
     }
 
     // -----------------------------------------------------
