@@ -78,7 +78,7 @@ public class SwerveMod{
         // -----------------------------------------------------
         // Drive Motor – TalonFX
         // -----------------------------------------------------
-        mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "rio");
+        mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "canivore");
         // Load your TalonFX drive config (PID, current limit, etc.)
         mDriveMotor.getConfigurator().apply(hardwareConfigs.swerveDriveTalonConfig);
         mDriveMotor.getConfigurator().setPosition(0.0);
@@ -134,6 +134,7 @@ public class SwerveMod{
             System.out.println("Desired Velocity: " + driveVelocity.Velocity);
             mDriveMotor.setControl(driveVelocity.withSlot(0));
         }
+        SmartDashboard.putNumber("Actual Speed " + moduleNumber, mDriveMotor.getVelocity().getValueAsDouble());
     }
 
     // -----------------------------------------------------
