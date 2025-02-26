@@ -71,7 +71,8 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_PID.setSetpoint(m_pivotSetpoint);
-    m_pivotMotor.set(m_PID.calculate(m_pivotEncoder.getPosition()));
+    // Problem m_pivotEncoder is null
+    // m_PID.setSetpoint(m_pivotSetpoint);
+    // m_pivotMotor.set(m_PID.calculate(m_pivotEncoder.getPosition()));
   }
 }

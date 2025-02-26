@@ -192,8 +192,8 @@ public final class Constants {
     public static final class CoralOutIntake{
         public static final int JOYSTICK_PORT_ID = 0;
 
-        public static final int PIVOTion_MOTOR_ID = 1;
-        public static final int ROTATION_MOTOR_ID = 2;
+        public static final int PIVOTion_MOTOR_ID = 11;
+        public static final int ROTATION_MOTOR_ID = 12;
 
         public static final int LIMITSWITCH_CHANNEL_ID = 6;
 
@@ -211,7 +211,7 @@ public final class Constants {
     }
 
     public class Elevator {
-        public static final int MOTOR_ID = 1;
+        public static final int MOTOR_ID = 9;
         public static final double ERROR_TOLERANCE = 0.1;
 
         // get the position for the following //{
