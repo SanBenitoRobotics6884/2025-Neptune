@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -34,32 +36,30 @@ import frc.robot.Commands.CoralOutIntakeCommand;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
-    //ClimbCommand m_ClimbCommand = new ClimbCommand();
-    //ClimbCommandUp m_ClimbCommandUp = new ClimbCommandUp();
     //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
-
-    //ClimbStop m_ClimbStop = new ClimbStop();
 
    /* Driver Controls */
 	private final int translationAxis = 1;
 	private final int strafeAxis = 0;
-	private final int rotationAxis = 4;
+	private final int rotationAxis = 2;
 
     /* Driver Buttons */
+    private final JoystickButton elevatorDisengage = new JoystickButton(driver, 7);
+    private final JoystickButton elevatorEngage = new JoystickButton(driver, 8);
+
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-
-    private final JoystickButton dampen = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-
     private final JoystickButton DynamicLock = new JoystickButton(driver, XboxController.Button.kX.value);
 
-    private final Trigger forwardHold = new Trigger(() -> (driver.getRawAxis(4) > 0.75));
-    private final Trigger backwardHold = new Trigger(() -> (driver.getRawAxis(4) < -0.75));
+    // private final Trigger forwardHold = new Trigger(() -> (driver.getRawAxis(4) > 0.75));
+    // private final Trigger backwardHold = new Trigger(() -> (driver.getRawAxis(4) < -0.75));
 
     /* Subsystems */
     private final PoseEstimator s_PoseEstimator = new PoseEstimator();
     private final Swerve s_Swerve = new Swerve(s_PoseEstimator);
+    private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
+    //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
+    //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */
@@ -75,24 +75,18 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
-                () -> robotCentric.getAsBoolean(),
-                () -> dampen.getAsBoolean(),
+                () -> false,
+                () -> false,
                 () -> 0 // Dynamic heading placeholder
             )
         );
 
+        s_ClimbSubsystem.setDefaultCommand(
+            new ClimbCommand(s_ClimbSubsystem, ()->elevatorDisengage.getAsBoolean(), ()->elevatorEngage.getAsBoolean())
+        );
+
         // Configure the button bindings
         configureButtonBindings();
-
-        /*if(m_XboxController.getLeftBumperButtonPressed()){
-          m_ClimbCommand.schedule();
-        }
-        if (m_XboxController.getAButtonPressed()) {
-          m_ClimbStop.schedule();
-        }
-        if (m_XboxController.getLeftBumperButtonReleased()) {
-          m_ClimbCommandUp.schedule();
-        }*/
 
 
         //Pathplanner commands - templates
