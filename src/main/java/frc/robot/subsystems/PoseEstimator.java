@@ -72,7 +72,7 @@ public class PoseEstimator extends SubsystemBase{
         SmartDashboard.putNumber("robotX", getEstimatedPosition().getX());
         SmartDashboard.putNumber("robotY", getEstimatedPosition().getY());
         SmartDashboard.putNumber("robotHeading", getEstimatedPosition().getRotation().getRadians());
-        Logger.recordOutput("EstimatedPose", getEstimatedPosition());
+        //Logger.recordOutput("EstimatedPose", getEstimatedPosition());
 
     }
 }

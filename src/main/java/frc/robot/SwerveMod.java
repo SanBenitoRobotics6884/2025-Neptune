@@ -17,7 +17,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-
+import com.ctre.phoenix6.hardware.TalonFX;
 /**
  * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder absolute encoders.
  */
@@ -28,7 +28,7 @@ public class SwerveMod{
     private Rotation2d angleOffset;
 
     private SparkMax mAngleMotor;
-    private SparkMax mDriveMotor;
+    private TalonFX mDriveMotor;
 
     private RelativeEncoder relAngleEncoder;
     private RelativeEncoder relDriveEncoder;

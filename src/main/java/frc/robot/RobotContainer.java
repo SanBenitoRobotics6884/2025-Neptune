@@ -21,6 +21,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
+import frc.robot.Constants.CoralOutIntake;
+import frc.robot.Subsystems.CoralOutIntakeSybsystem;
+import frc.robot.Commands.CoralOutIntakeCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -80,7 +84,7 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
 
-        if(m_XboxController.getLeftBumperButtonPressed()){
+        /*if(m_XboxController.getLeftBumperButtonPressed()){
           m_ClimbCommand.schedule();
         }
         if (m_XboxController.getAButtonPressed()) {
@@ -88,18 +92,18 @@ public class RobotContainer {
         }
         if (m_XboxController.getLeftBumperButtonReleased()) {
           m_ClimbCommandUp.schedule();
-        }
+        }*/
 
 
         //Pathplanner commands - templates
         
-        NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
-        NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
-        NamedCommands.registerCommand("print hello", Commands.print("hello"));
+        //NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
+        //NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
+        //NamedCommands.registerCommand("print hello", Commands.print("hello"));
     
         
         //Auto chooser
-        autoChooser = AutoBuilder.buildAutoChooser("New Auto"); // Default auto will be `Commands.none()`
+        //autoChooser = AutoBuilder.buildAutoChooser("New Auto"); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
     }
 
@@ -139,13 +143,13 @@ public class RobotContainer {
     }
 
   private void configureBindings() {
-    new JoystickButton(m_joystick, 1)
+    new JoystickButton(driver, 1)
       .whileTrue(m_CoralOutIntakeCommand);
-    new JoystickButton(m_joystick, 10)
+    new JoystickButton(driver, 10)
       .onTrue(m_coralOutIntakeSybsystem.toHighPosotion());
-    new JoystickButton(m_joystick, 11)
+    new JoystickButton(driver, 11)
       .onTrue(m_coralOutIntakeSybsystem.toMidPosotion());
-    new JoystickButton(m_joystick, 12)
+    new JoystickButton(driver, 12)
       .onTrue(m_coralOutIntakeSybsystem.toLowPosotion());
   }
 
