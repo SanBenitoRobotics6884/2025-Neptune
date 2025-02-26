@@ -21,6 +21,8 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+
+import frc.lib.math.Conversions;
 /**
  * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder absolute encoders.
  */

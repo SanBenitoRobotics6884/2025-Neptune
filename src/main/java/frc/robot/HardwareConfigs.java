@@ -16,7 +16,7 @@ public final class HardwareConfigs {
         /** Swerve Drive Motor Configuration */
         /* Motor Inverts and Neutral Mode */
         swerveDriveTalonConfig.MotorOutput.Inverted = Constants.Swerve.driveMotorInvert;
-        swerveDriveTalonConfig.MotorOutput.NeutralMode = Constants.Swerve.driveNeutralMode;
+        //swerveDriveTalonConfig.MotorOutput.NeutralMode = Constants.Swerve.driveNeutralMode;
 
         /* Gear Ratio Config */
         swerveDriveTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.driveGearRatio;
@@ -24,8 +24,8 @@ public final class HardwareConfigs {
         /* Current Limiting */
         swerveDriveTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.driveEnableCurrentLimit;
         swerveDriveTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.driveCurrentLimit;
-        swerveDriveTalonConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Swerve.driveCurrentThreshold;
-        swerveDriveTalonConfig.CurrentLimits.SupplyTimeThreshold = Constants.Swerve.driveCurrentThresholdTime;
+        //swerveDriveTalonConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Swerve.driveCurrentThreshold;
+        //swerveDriveTalonConfig.CurrentLimits.SupplyTimeThreshold = Constants.Swerve.driveCurrentThresholdTime;
 
         /* PID Config */
         swerveDriveTalonConfig.Slot0.kP = Constants.Swerve.driveKP;
@@ -62,7 +62,7 @@ public final class HardwareConfigs {
 
        //Swerve drive motor config
        //Motor inverts and nuetral modes
-       swerveDriveSparkConfig.inverted(Constants.Swerve.driveMotorInvert);
+       //swerveDriveSparkConfig.inverted(Constants.Swerve.driveMotorInvert);
        swerveDriveSparkConfig.idleMode(Constants.Swerve.driveNuetralMode);
 
        //Gear ratio and wrapping config

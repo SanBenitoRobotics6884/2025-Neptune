@@ -19,6 +19,7 @@ import frc.lib.util.swerveUtil.COTSTalonFXSwerveConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants.driveGearRatios;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
@@ -29,7 +30,7 @@ public final class Constants {
 
         public static final COTSNeoSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
         COTSNeoSwerveConstants.SDSMK4i(driveGearRatios.SDSMK4i_L2);
-        public static final COTSTalonFXSwerveConstants driveModule = COTSTalonFXSwerveConstants.WCP.SwerveXStandard.KrakenX60(1)
+        public static final COTSTalonFXSwerveConstants driveModule = COTSTalonFXSwerveConstants.WCP.SwerveXStandard.KrakenX60(1);
 
         /* Drivetrain Constants */
         public static final double trackWidth = Units.inchesToMeters(27); //TODO: This must be tuned to specific robot
@@ -53,7 +54,7 @@ public final class Constants {
 
          /* Motor Inverts */
          public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
-         public static final boolean driveMotorInvert = driveModule.driveMotorInvert;
+        public static final InvertedValue driveMotorInvert = driveModule.driveMotorInvert;
 
         /* Angle Encoder Invert */
         public static final SensorDirectionValue cancoderInvert = chosenModule.cancoderInvert;
