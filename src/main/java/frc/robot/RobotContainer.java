@@ -22,10 +22,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
+import frc.robot.Commands.CoralOutIntakeCommand;
 
 import frc.robot.Constants.CoralOutIntake;
-import frc.robot.Subsystems.CoralOutIntakeSybsystem;
-import frc.robot.Commands.CoralOutIntakeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -58,7 +57,7 @@ public class RobotContainer {
     private final PoseEstimator s_PoseEstimator = new PoseEstimator();
     private final Swerve s_Swerve = new Swerve(s_PoseEstimator);
     private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
-    //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
+    private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
@@ -82,7 +81,19 @@ public class RobotContainer {
         );
 
         s_ClimbSubsystem.setDefaultCommand(
-            new ClimbCommand(s_ClimbSubsystem, ()->elevatorDisengage.getAsBoolean(), ()->elevatorEngage.getAsBoolean())
+            new ClimbCommand(
+              s_ClimbSubsystem, 
+              ()->elevatorDisengage.getAsBoolean(), 
+              ()->elevatorEngage.getAsBoolean()
+            )
+        );
+
+        s_CoralOutIntakeSubsystem.setDefaultCommand(
+            new CoralOutIntakeCommand(
+              s_CoralOutIntakeSubsystem
+              // ()->elevatorDisengage.getAsBoolean(), 
+              // ()->elevatorEngage.getAsBoolean()
+            )
         );
 
         // Configure the button bindings

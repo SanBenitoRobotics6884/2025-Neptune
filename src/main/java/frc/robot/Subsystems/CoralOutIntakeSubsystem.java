@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.CoralOutIntake.*;
 
-public class CoralOutIntakeSybsystem extends SubsystemBase {
+public class CoralOutIntakeSubsystem extends SubsystemBase {
   Joystick m_joystick = new Joystick(JOYSTICK_PORT_ID);
 
   SparkMax m_pivotMotor = new SparkMax(PIVOTion_MOTOR_ID, MotorType.kBrushless);
@@ -34,7 +34,7 @@ public class CoralOutIntakeSybsystem extends SubsystemBase {
   PIDController m_PID = new PIDController(Kp, Ki, Kd);
 
   /** Creates a new CoralIntakeOuttake. */
-  public CoralOutIntakeSybsystem() {
+  public CoralOutIntakeSubsystem() {
     config.inverted(true);
     m_pivotMotor.configure(config, null, null);
     m_stealOrNoStealMotor.configure(config, null, null);

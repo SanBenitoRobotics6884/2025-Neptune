@@ -5,14 +5,14 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.CoralOutIntakeSybsystem;
+import frc.robot.Subsystems.CoralOutIntakeSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class CoralOutIntakeCommand extends Command {
-  CoralOutIntakeSybsystem m_coralOutIntake;
+  CoralOutIntakeSubsystem m_coralOutIntake;
 
   /** Creates a new CoralOutIntakeCommand. */
-  public CoralOutIntakeCommand(CoralOutIntakeSybsystem coralOutIntake) {
+  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake) {
     m_coralOutIntake = coralOutIntake;
 
     // Use addRequirements() here to declare subsystem dependencies.
