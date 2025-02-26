@@ -211,19 +211,26 @@ public final class Constants {
     }
 
     public class Elevator {
-        public static final int MOTOR_1_ID = 1;
+        public static final int MOTOR_ID = 1;
+        public static final double ERROR_TOLERANCE = 0.1;
 
         // get the position for the following //{
-            public static final double FORTE_POSOTION = 0;
-            public static final double MEZZO_POSOTION = 0;
-            public static final double PIANO_POSOTION = 0;
+        public static final double FORTE_POSOTION = 0;
+        public static final double MEZZO_POSOTION = 0;
+        public static final double PIANO_POSOTION = 0;
         //}
 
-        public static final double Kp = 0.5;
-        public static final double Ki = 0.01;
-        public static final double Kd = 0;
+        public static final double KP = 0.5;
+        public static final double KI = 0.01;
+        public static final double KD = 0;
 
-        public static final double ERROR_TOLERANCE = 0.2;
+        public static final InvertedValue MOTORINVERT = InvertedValue.CounterClockwise_Positive;
+        public static final double NEUTRALMODE = 0.0;
+        public static final double GEARRATIO = 1;
+        public static final boolean ENABLECURRENTLIMIT = true;
+        public static final double CURRENTLIMIT = 40;
+        public static final double OPENLOOPRAMP = 0.2;
+        public static final double CLOSEDLOOPRAMP = 0.0;
     }
 
 }
