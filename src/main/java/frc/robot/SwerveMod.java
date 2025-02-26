@@ -3,10 +3,12 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.lib.util.swerveUtil.CTREModuleState;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
+
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -46,6 +48,7 @@ public class SwerveMod{
     private CANcoder angleEncoder;
     private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
     private final VelocityVoltage driveVelocity = new VelocityVoltage(0);
+    private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
 
     public SwerveMod(int moduleNumber, SwerveModuleConstants moduleConstants) {
