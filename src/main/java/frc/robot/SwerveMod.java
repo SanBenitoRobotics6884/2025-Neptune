@@ -57,7 +57,7 @@ public class SwerveMod{
         // -----------------------------------------------------
         // Absolute angle encoder (CTRE CANcoder)
         // -----------------------------------------------------
-        angleEncoder = new CANcoder(moduleConstants.cancoderID, "rio");
+        angleEncoder = new CANcoder(moduleConstants.cancoderID, "Galigma");
         // Apply your CANcoder config (sensorCoefficient, magnetOffset, etc.)
         angleEncoder.getConfigurator().apply(hardwareConfigs.swerveCANcoderConfig);
 
