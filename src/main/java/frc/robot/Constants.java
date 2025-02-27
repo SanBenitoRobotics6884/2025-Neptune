@@ -119,7 +119,7 @@ public final class Constants {
             public static final int driveMotorID = 1;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 1;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(90.0/360);
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-90.0/360);
             public static final boolean driveInvert = true;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
@@ -140,7 +140,7 @@ public final class Constants {
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 2;
             public static final int canCoderID = 2;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(130.0/360);
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-50.0/360);
             public static final boolean driveInvert = true;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
@@ -162,7 +162,7 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 3;
             public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.0/360);
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(112.0/360);
             public static final boolean driveInvert = false;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
@@ -183,7 +183,7 @@ public final class Constants {
             public static final int driveMotorID = 4;
             public static final int angleMotorID = 4;
             public static final int canCoderID = 4;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.0/360);
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-3.0/360);
             public static final boolean driveInvert = false;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
