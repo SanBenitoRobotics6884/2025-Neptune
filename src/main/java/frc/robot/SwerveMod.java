@@ -175,6 +175,7 @@ public class SwerveMod{
     /** Absolute angle from the CANcoder, always in the [0,360) domain if you convert rotations → degrees. */
     public Rotation2d getCANcoder() {
         double absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
+        SmartDashboard.putNumber("Absolute Angle" + moduleNumber, absPositionRot);
         double absPositionDeg = absPositionRot * 360.0;
         return Rotation2d.fromDegrees(absPositionDeg);
     }
@@ -196,6 +197,7 @@ public class SwerveMod{
         // For example:
         // relAngleEncoder.setPositionConversionFactor(360.0); // 1 rotation = 360 degrees
         // => setPosition in degrees:
+        SmartDashboard.putNumber("Reset Angle " + moduleNumber, adjustedAngle);
         relAngleEncoder.setPosition(adjustedAngle);
 
         // If you do NOT set that conversion factor, you’d do:
