@@ -84,14 +84,6 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
 
-
-        //Pathplanner commands - templates
-        
-        //NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
-        //NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
-        //NamedCommands.registerCommand("print hello", Commands.print("hello"));
-    
-        
         //Auto chooser
         //autoChooser = AutoBuilder.buildAutoChooser("New Auto"); // Default auto will be `Commands.none()`
         //SmartDashboard.putData("Auto Mode", autoChooser);
