@@ -26,6 +26,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
+
+
+    
     private PoseEstimator s_PoseEstimator = new PoseEstimator();
 
     public SwerveDriveOdometry swerveOdometry;
@@ -43,15 +46,15 @@ public class Swerve extends SubsystemBase {
           Constants.AutoConstants.moduleConfig,
           Constants.Swerve.trackWidth);
 
-        gyro = new Pigeon2(Constants.Swerve.pigeonID);
+        gyro = new Pigeon2(Constants.Swerve.pigeonID, "Galigma");
         gyro.getConfigurator().apply(new Pigeon2Configuration());
         gyro.setYaw(0);
 
         mSwerveMods = new SwerveMod[] {
-            new SwerveMod(0, Constants.Swerve.Mod0.constants),
-            new SwerveMod(1, Constants.Swerve.Mod1.constants),
-            new SwerveMod(2, Constants.Swerve.Mod2.constants),
-            new SwerveMod(3, Constants.Swerve.Mod3.constants)
+            new SwerveMod(0, Constants.Swerve.Mod1.constants),
+            new SwerveMod(1, Constants.Swerve.Mod0.constants),
+            new SwerveMod(2, Constants.Swerve.Mod3.constants),
+            new SwerveMod(3, Constants.Swerve.Mod2.constants)
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());

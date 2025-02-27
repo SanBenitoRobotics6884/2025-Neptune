@@ -31,9 +31,9 @@ public class RobotContainer {
    /* Driver Controls */
 	  private final int translationAxis = 1;
 	  private final int strafeAxis = 0;
-	  private final int rotationAxis = 2;
-    private final int leftShoulderButton = 7;
-    private final int rightShoulderButton = 8;
+	  private final int rotationAxis = 4;
+    private final int leftShoulderButton = 5;
+    private final int rightShoulderButton = 6;
 
     /* Driver Buttons */
     private final JoystickButton elevatorDisengage = new JoystickButton(driver, leftShoulderButton);

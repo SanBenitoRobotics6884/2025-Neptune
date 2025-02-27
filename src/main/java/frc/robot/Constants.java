@@ -19,13 +19,13 @@ import frc.lib.util.swerveUtil.COTSTalonFXSwerveConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants.driveGearRatios;
-import com.ctre.phoenix6.signals.InvertedValue
+import com.ctre.phoenix6.signals.InvertedValue;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
     public static final class Swerve {
-        public static final int pigeonID = 13;
+        public static final int pigeonID = 6;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         public static final COTSNeoSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
@@ -120,7 +120,7 @@ public final class Constants {
             public static final int angleMotorID = 1;
             public static final int canCoderID = 1;
             public static final Rotation2d angleOffset = Rotation2d.fromRotations(-90.0/360);
-            public static final boolean driveInvert = true;
+            public static final boolean driveInvert = false;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
@@ -140,7 +140,7 @@ public final class Constants {
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 2;
             public static final int canCoderID = 2;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-50.0/360);
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(45.0/360);
             public static final boolean driveInvert = true;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
@@ -162,8 +162,8 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 3;
             public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(112.0/360);
-            public static final boolean driveInvert = false;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(65.0/360);
+            public static final boolean driveInvert = true;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
@@ -183,7 +183,7 @@ public final class Constants {
             public static final int driveMotorID = 4;
             public static final int angleMotorID = 4;
             public static final int canCoderID = 4;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-3.0/360);
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(7.0/360);
             public static final boolean driveInvert = false;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
