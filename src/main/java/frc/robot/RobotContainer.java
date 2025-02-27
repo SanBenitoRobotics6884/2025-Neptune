@@ -130,7 +130,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         //return autoChooser.getSelected();
-      return AutonomousCommand();
+      return new AutonomousCommand(s_Swerve);
     }
 
   private void configureBindings() {
