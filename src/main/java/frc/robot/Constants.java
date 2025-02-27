@@ -15,10 +15,16 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.lib.util.swerveUtil.COTSTalonFXSwerveConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants.driveGearRatios;
+
+import static edu.wpi.first.units.Units.Meters;
+
 import com.ctre.phoenix6.signals.InvertedValue;
 
 public final class Constants {
@@ -210,8 +216,9 @@ public final class Constants {
         public static final double Kd = 0;
     }
 
-    public class Elevator {
-        public static final int MOTOR_ID = 9;
+    public static final class Elevator {
+        public static final int LEFT_MOTOR_ID = 9;
+        public static final int RIGHT_MOTOR_ID = 0;
         public static final double ERROR_TOLERANCE = 0.1;
 
         // get the position for the following //{
@@ -232,5 +239,27 @@ public final class Constants {
         public static final double OPENLOOPRAMP = 0.2;
         public static final double CLOSEDLOOPRAMP = 0.0;
     }
+
+    public static final class Climb {
+
+    }
+
+    public static final class LEDs {
+        public static final int LED_BUFFER_LENGTH = 0;
+        public static final int LED_PORT = 0;
+        public static final Distance kLED_SPACING = Meters.of(1 / 120.0); // One meter for a certain amount of LEDs.
+        /* LED PATTERNS FOR EASY USAGE */
+        public static final LEDPattern[] LED_PATTERNS = {
+            LEDPattern.solid(Color.kRed), //Alliance Red
+            LEDPattern.solid(Color.kBlue), // Alliance Blue
+            LEDPattern.solid(Color.kGreen), // Deep Cage
+            LEDPattern.solid(Color.kAquamarine), //Elevator
+            LEDPattern.solid(Color.kHotPink), //Algae
+            LEDPattern.solid(Color.kYellow), // Coral
+            LEDPattern.solid(Color.kDarkOrange) // PIT MODE
+        };
+
+    }
+
 
 }

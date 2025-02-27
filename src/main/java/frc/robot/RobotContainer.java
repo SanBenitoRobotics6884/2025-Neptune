@@ -68,8 +68,8 @@ public class RobotContainer {
         s_ClimbSubsystem.setDefaultCommand(
             new ClimbCommand(
               s_ClimbSubsystem, 
-              ()->elevatorDisengage.getAsBoolean(), 
-              ()->elevatorEngage.getAsBoolean()
+              () -> elevatorDisengage.getAsBoolean(), 
+              () -> elevatorEngage.getAsBoolean()
             )
         );
 

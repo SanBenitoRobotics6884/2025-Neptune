@@ -17,13 +17,8 @@ import frc.robot.HardwareConfigs;
 import static frc.robot.Constants.Elevator.*;
 
 public class ElevatorSubsystem extends SubsystemBase {
-
-  private TalonFX mMotor;
-  // private TalonFX m_moter2;
-
-  // private AbsoluteEncoder relativeEncoder_1;
-  // private RelativeEncoder relativeEncodor_2;
-
+  private static TalonFX m_leftMotor = new TalonFX(LEFT_MOTOR_ID);
+  private static TalonFX m_rightMotor = new TalonFX(LEFT_MOTOR_ID);
   public double m_setpoint;
 
   public XboxController xboxController;
@@ -31,7 +26,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public ElevatorSubsystem() {
     HardwareConfigs hardwareConfigs = new HardwareConfigs();
-    mMotor = new TalonFX(MOTOR_ID, "Galigma");
+    mMotor = new TalonFX(LEFT_MOTOR_ID, "Galigma");
     // Load your TalonFX drive config (PID, current limit, etc.)
     mMotor.getConfigurator().apply(hardwareConfigs.elevatorTalonConfig);
     mMotor.getConfigurator().setPosition(0.0);
