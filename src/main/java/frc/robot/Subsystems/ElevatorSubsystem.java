@@ -31,7 +31,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public ElevatorSubsystem() {
     HardwareConfigs hardwareConfigs = new HardwareConfigs();
-    mMotor = new TalonFX(MOTOR_ID, "canivore");
+    mMotor = new TalonFX(MOTOR_ID, "Galigma");
     // Load your TalonFX drive config (PID, current limit, etc.)
     mMotor.getConfigurator().apply(hardwareConfigs.elevatorTalonConfig);
     mMotor.getConfigurator().setPosition(0.0);
