@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-import frc.robot.Commands.*;
-import frc.robot.Subsystems.*;
-import frc.robot.Commands.CoralOutIntakeCommand;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
+import frc.robot.commands.CoralOutIntakeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
