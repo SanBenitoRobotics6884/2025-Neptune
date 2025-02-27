@@ -38,7 +38,7 @@ public class ClimbCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.print("Climb Command Running");
+    // System.out.print("Climb Command Running");
     int climbState = -1;
     if(m_disengageButton.getAsBoolean()) {
       m_climbsubsystem.m_climbMotor.set(-.1);
@@ -54,7 +54,7 @@ public class ClimbCommand extends Command {
       m_climbsubsystem.m_climbMotor.stopMotor();
       climbState = 0;
     }
-    SmartDashboard.putNumber("Climb State", climbState);
+    // SmartDashboard.putNumber("Climb State", climbState);
   }
 
   // Called once the command ends or is interrupted.

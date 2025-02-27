@@ -9,26 +9,9 @@ public final class HardwareConfigs {
     public CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
     public SparkMaxConfig swerveAngleSparkConfig =  new SparkMaxConfig();
     public SparkMaxConfig swerveDriveSparkConfig =  new SparkMaxConfig();
-    public TalonFXConfiguration swerveDriveTalonConfig = new TalonFXConfiguration();
     public TalonFXConfiguration elevatorTalonConfig = new TalonFXConfiguration();
 
     public HardwareConfigs(){
-        /** Swerve Drive Motor Configuration */
-        /* Motor Inverts and Neutral Mode */
-        swerveDriveTalonConfig.MotorOutput.Inverted = Constants.Swerve.driveMotorInvert;
-        //swerveDriveTalonConfig.MotorOutput.NeutralMode = Constants.Swerve.driveNeutralMode;
-        swerveDriveTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.driveGearRatio;
-        swerveDriveTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.driveEnableCurrentLimit;
-        swerveDriveTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.driveCurrentLimit;
-        //swerveDriveTalonConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Swerve.driveCurrentThreshold;
-        //swerveDriveTalonConfig.CurrentLimits.SupplyTimeThreshold = Constants.Swerve.driveCurrentThresholdTime;
-        swerveDriveTalonConfig.Slot0.kP = Constants.Swerve.driveKP;
-        swerveDriveTalonConfig.Slot0.kI = Constants.Swerve.driveKI;
-        swerveDriveTalonConfig.Slot0.kD = Constants.Swerve.driveKD;
-        swerveDriveTalonConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
-        swerveDriveTalonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
-        swerveDriveTalonConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
-        swerveDriveTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
 
         elevatorTalonConfig.MotorOutput.Inverted = Constants.Elevator.MOTORINVERT;
         // elevatorTalonConfig.MotorOutput.NeutralMode = Constants.Elevator.NEUTRALMODE;
