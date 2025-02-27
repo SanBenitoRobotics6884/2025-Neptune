@@ -200,6 +200,13 @@ public class SwerveMod{
         // => setPosition in degrees:
         relAngleEncoder.setPosition(adjustedAngle);
 
+        SparkClosedLoopController angleController = mAngleMotor.getClosedLoopController();
+        angleController.setReference(
+            adjustedAngle,         // setpoint
+            ControlType.kPosition,  // position closed-loop
+            ClosedLoopSlot.kSlot0   // uses PID slot 0
+        );
+
         // If you do NOT set that conversion factor, you’d do:
         // relAngleEncoder.setPosition(adjustedAngle / 360.0);
     }
