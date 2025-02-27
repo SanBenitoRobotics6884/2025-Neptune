@@ -76,7 +76,7 @@ public class SwerveMod{
         // -----------------------------------------------------
         // Drive Motor – TalonFX
         // -----------------------------------------------------
-        mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "canivore");
+        mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "Galigma");
         // Load your TalonFX drive config (PID, current limit, etc.)
         mDriveMotor.getConfigurator().apply(hardwareConfigs.swerveDriveTalonConfig);
         mDriveMotor.getConfigurator().setPosition(0.0);
