@@ -21,7 +21,7 @@ import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-
+import com.ctre.phoenix6.signals.InvertedValue;
 import frc.lib.math.Conversions;
 /**
  * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder absolute encoders.
@@ -42,17 +42,19 @@ public class SwerveMod{
     /** TalonFX for the drive */
     private TalonFX mDriveMotor;
 
+    private InvertedValue invertMotor;
+
     /** CTRE CANcoder for absolute angle measurement */
     private CANcoder angleEncoder;
     private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
     private final VelocityVoltage driveVelocity = new VelocityVoltage(0);
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
-
     public SwerveMod(int moduleNumber, SwerveModuleConstants moduleConstants) {
         this.hardwareConfigs = Robot.hardwareConfigs;
         this.moduleNumber    = moduleNumber;
         this.angleOffset     = moduleConstants.angleOffset;
+        this.invertMotor     = moduleConstants.invertMotor;
 
         // -----------------------------------------------------
         // Absolute angle encoder (CTRE CANcoder)
@@ -78,7 +80,7 @@ public class SwerveMod{
         // -----------------------------------------------------
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "Galigma");
         // Load your TalonFX drive config (PID, current limit, etc.)
-        mDriveMotor.getConfigurator().apply(hardwareConfigs.swerveDriveTalonConfig);
+        mDriveMotor.getConfigurator().apply(moduleConstants.asTalonConfig());
         mDriveMotor.getConfigurator().setPosition(0.0);
 
         // Initialize encoders
@@ -109,28 +111,19 @@ public class SwerveMod{
 
         // 3) Set the drive speed (TalonFX)
         setSpeed(desiredState, isOpenLoop);
-
-        SmartDashboard.putNumber("Desired angle (deg) - Mod " + moduleNumber,
-                                 desiredState.angle.getDegrees());
     }
 
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
-        SmartDashboard.putNumber("Desired Speed " + moduleNumber, desiredState.speedMetersPerSecond);
         double speedMps = desiredState.speedMetersPerSecond;
         if(isOpenLoop){
             driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
             mDriveMotor.setControl(driveDutyCycle);
-            SmartDashboard.putNumber("Desired Duty Cycle " + moduleNumber, driveDutyCycle.Output);
-            System.out.println("Desired Duty Cycle: " + driveDutyCycle.Output);
         }
         else {
             driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
             driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
-            SmartDashboard.putNumber("Desired Velocity " + moduleNumber, driveVelocity.Velocity);
-            System.out.println("Desired Velocity: " + driveVelocity.Velocity);
             mDriveMotor.setControl(driveVelocity.withSlot(0));
         }
-        SmartDashboard.putNumber("Actual Speed " + moduleNumber, mDriveMotor.getVelocity().getValueAsDouble());
     }
 
     // -----------------------------------------------------
@@ -175,7 +168,6 @@ public class SwerveMod{
     /** Absolute angle from the CANcoder, always in the [0,360) domain if you convert rotations → degrees. */
     public Rotation2d getCANcoder() {
         double absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
-        SmartDashboard.putNumber("Absolute Angle" + moduleNumber, absPositionRot);
         double absPositionDeg = absPositionRot * 360.0;
         return Rotation2d.fromDegrees(absPositionDeg);
     }
@@ -197,7 +189,6 @@ public class SwerveMod{
         // For example:
         // relAngleEncoder.setPositionConversionFactor(360.0); // 1 rotation = 360 degrees
         // => setPosition in degrees:
-        SmartDashboard.putNumber("Reset Angle " + moduleNumber, adjustedAngle);
         relAngleEncoder.setPosition(adjustedAngle);
 
         // If you do NOT set that conversion factor, you’d do:
