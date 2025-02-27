@@ -57,7 +57,7 @@ public class RobotContainer {
             new SwerveCommand(
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
+                () -> driver.getRawAxis(strafeAxis),
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> false,
                 () -> false,
