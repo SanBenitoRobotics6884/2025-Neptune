@@ -32,30 +32,55 @@ public class ElevatorSubsystem extends SubsystemBase {
   private PIDController pidController;
 
   public ElevatorSubsystem() {
+
     HardwareConfigs hardwareConfigs = new HardwareConfigs();
-    mMotor = new TalonFX(MOTOR_ID, "Galigma");
+    mLeftMotor = new TalonFX(LEFT_MOTOR_ID, "Galigma");
+    mRightMotor = new TalonFX(RIGHT_MOTOR_ID, "Galigma");
     // Load your TalonFX drive config (PID, current limit, etc.)
-    mMotor.getConfigurator().apply(hardwareConfigs.elevatorTalonConfig);
-    mMotor.getConfigurator().setPosition(0.0);
+    mLeftMotor.getConfigurator().apply(hardwareConfigs.getElevatorConfig(false));
+    mRightMotor.getConfigurator().apply(hardwareConfigs.getElevatorConfig(true));
+    mLeftMotor.getConfigurator().setPosition(0.0);
+    mRightMotor.getConfigurator().setPosition(0.0);
 
     // pidController = new PIDController(KP, KI, KD);
     // pidController.setTolerance(ERROR_TOLERANCE);
     // mMotor.set(pidController.calculate(relativeEncoder_1.getPosition(), m_setpoint));
   }
 
+  public void extend(double val){
+    mLeftMotor.setPosition(0);
+    mLeftMotor.set(val);
+    mRightMotor.setPosition(0);
+    mRightMotor.set(val);
+  }
+
+  public void retract(double val){
+    mLeftMotor.setPosition(0);
+    mLeftMotor.set(-val);
+    mRightMotor.setPosition(0);
+    mRightMotor.set(-val);
+  }
+
+  public void stop(){
+    mLeftMotor.stopMotor();
+    mRightMotor.stopMotor();
+  }
+
   public void setSetpoit(int degrees) {
-    mMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
+    mLeftMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
+    mRightMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Elevator Motor Rot ", mMotor.getPosition().getValue().in(Degrees));
-    pidController.atSetpoint();
-    if (xboxController.getLeftBumperButtonPressed()) {
-      setSetpoit(0);
-    }
-    if (xboxController.getRightBumperButtonPressed()) {
-      setSetpoit(90); //TODO: change this to the correct angle
-    }
+    SmartDashboard.putNumber("Elevator Left ", mLeftMotor.getPosition().getValue().in(Degrees));
+    SmartDashboard.putNumber("Elevator Right ", mRightMotor.getPosition().getValue().in(Degrees));
+    // pidController.atSetpoint();
+    // if (xboxController.getLeftBumperButtonPressed()) {
+    //   setSetpoit(0);
+    // }
+    // if (xboxController.getRightBumperButtonPressed()) {
+    //   setSetpoit(90); //TODO: change this to the correct angle
+    // }
   }
 }
