@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.AbsoluteEncoder;
 
@@ -20,29 +21,26 @@ import frc.robot.HardwareConfigs;
 import static frc.robot.Constants.Elevator.*;
 
 public class ElevatorSubsystem extends SubsystemBase {
+ /* Left and Right Motors */
+  private TalonFX m_leftMotor;
+  private TalonFX m_rightMotor;
 
-  private TalonFX mLeftMotor;
-  private TalonFX mRightMotor;
-  // private TalonFX m_moter2;
-
-  // private AbsoluteEncoder relativeEncoder_1;
-  // private RelativeEncoder relativeEncodor_2;
-
-  public double m_setpoint;
-
-  public XboxController xboxController;
   private PIDController pidController;
+  private Follower m_follower = new Follower(LEFT_MOTOR_ID, true);
 
   public ElevatorSubsystem() {
 
     HardwareConfigs hardwareConfigs = new HardwareConfigs();
-    mLeftMotor = new TalonFX(LEFT_MOTOR_ID, "Galigma");
-    mRightMotor = new TalonFX(RIGHT_MOTOR_ID, "Galigma");
+    m_leftMotor = new TalonFX(LEFT_MOTOR_ID, "Galigma");
+    m_rightMotor = new TalonFX(RIGHT_MOTOR_ID, "Galigma");
     // Load your TalonFX drive config (PID, current limit, etc.)
-    mLeftMotor.getConfigurator().apply(hardwareConfigs.getElevatorConfig(false));
-    mRightMotor.getConfigurator().apply(hardwareConfigs.getElevatorConfig(true));
-    mLeftMotor.getConfigurator().setPosition(0.0);
-    mRightMotor.getConfigurator().setPosition(0.0);
+    var m_leftMotorConfigurator = m_leftMotor.getConfigurator();
+    //var m_rightMotorConfigurator = m_rightMotor.getConfigurator();
+    m_leftMotorConfigurator.apply(hardwareConfigs.getElevatorConfig(false));
+    //m_rightMotorConfigurator.apply(hardwareConfigs.getElevatorConfig(true));
+    m_leftMotorConfigurator.setPosition(0.0);
+    //m_rightMotorConfigurator.setPosition(0.0);
+    m_rightMotor.setControl(m_follower);
 
     // pidController = new PIDController(KP, KI, KD);
     // pidController.setTolerance(ERROR_TOLERANCE);
@@ -50,34 +48,34 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void extend(double val){
-    mLeftMotor.setPosition(0);
-    mLeftMotor.set(val);
-    mRightMotor.setPosition(0);
-    mRightMotor.set(val);
+    m_leftMotor.setPosition(0);
+    m_leftMotor.set(val);
+    m_rightMotor.setPosition(0);
+    m_rightMotor.set(val);
   }
 
   public void retract(double val){
-    mLeftMotor.setPosition(0);
-    mLeftMotor.set(-val);
-    mRightMotor.setPosition(0);
-    mRightMotor.set(-val);
+    m_leftMotor.setPosition(0);
+    m_leftMotor.set(-val);
+    m_rightMotor.setPosition(0);
+    m_rightMotor.set(-val);
   }
 
   public void stop(){
-    mLeftMotor.stopMotor();
-    mRightMotor.stopMotor();
+    m_leftMotor.stopMotor();
+    m_rightMotor.stopMotor();
   }
 
   public void setSetpoint(int degrees) {
-    mLeftMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
-    mRightMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
+    m_leftMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
+    m_rightMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Elevator Left ", mLeftMotor.getPosition().getValue().in(Degrees));
-    SmartDashboard.putNumber("Elevator Right ", mRightMotor.getPosition().getValue().in(Degrees));
-    // pidController.atSetpoint();
+    SmartDashboard.putNumber("Elevator Left ", m_leftMotor.getPosition().getValue().in(Degrees));
+    SmartDashboard.putNumber("Elevator Right ", m_rightMotor.getPosition().getValue().in(Degrees));
+    //pidController.atSetpoint();
     // if (xboxController.getLeftBumperButtonPressed()) {
     //   setSetpoit(0);
     // }
