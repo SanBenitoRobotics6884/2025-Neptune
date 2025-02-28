@@ -257,7 +257,8 @@ public final class Constants {
     }
 
     public class Elevator {
-        public static final int MOTOR_ID = 9;
+        public static final int LEFT_MOTOR_ID = 9;
+        public static final int RIGHT_MOTOR_ID = 10;
         public static final double ERROR_TOLERANCE = 0.1;
 
         // get the position for the following //{
