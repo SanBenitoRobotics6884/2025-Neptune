@@ -49,6 +49,7 @@ public class RobotContainer {
     private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
     private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
+    private final Camera s_Camera = new Camera();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */
