@@ -10,6 +10,7 @@ import com.revrobotics.AbsoluteEncoder;
 import static edu.wpi.first.units.Units.Degrees;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Conversions;
@@ -20,7 +21,8 @@ import static frc.robot.Constants.Elevator.*;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-  private TalonFX mMotor;
+  private TalonFX mLeftMotor;
+  private TalonFX mRightMotor;
   // private TalonFX m_moter2;
 
   // private AbsoluteEncoder relativeEncoder_1;
@@ -66,7 +68,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     mRightMotor.stopMotor();
   }
 
-  public void setSetpoit(int degrees) {
+  public void setSetpoint(int degrees) {
     mLeftMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
     mRightMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
   }

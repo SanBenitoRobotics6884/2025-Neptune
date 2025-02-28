@@ -42,7 +42,7 @@ public final class HardwareConfigs {
 
     }
 
-    public void getElevatorConfig(boolean invertMotor) {
+    public TalonFXConfiguration getElevatorConfig(boolean invertMotor) {
         TalonFXConfiguration elevatorTalonConfig = new TalonFXConfiguration();
         elevatorTalonConfig.MotorOutput.Inverted = invertMotor ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         // elevatorTalonConfig.MotorOutput.NeutralMode = Constants.Elevator.NEUTRALMODE;

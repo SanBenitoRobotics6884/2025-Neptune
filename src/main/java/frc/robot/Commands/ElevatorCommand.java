@@ -18,9 +18,9 @@ public class ElevatorCommand extends Command {
     private DoubleSupplier m_extendSup;
     private DoubleSupplier m_retractSup;
 
-    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup, DoubleSupplier rotationSup) {
+    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup) {
         m_subsystem = s_subsystem;
-        addRequirements(s_Swerve);
+        addRequirements(m_subsystem);
 
         m_extendSup = extendSup;
         m_retractSup = retractSup;
@@ -28,8 +28,8 @@ public class ElevatorCommand extends Command {
 
     @Override
     public void execute() {
-        double extendVal = MathUtil.applyDeadband(extendSup.getAsDouble(), Constants.stickDeadband));
-        double retractVal = MathUtil.applyDeadband(retractSup.getAsDouble(), Constants.stickDeadband));
+        double extendVal = MathUtil.applyDeadband(extendSup.getAsDouble(), Constants.stickDeadband);
+        double retractVal = MathUtil.applyDeadband(retractSup.getAsDouble(), Constants.stickDeadband);
 
         SmartDashboard.putNumber("Joystick extend", extendSup.getAsDouble());
         SmartDashboard.putNumber("Joystick retract", retractSup.getAsDouble());

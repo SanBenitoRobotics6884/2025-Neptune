@@ -48,6 +48,7 @@ public class RobotContainer {
     private final Swerve s_Swerve = new Swerve(s_PoseEstimator);
     private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
+    private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */
@@ -86,8 +87,10 @@ public class RobotContainer {
         s_ElevatorSubsystem.setDefaultCommand(
             new ElevatorCommand(
                 s_ElevatorSubsystem,
-            )
-        )
+                () -> elevatorEngage.getValueAsDouble(),
+                () -> elevatorDisengage.getValueAsDouble()
+           )
+        );
 
         // Configure the button bindings
         configureButtonBindings();
