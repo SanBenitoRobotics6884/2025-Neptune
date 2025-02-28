@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
 public class Swerve extends SubsystemBase {
 
@@ -193,4 +195,20 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond); 
         }
     }
+
+    public void driveForward() {
+        double targetSpeed = 2.0/*meters*/ / 30/*seconds*/;
+        drive(new Translation2d(0.5, 0).times(targetSpeed), 0, false, true);
+    }
+
+    public Command driveForwardCommand() {
+        return new FunctionalCommand(
+            this::driveForward,
+            () -> {},
+            b -> {},
+            () -> {return false;},
+            this
+        );
+    }
+
 }
