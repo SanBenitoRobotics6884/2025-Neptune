@@ -29,9 +29,11 @@ public class RobotContainer {
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
 
    /* Driver Controls */
-	  private final int translationAxis = 1;
-	  private final int strafeAxis = 0;
-	  private final int rotationAxis = 4;
+	private final int translationAxis = 1;
+	private final int strafeAxis = 0;
+    private final int triggerLeft = 2;
+    private final int triggerRight = 3;
+	private final int rotationAxis = 4;
     private final int leftShoulderButton = 5;
     private final int rightShoulderButton = 6;
 
@@ -80,6 +82,12 @@ public class RobotContainer {
               // ()->elevatorEngage.getAsBoolean()
             )
         );
+
+        s_ElevatorSubsystem.setDefaultCommand(
+            new ElevatorCommand(
+                s_ElevatorSubsystem,
+            )
+        )
 
         // Configure the button bindings
         configureButtonBindings();

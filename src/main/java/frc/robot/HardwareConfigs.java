@@ -14,19 +14,6 @@ public final class HardwareConfigs {
 
     public HardwareConfigs(){
 
-        elevatorTalonConfig.MotorOutput.Inverted = Constants.Elevator.MOTORINVERT ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-        // elevatorTalonConfig.MotorOutput.NeutralMode = Constants.Elevator.NEUTRALMODE;
-        elevatorTalonConfig.Feedback.SensorToMechanismRatio = Constants.Elevator.GEARRATIO;
-        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Elevator.ENABLECURRENTLIMIT;
-        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Elevator.CURRENTLIMIT;
-        elevatorTalonConfig.Slot0.kP = Constants.Elevator.KP;
-        elevatorTalonConfig.Slot0.kI = Constants.Elevator.KI;
-        elevatorTalonConfig.Slot0.kD = Constants.Elevator.KD;
-        elevatorTalonConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
-        elevatorTalonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
-        elevatorTalonConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
-        elevatorTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
-
 
        //PID config
        swerveDriveSparkConfig.closedLoop.p(Constants.Swerve.driveKP);
@@ -54,4 +41,22 @@ public final class HardwareConfigs {
        swerveAngleSparkConfig.closedLoopRampRate(Constants.Swerve.closedLoopRamp);
 
     }
+
+    public void getElevatorConfig(boolean invertMotor) {
+        TalonFXConfiguration elevatorTalonConfig = new TalonFXConfiguration();
+        elevatorTalonConfig.MotorOutput.Inverted = invertMotor ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        // elevatorTalonConfig.MotorOutput.NeutralMode = Constants.Elevator.NEUTRALMODE;
+        elevatorTalonConfig.Feedback.SensorToMechanismRatio = Constants.Elevator.GEARRATIO;
+        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Elevator.ENABLECURRENTLIMIT;
+        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Elevator.CURRENTLIMIT;
+        elevatorTalonConfig.Slot0.kP = Constants.Elevator.KP;
+        elevatorTalonConfig.Slot0.kI = Constants.Elevator.KI;
+        elevatorTalonConfig.Slot0.kD = Constants.Elevator.KD;
+        elevatorTalonConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
+        elevatorTalonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
+        elevatorTalonConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
+        elevatorTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
+        return elevatorTalonConfig;
+    }
+
 }
