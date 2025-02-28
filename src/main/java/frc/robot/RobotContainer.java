@@ -87,8 +87,8 @@ public class RobotContainer {
         s_ElevatorSubsystem.setDefaultCommand(
             new ElevatorCommand(
                 s_ElevatorSubsystem,
-                () -> elevatorEngage.getValueAsDouble(),
-                () -> elevatorDisengage.getValueAsDouble()
+                () -> driver.getRawAxis(triggerLeft),
+                () -> driver.getRawAxis(triggerRight)
            )
         );
 
