@@ -41,14 +41,18 @@ public class RobotContainer {
     private final int bButton = 1;
     private final int xButton = 2;
     private final int yButton = 3;
-    private final int leftShoulderButton = 5;
-    private final int rightShoulderButton = 6;
+    private final int dLeftShoulderButton = 5;
+
+    /* Operator Controls */
+    private final int oLeftShoulderButton = 5;
+    private final int oRightShoulderButton = 6;
 
     /* Driver/Operator Buttons */
-    private final JoystickButton climbDisengage = new JoystickButton(operator, leftShoulderButton);
-    private final JoystickButton climbEngage = new JoystickButton(operator, rightShoulderButton);
+    private final JoystickButton climbDisengage = new JoystickButton(operator, oLeftShoulderButton);
+    private final JoystickButton climbEngage = new JoystickButton(operator, oRightShoulderButton);
 
     private final JoystickButton zeroGyro = new JoystickButton(driver, ybutton);
+    private final JoystickButton dampen = new JoystickButton(driver, dLeftShoulderButton);
 
     /* Subsystems */
     private final PoseEstimator s_PoseEstimator = new PoseEstimator();
@@ -71,7 +75,7 @@ public class RobotContainer {
                 () -> driver.getRawAxis(strafeAxis),
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> false,
-                () -> false,
+                () -> dampen.getAsBoolean(),
                 () -> 0 // Dynamic heading placeholder
             )
         );
