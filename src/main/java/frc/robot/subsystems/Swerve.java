@@ -32,14 +32,6 @@ import org.littletonrobotics.junction.Logger;
 import static frc.robot.Constants.Swerve.*;
 
 public class Swerve extends SubsystemBase {
-// NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW 
-private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
-    FR_LOCATION,
-    FL_LOCATION,
-    BR_LOCATION,
-    BL_LOCATION);
-
-    
     private PoseEstimator s_PoseEstimator = new PoseEstimator();
 
     public SwerveDriveOdometry swerveOdometry;
@@ -47,6 +39,15 @@ private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
     public Pigeon2 gyro;
     public RobotConfig config;
     private Field2d field = new Field2d();
+// NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW 
+    private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+        FR_LOCATION,
+        FL_LOCATION,
+        BR_LOCATION,
+        BL_LOCATION);
+
+    private ModuleIOInputsAutoLogged[] m_moduleInputs = new mSwerveMods[4];
+// END END END END END END END END END END END END END END END END END END END 
 
     public Swerve(PoseEstimator s_PoseEstimator) {
         this.s_PoseEstimator = s_PoseEstimator;
@@ -211,6 +212,10 @@ private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
         drive(new Translation2d(0.5, 0).times(targetSpeed), 0, false, true);
     }
 // NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW 
+    public Rotation2d getAngle() {
+        return Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble());
+    }
+
     public void driveRobotOriented(ChassisSpeeds speeds) {
         speeds = ChassisSpeeds.discretize(speeds, 0.020);
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(speeds);
@@ -219,8 +224,8 @@ private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
     
         //TODO: Make code that works the same way as this is doing, AKA, that coorelates on the way that this code was made
         for(int i = 0; i < 4; i++) {
-          m_modules[i].setState(SwerveModuleState.optimize(
-              states[i], m_moduleInputs[i].relativeAngle));
+            mSwerveMods[i].setState(SwerveModuleState.optimize(
+                states[i], mSwerveMods[i].relativeAngle));
         }
       }
     
