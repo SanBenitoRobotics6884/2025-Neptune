@@ -71,8 +71,10 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        new DebugSwerveCommand(
-          s_Swerve
+        s_Swerve.setDefaultCommand(
+          new DebugSwerveCommand(
+            s_Swerve
+          )
         );
 
         // Configure the button bindings
