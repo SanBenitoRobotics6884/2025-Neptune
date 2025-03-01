@@ -105,8 +105,8 @@ public class RobotContainer {
                 s_ElevatorSubsystem,
                 // () -> operator.getRawAxis(triggerLeft),
                 () -> operator.getLeftY(),
-                () -> operator.getRightY()
-
+                () -> operator.getRightY(),
+                () -> operator.getLBumper()
            )
         );
 
