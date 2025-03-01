@@ -33,8 +33,8 @@ public class ElevatorCommand extends Command {
         double extendVal = MathUtil.applyDeadband(m_extendSup.getAsDouble()/4, Constants.stickDeadband) * (m_dampenSup.getAsBoolean() ? 0.2 : 1);
         double retractVal = MathUtil.applyDeadband(m_retractSup.getAsDouble()/4, Constants.stickDeadband) * (m_dampenSup.getAsBoolean() ? 0.2 : 1);
 
-        SmartDashboard.putNumber("Joystick extend", m_extendSup.getAsDouble());
-        SmartDashboard.putNumber("Joystick retract", m_retractSup.getAsDouble());
+        SmartDashboard.putNumber("El extend", m_extendSup.getAsDouble());
+        SmartDashboard.putNumber("El retract", m_retractSup.getAsDouble());
 
         // current
 

@@ -33,23 +33,23 @@ public class RobotContainer {
    /* Driver Controls */
 	private final int translationAxis = 1;
 	private final int strafeAxis = 0;
-    private final int triggerLeft = 2; //was 2
+    private final int triggerLeft = 4; //was 2
     private final int triggerRight = 3; //was 3
-	private final int rotationAxis = 4;
+	private final int rotationAxis = 2;
 
-    private final int aButton = 0;
-    private final int bButton = 1;
-    private final int xButton = 2;
-    private final int yButton = 3;
-    private final int dLeftShoulderButton = 5;
+    private final int aButton = 1;
+    private final int bButton = 2;
+    private final int xButton = 4;
+    private final int yButton = 5;
+    private final int dLeftShoulderButton = 7;
 
     /* Operator Controls */
     private final int oAButton = 0;
     private final int oBButton = 1;
     private final int oXButton = 2;
     private final int oYButton = 3;
-    private final int oLeftShoulderButton = 5;
-    private final int oRightShoulderButton = 6;
+    private final int oLeftShoulderButton = 7;
+    private final int oRightShoulderButton = 8;
 
     /* Driver/Operator Buttons */
     private final JoystickButton climbDisengage = new JoystickButton(operator, oLeftShoulderButton);
@@ -64,7 +64,7 @@ public class RobotContainer {
     private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
     private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
-    private final Camera s_Camera = new Camera();
+    // private final Camera s_Camera = new Camera();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */
@@ -80,7 +80,8 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> false,
                 () -> dampen.getAsBoolean(),
-                () -> 0 // Dynamic heading placeholder
+                () -> 0, // Dynamic heading placeholder,
+                () -> zeroGyro.getAsBoolean()
             )
         );
 
@@ -96,9 +97,9 @@ public class RobotContainer {
             new CoralOutIntakeCommand(
               s_CoralOutIntakeSubsystem,
               () -> operator.getXButtonPressed(),
-              () -> operator.getYButtonReleased(),
+              () -> operator.getYButtonPressed(),
               () -> operator.getAButtonPressed(),
-              () -> operator.getBButtonReleased()
+              () -> operator.getBButtonPressed()
             )
         );
 

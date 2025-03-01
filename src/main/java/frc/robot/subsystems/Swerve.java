@@ -38,6 +38,7 @@ public class Swerve extends SubsystemBase {
     public Pigeon2 gyro;
     public RobotConfig config;
     private Field2d field = new Field2d();
+    private double startTime = System.currentTimeMillis();
 
     public Swerve(PoseEstimator s_PoseEstimator) {
         this.s_PoseEstimator = s_PoseEstimator;
@@ -172,6 +173,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroHeading(){
+        SmartDashboard.putNumber("Zeroing at", startTime - System.currentTimeMillis());
         gyro.setYaw(0);
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
