@@ -72,7 +72,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void stop(){
-    eMotorPosition = m_leftMotor.getPosition().getValue().in(Degrees)
+    eMotorPosition = m_leftMotor.getPosition().getValue().in(Degrees);
   }
 
   @Override
