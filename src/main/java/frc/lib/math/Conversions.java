@@ -160,4 +160,12 @@ public class Conversions {
     public static double degreesToNeo(double degrees, double gearRatio) {
         return degrees / (360.0 / (gearRatio * 42.0));
     }
+
+    /**
+     * @param degrees Degrees of rotation of Mechanism
+     * @return rotations
+     */
+    public static double degreesToRotations(double degrees) {
+        return degrees / 360.0;
+    }
 }

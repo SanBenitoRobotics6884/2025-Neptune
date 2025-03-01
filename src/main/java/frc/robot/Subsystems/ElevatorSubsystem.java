@@ -27,6 +27,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private PIDController pidController;
   private Follower m_follower = new Follower(LEFT_MOTOR_ID, true);
+  private double speed = 0.5;
+  private double THRESHOLD = 5.0;
 
   double eMotorPosition = 0.0;
 
@@ -45,55 +47,32 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_rightMotor.setControl(m_follower);
 
     eMotorPosition = 0.0;
-
-
-    // pidController = new PIDController(KP, KI, KD);
-    // pidController.setTolerance(ERROR_TOLERANCE);
-    // mMotor.set(pidController.calculate(relativeEncoder_1.getPosition(), m_setpoint));
   }
 
   public void extend(double val){
-    if (eMotorPosition <= 3) {
-    eMotorPosition += 0.01;
-    //double testingnumber = m_leftMotor.getPosition();
-    SmartDashboard.putNumber("eMotorPosition", eMotorPosition);
-    m_leftMotor.setPosition(eMotorPosition);
-    m_leftMotor.set(val);
-    m_rightMotor.setPosition(-eMotorPosition);
-    m_rightMotor.set(-val);
-    }
+    eMotorPosition += val;
+    m_leftMotor.set(speed);
+    // m_rightMotor.setPosition(-eMotorPosition);
+    // m_rightMotor.set(-val);
   }
 
   public void retract(double val){
-    if (eMotorPosition >= 0) {
-    eMotorPosition -= 0.01;
-    m_leftMotor.setPosition(-eMotorPosition);
-    m_leftMotor.set(-val);
-    m_rightMotor.setPosition(eMotorPosition);
-    m_rightMotor.set(val);
-    }
+    eMotorPosition -= val;
+    m_leftMotor.set(speed);
+    // m_rightMotor.setPosition(eMotorPosition);
+    // m_rightMotor.set(val);
   }
 
   public void stop(){
-    m_leftMotor.disable();
-    m_rightMotor.disable();
-  }
-
-  public void setSetpoint(int degrees) {
-    m_leftMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
-    m_rightMotor.set(Conversions.degreesToFalcon(degrees, Constants.Elevator.GEARRATIO));
+    eMotorPosition = m_leftMotor.getPosition().getValue().in(Degrees)
+    // m_leftMotor.stopMotor();
+    // m_rightMotor.stopMotor();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Elevator Left ", m_leftMotor.getPosition().getValue().in(Degrees));
-    SmartDashboard.putNumber("Elevator Right ", m_rightMotor.getPosition().getValue().in(Degrees));
-    //pidController.atSetpoint();
-    // if (xboxController.getLeftBumperButtonPressed()) {
-    //   setSetpoit(0);
-    // }
-    // if (xboxController.getRightBumperButtonPressed()) {
-    //   setSetpoit(90); //TODO: change this to the correct angle
-    // }
+    SmartDashboard.putNumber("Elevator", m_leftMotor.getPosition().getValue().in(Degrees));
+    if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)) > THRESHOLD)
+      m_leftMotor.setPosition(Conversions.degreesToRotations(eMotorPosition));
   }
 }
