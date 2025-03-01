@@ -51,7 +51,7 @@ public class RobotContainer {
     private final JoystickButton climbDisengage = new JoystickButton(operator, oLeftShoulderButton);
     private final JoystickButton climbEngage = new JoystickButton(operator, oRightShoulderButton);
 
-    private final JoystickButton zeroGyro = new JoystickButton(driver, ybutton);
+    private final JoystickButton zeroGyro = new JoystickButton(driver, yButton);
     private final JoystickButton dampen = new JoystickButton(driver, dLeftShoulderButton);
 
     /* Subsystems */
@@ -106,7 +106,7 @@ public class RobotContainer {
                 // () -> operator.getRawAxis(triggerLeft),
                 () -> operator.getLeftY(),
                 () -> operator.getRightY(),
-                () -> operator.getLBumper()
+                () -> operator.getLeftBumper()
            )
         );
 
