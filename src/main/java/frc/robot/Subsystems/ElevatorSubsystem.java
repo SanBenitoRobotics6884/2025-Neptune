@@ -53,7 +53,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void extend(double val){
-    eMotorPosition += 0.05;
+    eMotorPosition += 0.01;
     m_leftMotor.setPosition(eMotorPosition);
     m_leftMotor.set(val);
     m_rightMotor.setPosition(-eMotorPosition);
@@ -61,7 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void retract(double val){
-    eMotorPosition -= 0.05;
+    eMotorPosition -= 0.01;
     m_leftMotor.setPosition(-eMotorPosition);
     m_leftMotor.set(-val);
     m_rightMotor.setPosition(eMotorPosition);

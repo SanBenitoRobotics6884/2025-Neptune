@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
-import frc.robot.Commands.CoralOutIntakeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,7 +23,7 @@ import frc.robot.Commands.CoralOutIntakeCommand;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick operator = new Joystick(0);
+    private final XboxController operator = new XboxController(0);
       //climb, elevator, and coral (control is blutooth)
     private final Joystick driver = new Joystick(1);
       // Controller in port 1 is driving (controll is cable)
@@ -91,8 +90,9 @@ public class RobotContainer {
         s_ElevatorSubsystem.setDefaultCommand(
             new ElevatorCommand(
                 s_ElevatorSubsystem,
-                () -> operator.getRawAxis(triggerLeft),
-                () -> operator.getRawAxis(triggerRight)
+                // () -> operator.getRawAxis(triggerLeft),
+                () -> operator.getLeftY(),
+                () -> operator.getRightY()
                 
            )
         );
