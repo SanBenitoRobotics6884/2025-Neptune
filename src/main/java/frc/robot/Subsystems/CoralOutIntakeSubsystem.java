@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.CoralOutIntake.*;
 
+import java.util.function.BooleanSupplier;
+
 public class CoralOutIntakeSubsystem extends SubsystemBase {
   Joystick m_joystick = new Joystick(JOYSTICK_PORT_ID);
 
@@ -48,13 +50,15 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
     m_pivotSetpoint = setpoint;
   }
 
-  public void intakeOutaking() {
-    if (pieceIsIn()) {
+  public void intake(Boolean bButtonPressed, Boolean bButtonReleased) {
+    if (bButtonPressed) {
       m_stealOrNoStealMotor.set(-ROTATION_MOTOR_SPEED);
-    } else {
+    } else if (bButtonReleased) {
       m_stealOrNoStealMotor.set(ROTATION_MOTOR_SPEED);
     }
   }
+
+  // Needs an outtake function using x button
 
   public Command toHighPosotion() {
     return runOnce(() -> setSetpoint(HIGH_POSITION));

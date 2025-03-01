@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
-import frc.robot.Commands.CoralOutIntakeCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,22 +23,25 @@ import frc.robot.Commands.CoralOutIntakeCommand;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
+    private final XboxController operator = new XboxController(0);
+      //climb, elevator, and coral (control is blutooth)
+    private final Joystick driver = new Joystick(1);
+      // Controller in port 1 is driving (controll is cable)
     //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
 
    /* Driver Controls */
 	private final int translationAxis = 1;
 	private final int strafeAxis = 0;
-    private final int triggerLeft = 2;
-    private final int triggerRight = 3;
+    private final int triggerLeft = 2; //was 2
+    private final int triggerRight = 3; //was 3
 	private final int rotationAxis = 4;
     private final int leftShoulderButton = 5;
     private final int rightShoulderButton = 6;
 
-    /* Driver Buttons */
-    private final JoystickButton elevatorDisengage = new JoystickButton(driver, leftShoulderButton);
-    private final JoystickButton elevatorEngage = new JoystickButton(driver, rightShoulderButton);
+    /* Driver/Operator Buttons */
+    private final JoystickButton climbDisengage = new JoystickButton(operator, leftShoulderButton);
+    private final JoystickButton climbEngage = new JoystickButton(operator, rightShoulderButton);
 
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
 
@@ -60,7 +62,7 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new SwerveCommand(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
+                () -> driver.getRawAxis(translationAxis), 
                 () -> driver.getRawAxis(strafeAxis),
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> false,
@@ -72,24 +74,30 @@ public class RobotContainer {
         s_ClimbSubsystem.setDefaultCommand(
             new ClimbCommand(
               s_ClimbSubsystem, 
-              () -> elevatorDisengage.getAsBoolean(), 
-              () -> elevatorEngage.getAsBoolean()
+              ()->climbDisengage.getAsBoolean(), 
+              ()->climbEngage.getAsBoolean()
             )
         );
 
         s_CoralOutIntakeSubsystem.setDefaultCommand(
             new CoralOutIntakeCommand(
-              s_CoralOutIntakeSubsystem
-              // ()->elevatorDisengage.getAsBoolean(), 
-              // ()->elevatorEngage.getAsBoolean()
+              s_CoralOutIntakeSubsystem,
+              () -> operator.getXButtonPressed(),
+              () -> operator.getXButtonReleased(),
+              () -> operator.getBButtonPressed(),
+              () -> operator.getBButtonReleased()
+              // ()->climbDisengage.getAsBoolean(), 
+              // ()->climbEngage.getAsBoolean()
             )
         );
 
         s_ElevatorSubsystem.setDefaultCommand(
             new ElevatorCommand(
                 s_ElevatorSubsystem,
-                () -> driver.getRawAxis(triggerLeft),
-                () -> driver.getRawAxis(triggerRight)
+                // () -> operator.getRawAxis(triggerLeft),
+                () -> operator.getLeftY(),
+                () -> operator.getRightY()
+                
            )
         );
 
@@ -112,6 +120,7 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
 
     //Heading lock bindings
+      /**
         // forwardHold.onTrue(
         //     new InstantCommand(() -> States.driveState = States.DriveStates.forwardHold)).onFalse(
         //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
@@ -124,6 +133,7 @@ public class RobotContainer {
         //     new InstantCommand(() -> States.driveState = States.DriveStates.DynamicLock)).onFalse(
         //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
         // );
+      */
     } 
 
     /**

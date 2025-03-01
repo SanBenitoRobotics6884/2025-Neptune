@@ -42,12 +42,10 @@ public class ClimbCommand extends Command {
     int climbState = -1;
     if(m_disengageButton.getAsBoolean()) {
       m_climbsubsystem.m_climbMotor.set(-.2);
-      m_climbsubsystem.m_climbMotor.setPosition(-.25);
       climbState = 1;
     }
     else if (m_engageButton.getAsBoolean()) {
       m_climbsubsystem.m_climbMotor.set(0.2);
-      m_climbsubsystem.m_climbMotor.setPosition(.25);
       climbState = 2;
     }
     else {

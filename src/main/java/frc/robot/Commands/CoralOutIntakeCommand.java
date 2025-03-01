@@ -4,6 +4,8 @@
 
 package frc.robot.Commands;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.CoralOutIntakeSubsystem;
 
@@ -11,12 +13,22 @@ import frc.robot.Subsystems.CoralOutIntakeSubsystem;
 public class CoralOutIntakeCommand extends Command {
   CoralOutIntakeSubsystem m_coralOutIntake;
 
-  /** Creates a new CoralOutIntakeCommand. */
-  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake) {
-    m_coralOutIntake = coralOutIntake;
+  BooleanSupplier m_xButtonPressed;
+  BooleanSupplier m_xButtonReleased;
+  BooleanSupplier m_bButtonPressed;
+  BooleanSupplier m_bButtonReleased;
 
-    // Use addRequirements() here to declare subsystem dependencies.
+
+  /** Creates a new CoralOutIntakeCommand. */
+  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake, BooleanSupplier xButtonPressed, 
+  BooleanSupplier xButtonReleased, BooleanSupplier bButtonPressed, BooleanSupplier bButtonReleased) {
+    m_coralOutIntake = coralOutIntake;
     addRequirements(coralOutIntake);
+
+    m_xButtonPressed = xButtonPressed;
+    m_xButtonReleased = xButtonReleased;
+    m_bButtonPressed = bButtonPressed;
+    m_bButtonReleased = bButtonReleased;
   }
 
   // Called when the command is initially scheduled.
@@ -26,8 +38,13 @@ public class CoralOutIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralOutIntake.intakeOutaking();
+
+    Boolean bButtonIsPressed = m_bButtonPressed.getAsBoolean();
+    Boolean bButtonIsReleased = m_bButtonPressed.getAsBoolean();
+
+    m_coralOutIntake.intake(bButtonIsPressed, bButtonIsReleased);
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
