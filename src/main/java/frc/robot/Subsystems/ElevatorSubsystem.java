@@ -53,24 +53,30 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void extend(double val){
+    if (eMotorPosition <= 3) {
     eMotorPosition += 0.01;
+    //double testingnumber = m_leftMotor.getPosition();
+    SmartDashboard.putNumber("eMotorPosition", eMotorPosition);
     m_leftMotor.setPosition(eMotorPosition);
     m_leftMotor.set(val);
     m_rightMotor.setPosition(-eMotorPosition);
     m_rightMotor.set(-val);
+    }
   }
 
   public void retract(double val){
+    if (eMotorPosition >= 0) {
     eMotorPosition -= 0.01;
     m_leftMotor.setPosition(-eMotorPosition);
     m_leftMotor.set(-val);
     m_rightMotor.setPosition(eMotorPosition);
     m_rightMotor.set(val);
+    }
   }
 
   public void stop(){
-    m_leftMotor.stopMotor();
-    m_rightMotor.stopMotor();
+    m_leftMotor.disable();
+    m_rightMotor.disable();
   }
 
   public void setSetpoint(int degrees) {

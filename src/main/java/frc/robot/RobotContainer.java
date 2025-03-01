@@ -81,7 +81,11 @@ public class RobotContainer {
 
         s_CoralOutIntakeSubsystem.setDefaultCommand(
             new CoralOutIntakeCommand(
-              s_CoralOutIntakeSubsystem
+              s_CoralOutIntakeSubsystem,
+              () -> operator.getXButtonPressed(),
+              () -> operator.getXButtonReleased(),
+              () -> operator.getBButtonPressed(),
+              () -> operator.getBButtonReleased()
               // ()->climbDisengage.getAsBoolean(), 
               // ()->climbEngage.getAsBoolean()
             )
