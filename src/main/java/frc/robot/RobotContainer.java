@@ -44,6 +44,10 @@ public class RobotContainer {
     private final int dLeftShoulderButton = 5;
 
     /* Operator Controls */
+    private final int oAButton = 0;
+    private final int oBButton = 1;
+    private final int oXButton = 2;
+    private final int oYButton = 3;
     private final int oLeftShoulderButton = 5;
     private final int oRightShoulderButton = 6;
 
@@ -92,18 +96,15 @@ public class RobotContainer {
             new CoralOutIntakeCommand(
               s_CoralOutIntakeSubsystem,
               () -> operator.getXButtonPressed(),
-              () -> operator.getXButtonReleased(),
-              () -> operator.getBButtonPressed(),
+              () -> operator.getYButtonReleased(),
+              () -> operator.getAButtonPressed(),
               () -> operator.getBButtonReleased()
-              // ()->climbDisengage.getAsBoolean(),
-              // ()->climbEngage.getAsBoolean()
             )
         );
 
         s_ElevatorSubsystem.setDefaultCommand(
             new ElevatorCommand(
                 s_ElevatorSubsystem,
-                // () -> operator.getRawAxis(triggerLeft),
                 () -> operator.getLeftY(),
                 () -> operator.getRightY(),
                 () -> operator.getLeftBumper()
