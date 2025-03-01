@@ -29,6 +29,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   private Follower m_follower = new Follower(LEFT_MOTOR_ID, true);
   private double speed = 0.5;
   private double THRESHOLD = 5.0;
+  private double LOWER_LIMIT = 0.0;
+  private double UPPPER_LIMIT = 3.0;
 
   double eMotorPosition = 0.0;
 
@@ -51,27 +53,32 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void extend(double val){
     eMotorPosition += val;
+    if (eMotorPosition > UPPPER_LIMIT) {
+      eMotorPosition = UPPPER_LIMIT;
+    }
+
     m_leftMotor.set(speed);
-    // m_rightMotor.setPosition(-eMotorPosition);
-    // m_rightMotor.set(-val);
+    // m_rightMotor.set(-speed);
   }
 
   public void retract(double val){
     eMotorPosition -= val;
-    m_leftMotor.set(speed);
-    // m_rightMotor.setPosition(eMotorPosition);
-    // m_rightMotor.set(val);
+    if (eMotorPosition < LOWER_LIMIT) {
+      eMotorPosition = LOWER_LIMIT;
+    }
+
+    m_leftMotor.set(-speed);
+    //m_rightMotor.set(speed);
   }
 
   public void stop(){
     eMotorPosition = m_leftMotor.getPosition().getValue().in(Degrees)
-    // m_leftMotor.stopMotor();
-    // m_rightMotor.stopMotor();
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Elevator", m_leftMotor.getPosition().getValue().in(Degrees));
+    SmartDashboard.putNumber("Elevator actual", m_leftMotor.getPosition().getValue().in(Degrees));
+    SmartDashboard.putNumber("Elevator target", eMotorPosition);
     if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)) > THRESHOLD)
       m_leftMotor.setPosition(Conversions.degreesToRotations(eMotorPosition));
   }
