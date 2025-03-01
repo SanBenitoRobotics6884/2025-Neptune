@@ -36,6 +36,11 @@ public class RobotContainer {
     private final int triggerLeft = 2; //was 2
     private final int triggerRight = 3; //was 3
 	private final int rotationAxis = 4;
+
+    private final int aButton = 0;
+    private final int bButton = 1;
+    private final int xButton = 2;
+    private final int yButton = 3;
     private final int leftShoulderButton = 5;
     private final int rightShoulderButton = 6;
 
@@ -43,7 +48,7 @@ public class RobotContainer {
     private final JoystickButton climbDisengage = new JoystickButton(operator, leftShoulderButton);
     private final JoystickButton climbEngage = new JoystickButton(operator, rightShoulderButton);
 
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton zeroGyro = new JoystickButton(driver, ybutton);
 
     /* Subsystems */
     private final PoseEstimator s_PoseEstimator = new PoseEstimator();
