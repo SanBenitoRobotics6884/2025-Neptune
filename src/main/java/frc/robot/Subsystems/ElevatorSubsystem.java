@@ -31,6 +31,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private double THRESHOLD = 5.0;
   private double LOWER_LIMIT = 0.0;
   private double UPPPER_LIMIT = 3.0;
+  private double lastAction = System.currentTimeMillis();
 
   double eMotorPosition = 0.0;
 
@@ -52,6 +53,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void extend(double val){
+    if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
+      return;
+    }
+    lastAction = System.currentTimeMillis();
     eMotorPosition += val;
     if (eMotorPosition > UPPPER_LIMIT) {
       eMotorPosition = UPPPER_LIMIT;
@@ -62,6 +67,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void retract(double val){
+    if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
+      return;
+    }
+    lastAction = System.currentTimeMillis();
     eMotorPosition -= val;
     if (eMotorPosition < LOWER_LIMIT) {
       eMotorPosition = LOWER_LIMIT;
