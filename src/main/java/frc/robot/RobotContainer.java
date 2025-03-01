@@ -62,7 +62,7 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new SwerveCommand(
                 s_Swerve, 
-                () -> driver.getRawAxis(translationAxis), 
+                () -> driver.getRawAxis(translationAxis),
                 () -> driver.getRawAxis(strafeAxis),
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> false,
@@ -74,7 +74,7 @@ public class RobotContainer {
         s_ClimbSubsystem.setDefaultCommand(
             new ClimbCommand(
               s_ClimbSubsystem, 
-              ()->climbDisengage.getAsBoolean(), 
+              ()->climbDisengage.getAsBoolean(),
               ()->climbEngage.getAsBoolean()
             )
         );
@@ -86,7 +86,7 @@ public class RobotContainer {
               () -> operator.getXButtonReleased(),
               () -> operator.getBButtonPressed(),
               () -> operator.getBButtonReleased()
-              // ()->climbDisengage.getAsBoolean(), 
+              // ()->climbDisengage.getAsBoolean(),
               // ()->climbEngage.getAsBoolean()
             )
         );
@@ -97,7 +97,7 @@ public class RobotContainer {
                 // () -> operator.getRawAxis(triggerLeft),
                 () -> operator.getLeftY(),
                 () -> operator.getRightY()
-                
+
            )
         );
 
