@@ -28,6 +28,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   private PIDController pidController;
   private Follower m_follower = new Follower(LEFT_MOTOR_ID, true);
 
+  double eMotorPosition = 0.0;
+
   public ElevatorSubsystem() {
 
     HardwareConfigs hardwareConfigs = new HardwareConfigs();
@@ -42,23 +44,28 @@ public class ElevatorSubsystem extends SubsystemBase {
     //m_rightMotorConfigurator.setPosition(0.0);
     m_rightMotor.setControl(m_follower);
 
+    eMotorPosition = 0.0;
+
+
     // pidController = new PIDController(KP, KI, KD);
     // pidController.setTolerance(ERROR_TOLERANCE);
     // mMotor.set(pidController.calculate(relativeEncoder_1.getPosition(), m_setpoint));
   }
 
   public void extend(double val){
-    m_leftMotor.setPosition(0);
+    eMotorPosition += 0.05;
+    m_leftMotor.setPosition(eMotorPosition);
     m_leftMotor.set(val);
-    m_rightMotor.setPosition(0);
-    m_rightMotor.set(val);
+    m_rightMotor.setPosition(-eMotorPosition);
+    m_rightMotor.set(-val);
   }
 
   public void retract(double val){
-    m_leftMotor.setPosition(0);
+    eMotorPosition -= 0.05;
+    m_leftMotor.setPosition(-eMotorPosition);
     m_leftMotor.set(-val);
-    m_rightMotor.setPosition(0);
-    m_rightMotor.set(-val);
+    m_rightMotor.setPosition(eMotorPosition);
+    m_rightMotor.set(val);
   }
 
   public void stop(){
