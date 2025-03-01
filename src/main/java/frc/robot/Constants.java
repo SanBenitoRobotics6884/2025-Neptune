@@ -206,6 +206,14 @@ public final class Constants {
                 );
 
         }
+
+        // NEW
+        public static final double APOTHEM = Units.inchesToMeters(10.625); // outdated
+        public static final Translation2d FR_LOCATION = new Translation2d(APOTHEM, -APOTHEM);
+        public static final Translation2d FL_LOCATION = new Translation2d(APOTHEM, APOTHEM);
+        public static final Translation2d BR_LOCATION = new Translation2d(-APOTHEM, -APOTHEM);
+        public static final Translation2d BL_LOCATION = new Translation2d(-APOTHEM, APOTHEM);
+        //END
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot

@@ -27,8 +27,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
-public class Swerve extends SubsystemBase {
+import org.littletonrobotics.junction.Logger;
 
+import static frc.robot.Constants.Swerve.*;
+
+public class Swerve extends SubsystemBase {
+// NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW 
+private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+    FR_LOCATION,
+    FL_LOCATION,
+    BR_LOCATION,
+    BL_LOCATION);
 
     
     private PoseEstimator s_PoseEstimator = new PoseEstimator();
@@ -201,6 +210,24 @@ public class Swerve extends SubsystemBase {
         double targetSpeed = 2.0/*meters*/ / 30/*seconds*/;
         drive(new Translation2d(0.5, 0).times(targetSpeed), 0, false, true);
     }
+// NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW 
+    public void driveRobotOriented(ChassisSpeeds speeds) {
+        speeds = ChassisSpeeds.discretize(speeds, 0.020);
+        SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(speeds);
+        //TODO: Fix the 'Logger' import, or find something that works similarly to the 'Logger'
+        Logger.recordOutput("swerve/desired-states", states);
+    
+        //TODO: Make code that works the same way as this is doing, AKA, that coorelates on the way that this code was made
+        for(int i = 0; i < 4; i++) {
+          m_modules[i].setState(SwerveModuleState.optimize(
+              states[i], m_moduleInputs[i].relativeAngle));
+        }
+      }
+    
+      public void driveFieldOriented(ChassisSpeeds speeds) {
+        driveRobotOriented(ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getAngle()));
+      }
+// END END END END END END END END END END END END END END END END END END END END END END 
 
     public Command driveForwardCommand() {
         return new FunctionalCommand(
