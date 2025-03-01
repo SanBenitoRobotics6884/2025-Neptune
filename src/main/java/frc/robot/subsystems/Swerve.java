@@ -46,7 +46,7 @@ public class Swerve extends SubsystemBase {
         BR_LOCATION,
         BL_LOCATION);
 
-    private ModuleIOInputsAutoLogged[] m_moduleInputs = new mSwerveMods[4];
+    private ModuleIOInputsAutoLogged[] m_moduleInputs = new ModuleIOInputsAutoLogged[4];
 // END END END END END END END END END END END END END END END END END END END 
 
     public Swerve(PoseEstimator s_PoseEstimator) {
