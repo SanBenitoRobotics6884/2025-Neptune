@@ -88,7 +88,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Elevator actual", m_leftMotor.getPosition().getValue().in(Degrees)/360);
     SmartDashboard.putNumber("Elevator target", eMotorPosition);
-    if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)) > THRESHOLD)
-      m_leftMotor.setPosition(Conversions.degreesToRotations(eMotorPosition));
+    if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)/360) > THRESHOLD)
+      m_leftMotor.setPosition(eMotorPosition);
   }
 }
