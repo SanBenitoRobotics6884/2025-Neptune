@@ -64,7 +64,6 @@ public class RobotContainer {
     private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
     private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
-    // private final Camera s_Camera = new Camera();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */
@@ -129,22 +128,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-
-    //Heading lock bindings
-      /**
-        // forwardHold.onTrue(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.forwardHold)).onFalse(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        // );
-        // backwardHold.onTrue(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.backwardHold)).onFalse(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        // );
-        // DynamicLock.onTrue(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.DynamicLock)).onFalse(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        // );
-      */
     } 
 
     /**
@@ -158,14 +141,4 @@ public class RobotContainer {
       return new AutonomousCommand(s_Swerve);
     }
 
-  private void configureBindings() {
-    /*new JoystickButton(driver, 1)
-      .whileTrue(m_CoralOutIntakeCommand);
-    new JoystickButton(driver, 10)
-      .onTrue(m_coralOutIntakeSybsystem.toHighPosotion());
-    new JoystickButton(driver, 11)
-      .onTrue(m_coralOutIntakeSybsystem.toMidPosotion());
-    new JoystickButton(driver, 12)
-      .onTrue(m_coralOutIntakeSybsystem.toLowPosotion());*/
-  }
 }

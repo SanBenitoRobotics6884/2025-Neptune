@@ -20,8 +20,6 @@ import static frc.robot.Constants.CoralOutIntake.*;
 import java.util.function.BooleanSupplier;
 
 public class CoralOutIntakeSubsystem extends SubsystemBase {
-  Joystick m_joystick = new Joystick(JOYSTICK_PORT_ID);
-
   SparkMax m_pivotMotor = new SparkMax(PIVOTion_MOTOR_ID, MotorType.kBrushless);
   SparkMax m_stealOrNoStealMotor = new SparkMax(ROTATION_MOTOR_ID, MotorType.kBrushless);
   SparkMaxConfig config = new SparkMaxConfig();
@@ -32,7 +30,8 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   DigitalInput m_limitSwitch = new DigitalInput(LIMITSWITCH_CHANNEL_ID);
 
   double m_pivotSetpoint;
-  double PIVOT_MOTOR_SPEED = 0.5;
+  double m_pivotPosition;
+  double PIVOT_MOTOR_SPEED = 0.1;
 
   PIDController m_PID = new PIDController(Kp, Ki, Kd);
   int STALL_CURRENT_THRESHOLD = 15; // amps
@@ -53,9 +52,9 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   }
 
   public void intake(Boolean intakePressed, Boolean outtakePressed, Boolean pivotUpPressed, Boolean pivotDownPressed) {
-    if (pivotUpPressed) {
+    if (pivotUpPressed && m_pivotPosition <= HIGH_POSITION) {
       m_pivotMotor.set(PIVOT_MOTOR_SPEED);
-    } else if (pivotDownPressed) {
+    } else if (pivotDownPressed && m_pivotPosition >= LOW_POSITION) {
       m_pivotMotor.set(-PIVOT_MOTOR_SPEED);
     } else {
       m_pivotMotor.set(0);
@@ -86,6 +85,9 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    m_pivotPosition = m_pivotEncoder.getPosition()/360;
+
+
     // This method will be called once per scheduler run
     // Problem m_pivotEncoder is null
     // m_PID.setSetpoint(m_pivotSetpoint);
