@@ -39,11 +39,11 @@ public class SwerveMod{
     private Rotation2d angleOffset;
 
     /** SparkMax for the steering (angle) NEO */
-    private SparkMax mAngleMotor;
+    public SparkMax mAngleMotor;
     private RelativeEncoder relAngleEncoder;
 
     /** TalonFX for the drive */
-    private TalonFX mDriveMotor;
+    public TalonFX mDriveMotor;
 
     private boolean driveInvert;
     private boolean steerInvert;

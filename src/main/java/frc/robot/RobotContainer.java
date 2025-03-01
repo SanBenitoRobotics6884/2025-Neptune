@@ -71,44 +71,8 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        s_Swerve.setDefaultCommand(
-            new SwerveCommand(
-                s_Swerve, 
-                () -> driver.getRawAxis(translationAxis),
-                () -> driver.getRawAxis(strafeAxis),
-                () -> -driver.getRawAxis(rotationAxis), 
-                () -> false,
-                () -> dampen.getAsBoolean(),
-                () -> 0, // Dynamic heading placeholder,
-                () -> zeroGyro.getAsBoolean()
-            )
-        );
-
-        s_ClimbSubsystem.setDefaultCommand(
-            new ClimbCommand(
-              s_ClimbSubsystem, 
-              ()->climbDisengage.getAsBoolean(),
-              ()->climbEngage.getAsBoolean()
-            )
-        );
-
-        s_CoralOutIntakeSubsystem.setDefaultCommand(
-            new CoralOutIntakeCommand(
-              s_CoralOutIntakeSubsystem,
-              () -> operator.getXButtonPressed(),
-              () -> operator.getYButtonPressed(),
-              () -> operator.getAButtonPressed(),
-              () -> operator.getBButtonPressed()
-            )
-        );
-
-        s_ElevatorSubsystem.setDefaultCommand(
-            new ElevatorCommand(
-                s_ElevatorSubsystem,
-                () -> operator.getLeftY(),
-                () -> operator.getRightY(),
-                () -> operator.getLeftBumper()
-           )
+        new DebugSwerveCommand(
+          s_Swerve
         );
 
         // Configure the button bindings
