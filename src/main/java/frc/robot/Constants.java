@@ -29,9 +29,10 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final String GALIGMA_BUS = "Galigma"; // Thanks, Julio for all the troubles. :( -Zach
 
     public static final class Swerve {
-        public static final int pigeonID = 13;
+        public static final int pigeonID = 6;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         public static final COTSNeoSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
@@ -59,7 +60,7 @@ public final class Constants {
         public static final double angleGearRatio = chosenModule.angleGearRatio;
 
          /* Motor Inverts */
-         public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
+        public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
         public static final InvertedValue driveMotorInvert = driveModule.driveMotorInvert;
 
         /* Angle Encoder Invert */
@@ -125,10 +126,20 @@ public final class Constants {
             public static final int driveMotorID = 1;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 1;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(90.0/360);
-            public static final InvertedValue invertMotor = InvertedValue.Clockwise_Positive;;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(-90.0/360);
+            public static final boolean driveInvert = false;
+            public static final boolean angleInvert = false;
+            public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, invertMotor);
+                new SwerveModuleConstants(
+                    driveMotorID,
+                    angleMotorID,
+                    canCoderID,
+                    angleOffset,
+                    driveInvert,
+                    angleInvert,
+                    magnetOffset
+                );
         }
 
         /* Front Right Module - Module 1 */
@@ -136,10 +147,21 @@ public final class Constants {
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 2;
             public static final int canCoderID = 2;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(130.0/360);
-            public static final InvertedValue invertMotor = InvertedValue.Clockwise_Positive;;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(45.0/360);
+            public static final boolean driveInvert = true;
+            public static final boolean angleInvert = false;
+            public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, invertMotor);
+                new SwerveModuleConstants(
+                    driveMotorID,
+                    angleMotorID,
+                    canCoderID,
+                    angleOffset,
+                    driveInvert,
+                    angleInvert,
+                    magnetOffset
+                );
+
         }
         
         /* Back Left Module - Module 2 */
@@ -147,10 +169,20 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 3;
             public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.0/360);
-            public static final InvertedValue invertMotor = InvertedValue.CounterClockwise_Positive;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(65.0/360);
+            public static final boolean driveInvert = true;
+            public static final boolean angleInvert = false;
+            public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, invertMotor);
+                new SwerveModuleConstants(
+                    driveMotorID,
+                    angleMotorID,
+                    canCoderID,
+                    angleOffset,
+                    driveInvert,
+                    angleInvert,
+                    magnetOffset
+                );
         }
 
         /* Back Right Module - Module 3 */
@@ -158,10 +190,21 @@ public final class Constants {
             public static final int driveMotorID = 4;
             public static final int angleMotorID = 4;
             public static final int canCoderID = 4;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.0/360);
-            public static final InvertedValue invertMotor = InvertedValue.CounterClockwise_Positive;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(7.0/360);
+            public static final boolean driveInvert = false;
+            public static final boolean angleInvert = false;
+            public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
-                new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset, invertMotor);
+                new SwerveModuleConstants(
+                    driveMotorID,
+                    angleMotorID,
+                    canCoderID,
+                    angleOffset,
+                    driveInvert,
+                    angleInvert,
+                    magnetOffset
+                );
+
         }
     }
 
@@ -220,9 +263,9 @@ public final class Constants {
         public static final double Kd = 0;
     }
 
-    public static final class Elevator {
+    public class Elevator {
         public static final int LEFT_MOTOR_ID = 9;
-        public static final int RIGHT_MOTOR_ID = 0;
+        public static final int RIGHT_MOTOR_ID = 10;
         public static final double ERROR_TOLERANCE = 0.1;
 
         // get the position for the following //{
@@ -235,7 +278,8 @@ public final class Constants {
         public static final double KI = 0.01;
         public static final double KD = 0;
 
-        public static final InvertedValue MOTORINVERT = InvertedValue.CounterClockwise_Positive;
+        public static final boolean MOTORINVERT = false;
+        public static final boolean STEERINVERT = false;
         public static final double NEUTRALMODE = 0.0;
         public static final double GEARRATIO = 1;
         public static final boolean ENABLECURRENTLIMIT = true;

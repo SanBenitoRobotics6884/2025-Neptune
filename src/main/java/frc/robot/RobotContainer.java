@@ -29,11 +29,13 @@ public class RobotContainer {
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
 
    /* Driver Controls */
-	  private final int translationAxis = 1;
-	  private final int strafeAxis = 0;
-	  private final int rotationAxis = 2;
-    private final int leftShoulderButton = 7;
-    private final int rightShoulderButton = 8;
+	private final int translationAxis = 1;
+	private final int strafeAxis = 0;
+    private final int triggerLeft = 2;
+    private final int triggerRight = 3;
+	private final int rotationAxis = 4;
+    private final int leftShoulderButton = 5;
+    private final int rightShoulderButton = 6;
 
     /* Driver Buttons */
     private final JoystickButton elevatorDisengage = new JoystickButton(driver, leftShoulderButton);
@@ -46,6 +48,8 @@ public class RobotContainer {
     private final Swerve s_Swerve = new Swerve(s_PoseEstimator);
     private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
+    private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
+    private final Camera s_Camera = new Camera();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */
@@ -57,7 +61,7 @@ public class RobotContainer {
             new SwerveCommand(
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
+                () -> driver.getRawAxis(strafeAxis),
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> false,
                 () -> false,
@@ -81,17 +85,17 @@ public class RobotContainer {
             )
         );
 
+        s_ElevatorSubsystem.setDefaultCommand(
+            new ElevatorCommand(
+                s_ElevatorSubsystem,
+                () -> driver.getRawAxis(triggerLeft),
+                () -> driver.getRawAxis(triggerRight)
+           )
+        );
+
         // Configure the button bindings
         configureButtonBindings();
 
-
-        //Pathplanner commands - templates
-        
-        //NamedCommands.registerCommand("marker1", Commands.print("Passed marker 1"));
-        //NamedCommands.registerCommand("marker2", Commands.print("Passed marker 2"));
-        //NamedCommands.registerCommand("print hello", Commands.print("hello"));
-    
-        
         //Auto chooser
         //autoChooser = AutoBuilder.buildAutoChooser("New Auto"); // Default auto will be `Commands.none()`
         //SmartDashboard.putData("Auto Mode", autoChooser);

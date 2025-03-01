@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 public final class HardwareConfigs {
   
@@ -13,34 +14,6 @@ public final class HardwareConfigs {
 
     public HardwareConfigs(){
 
-        elevatorTalonConfig.MotorOutput.Inverted = Constants.Elevator.MOTORINVERT;
-        // elevatorTalonConfig.MotorOutput.NeutralMode = Constants.Elevator.NEUTRALMODE;
-        elevatorTalonConfig.Feedback.SensorToMechanismRatio = Constants.Elevator.GEARRATIO;
-        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Elevator.ENABLECURRENTLIMIT;
-        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Elevator.CURRENTLIMIT;
-        elevatorTalonConfig.Slot0.kP = Constants.Elevator.KP;
-        elevatorTalonConfig.Slot0.kI = Constants.Elevator.KI;
-        elevatorTalonConfig.Slot0.kD = Constants.Elevator.KD;
-        elevatorTalonConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
-        elevatorTalonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
-        elevatorTalonConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
-        elevatorTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
-
-        /** Swerve CANCoder Configuration */
-       swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.cancoderInvert;
-
-       //Swerve angle motor config
-       //Motor inverts and nuetral modes
-       swerveAngleSparkConfig.inverted(Constants.Swerve.angleMotorInvert);
-       swerveAngleSparkConfig.idleMode(Constants.Swerve.angleNuetralMode);
-
-       //Gear ratio and wrapping config
-       swerveAngleSparkConfig.encoder.positionConversionFactor(360/Constants.Swerve.angleGearRatio);
-       swerveAngleSparkConfig.encoder.velocityConversionFactor(Constants.Swerve.angleGearRatio / 60);
-       swerveAngleSparkConfig.closedLoop.positionWrappingEnabled(true);
-
-       //current limiting
-       swerveAngleSparkConfig.smartCurrentLimit(40);
 
        //PID config
        swerveDriveSparkConfig.closedLoop.p(Constants.Swerve.driveKP);
@@ -68,4 +41,22 @@ public final class HardwareConfigs {
        swerveAngleSparkConfig.closedLoopRampRate(Constants.Swerve.closedLoopRamp);
 
     }
+
+    public TalonFXConfiguration getElevatorConfig(boolean invertMotor) {
+        TalonFXConfiguration elevatorTalonConfig = new TalonFXConfiguration();
+        elevatorTalonConfig.MotorOutput.Inverted = invertMotor ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        // elevatorTalonConfig.MotorOutput.NeutralMode = Constants.Elevator.NEUTRALMODE;
+        elevatorTalonConfig.Feedback.SensorToMechanismRatio = Constants.Elevator.GEARRATIO;
+        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Elevator.ENABLECURRENTLIMIT;
+        elevatorTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Elevator.CURRENTLIMIT;
+        elevatorTalonConfig.Slot0.kP = Constants.Elevator.KP;
+        elevatorTalonConfig.Slot0.kI = Constants.Elevator.KI;
+        elevatorTalonConfig.Slot0.kD = Constants.Elevator.KD;
+        elevatorTalonConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
+        elevatorTalonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Elevator.OPENLOOPRAMP;
+        elevatorTalonConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
+        elevatorTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Elevator.CLOSEDLOOPRAMP;
+        return elevatorTalonConfig;
+    }
+
 }

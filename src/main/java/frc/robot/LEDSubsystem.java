@@ -12,15 +12,16 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LEDs.*;
 
 // Hawk Tuah | Led Code
-public class Led_Subsystem extends SubsystemBase {
+public class LEDSubsystem extends SubsystemBase {
   private final AddressableLED m_led;
   private final AddressableLEDBuffer m_LedBuffer;
-  
+
     Optional<Alliance> m_alliance = DriverStation.getAlliance();
 
-  public Led_Subsystem() {
+  public LEDSubsystem() {
     m_led = new AddressableLED(Constants.LEDs.LED_BUFFER_LENGTH);
     m_LedBuffer = new AddressableLEDBuffer(60);
 

@@ -6,12 +6,14 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.lib.util.swerveUtil.SwerveModuleConstants;
-
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+//import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -20,14 +22,15 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+//import com.revrobotics.CANSparkMax;  // This is the more current version of the class
 import com.revrobotics.spark.SparkMax;
-import com.ctre.phoenix6.signals.InvertedValue;
 import frc.lib.math.Conversions;
+import frc.lib.util.swerveUtil.SwerveModuleConstants;
+
 /**
  * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder absolute encoders.
  */
 public class SwerveMod{
-    private HardwareConfigs hardwareConfigs;
 
     /** Which module # is this? (0,1,2,3...) */
     public int moduleNumber;
@@ -42,7 +45,9 @@ public class SwerveMod{
     /** TalonFX for the drive */
     private TalonFX mDriveMotor;
 
-    private InvertedValue invertMotor;
+    private boolean driveInvert;
+    private boolean steerInvert;
+    private double magnetOffset;
 
     /** CTRE CANcoder for absolute angle measurement */
     private CANcoder angleEncoder;
@@ -51,17 +56,21 @@ public class SwerveMod{
     private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
     public SwerveMod(int moduleNumber, SwerveModuleConstants moduleConstants) {
-        this.hardwareConfigs = Robot.hardwareConfigs;
         this.moduleNumber    = moduleNumber;
         this.angleOffset     = moduleConstants.angleOffset;
-        this.invertMotor     = moduleConstants.invertMotor;
+        this.steerInvert     = moduleConstants.steerInvert;
+        this.driveInvert     = moduleConstants.driveInvert;
+        this.magnetOffset    = moduleConstants.magnetOffset;
 
         // -----------------------------------------------------
         // Absolute angle encoder (CTRE CANcoder)
         // -----------------------------------------------------
-        angleEncoder = new CANcoder(moduleConstants.cancoderID, "Galigma");
         // Apply your CANcoder config (sensorCoefficient, magnetOffset, etc.)
-        angleEncoder.getConfigurator().apply(hardwareConfigs.swerveCANcoderConfig);
+        angleEncoder = new CANcoder(moduleConstants.cancoderID, "Galigma");
+        //config.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        angleEncoder.getAbsolutePosition().setUpdateFrequency(10);
+        angleEncoder.optimizeBusUtilization();
+        angleEncoder.getConfigurator().apply(moduleConstants.asMagnetSensorConfig());
 
         // -----------------------------------------------------
         // Angle (steering) Motor – NEO w/ SparkMax
@@ -69,7 +78,7 @@ public class SwerveMod{
         mAngleMotor = new SparkMax(moduleConstants.angleMotorID, MotorType.kBrushless);
         // Load your SparkMax angle config (PID, current limit, ramp, etc.)
         mAngleMotor.configure(
-            hardwareConfigs.swerveAngleSparkConfig,
+            moduleConstants.asSwerveAngleConfig(),
             ResetMode.kNoResetSafeParameters,
             PersistMode.kPersistParameters
         );
@@ -190,6 +199,13 @@ public class SwerveMod{
         // relAngleEncoder.setPositionConversionFactor(360.0); // 1 rotation = 360 degrees
         // => setPosition in degrees:
         relAngleEncoder.setPosition(adjustedAngle);
+
+        SparkClosedLoopController angleController = mAngleMotor.getClosedLoopController();
+        angleController.setReference(
+            adjustedAngle,         // setpoint
+            ControlType.kPosition,  // position closed-loop
+            ClosedLoopSlot.kSlot0   // uses PID slot 0
+        );
 
         // If you do NOT set that conversion factor, you’d do:
         // relAngleEncoder.setPosition(adjustedAngle / 360.0);
