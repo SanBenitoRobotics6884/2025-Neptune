@@ -200,8 +200,21 @@ public class Swerve extends SubsystemBase {
     }
 
     public void driveForward() {
-        double targetSpeed = 2.0/*meters*/ / 30/*seconds*/;
-        drive(new Translation2d(0.5, 0).times(targetSpeed), 0, false, true);
+        double speedMps = 0.5;
+        for (int i=0; i <= 3; i++){
+            DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
+            driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
+            //s_Swerve.mSwerveMods[i].mDriveMotor.setControl(driveDutyCycle);
+            System.out.println("setting speed to " + speedMps);
+
+            // SparkClosedLoopController angleController =  s_Swerve.mSwerveMods[i].mAngleMotor.getClosedLoopController();
+            // angleController.setReference(
+            //     speedMps * 20,         // setpoint
+            //     ControlType.kPosition,  // position closed-loop
+            //     ClosedLoopSlot.kSlot0   // uses PID slot 0
+            // );
+            // System.out.println("setting angle to " + speedMps * 10);
+        }
     }
 
     public Command driveForwardCommand() {
