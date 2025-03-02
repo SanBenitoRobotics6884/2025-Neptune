@@ -51,11 +51,7 @@ public class AutonomousCommand  extends Command {
         autoTimer = System.currentTimeMillis()/1000;
     }
     public void execute(){
-        SmartDashboard.putNumber("autotimer", System.currentTimeMillis()/1000 - autoTimer);
-        m_swerve.drive(
-                new Translation2d(0, 1),
-                0.0, false, false);
-
+        m_swerve.driveForward(0.5);
     }
 
     public boolean isFinished(){
@@ -63,11 +59,6 @@ public class AutonomousCommand  extends Command {
     }
 
     public void end(boolean interrupted){
-        m_swerve.drive(
-            new Translation2d(0, 0),
-            0.0,
-            false,
-            false
-        );
+        m_swerve.driveForward(0);
     }
 }
