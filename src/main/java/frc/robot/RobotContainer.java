@@ -61,9 +61,9 @@ public class RobotContainer {
     /* Subsystems */
     private final PoseEstimator s_PoseEstimator = new PoseEstimator();
     private final Swerve s_Swerve = new Swerve(s_PoseEstimator);
-    private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
-    private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
-    private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
+    //private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
+    //private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
+    //private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
     /* AutoChooser */

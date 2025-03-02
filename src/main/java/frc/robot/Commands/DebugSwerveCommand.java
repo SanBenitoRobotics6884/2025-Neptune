@@ -30,16 +30,16 @@ public class DebugSwerveCommand extends Command {
     public void execute() {
         /* Get Values, Deadband, Dampen */
 
-        for (int i=0; i < 3; i++){
+        for (int i=0; i <= 3; i++){
             double speedMps = (System.currentTimeMillis() / 1000 ) % 5;
             DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
             driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
-            s_Swerve.mSwerveMods[i].mDriveMotor.setControl(driveDutyCycle);
+            //s_Swerve.mSwerveMods[i].mDriveMotor.setControl(driveDutyCycle);
             System.out.println("setting speed to " + speedMps);
 
             SparkClosedLoopController angleController =  s_Swerve.mSwerveMods[i].mAngleMotor.getClosedLoopController();
             angleController.setReference(
-                speedMps * 10,         // setpoint
+                speedMps * 20,         // setpoint
                 ControlType.kPosition,  // position closed-loop
                 ClosedLoopSlot.kSlot0   // uses PID slot 0
             );
