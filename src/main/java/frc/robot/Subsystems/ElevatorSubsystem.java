@@ -53,7 +53,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   private void setEMotorPosition(double val){
-    eMotorPosition = val
+    eMotorPosition = val;
     if (eMotorPosition > UPPPER_LIMIT) {
       eMotorPosition = UPPPER_LIMIT;
     }
@@ -67,7 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       return;
     }
     lastAction = System.currentTimeMillis();
-    setEMotorPosition(eMotorPosition + val)
+    setEMotorPosition(eMotorPosition + val);
     m_leftMotor.set(speed);
     // m_rightMotor.set(-speed);
   }
@@ -77,13 +77,13 @@ public class ElevatorSubsystem extends SubsystemBase {
       return;
     }
     lastAction = System.currentTimeMillis();
-    setEMotorPosition(eMotorPosition - val)
+    setEMotorPosition(eMotorPosition - val);
     m_leftMotor.set(-speed);
     //m_rightMotor.set(speed);
   }
 
   public void stop(){
-    setEMotorPosition(m_leftMotor.getPosition().getValue().in(Degrees)/360)
+    setEMotorPosition(m_leftMotor.getPosition().getValue().in(Degrees)/360);
   }
 
   @Override

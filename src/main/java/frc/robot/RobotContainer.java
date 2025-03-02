@@ -154,11 +154,11 @@ public class RobotContainer {
      */
 
      //Below is Autocommand as of 3:05 pm,, 3/1/2025
-    /*public Command getAutonomousCommand() {
+    public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         //return autoChooser.getSelected();
       return new AutonomousCommand(s_Swerve);
-    }*/
+    }
 
   private void configureBindings() {
     /*new JoystickButton(driver, 1)
