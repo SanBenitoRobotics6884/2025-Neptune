@@ -281,7 +281,7 @@ public final class Constants {
         public static final boolean MOTORINVERT = false;
         public static final boolean STEERINVERT = false;
         public static final double NEUTRALMODE = 0.0;
-        public static final double GEARRATIO = 1;
+        public static final double GEARRATIO = 15;
         public static final boolean ENABLECURRENTLIMIT = true;
         public static final double CURRENTLIMIT = 40;
         public static final double OPENLOOPRAMP = 0.2;

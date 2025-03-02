@@ -39,27 +39,35 @@ SparkMax m_pivotMotor = new SparkMax(PIVOTion_MOTOR_ID, MotorType.kBrushless);
   }
  */
 
-public class AutonomousCommand  extends SequentialCommandGroup {
-    SparkMax m_testMotor4 = new SparkMax(4, MotorType.kBrushless);
-    SparkMaxConfig config = new SparkMaxConfig();
-    
+public class AutonomousCommand  extends Command {
     private final Swerve m_swerve;
-    SmartDashboard m_smartdashboard;
+    double autoTimer = System.currentTimeMillis()/1000;
 
     public AutonomousCommand(Swerve s_Swerve){
         addRequirements(s_Swerve);
         m_swerve = s_Swerve;
+    }
+    public void init (){
+        autoTimer = System.currentTimeMillis()/1000;
+    }
+    public void execute(){
+        SmartDashboard.putNumber("autotimer", System.currentTimeMillis()/1000 - autoTimer);
+        m_swerve.drive(
+                new Translation2d(0, 1),
+                0.0, false, false);
 
-        config.inverted(true);
-        m_testMotor4.configure(config, null, null);
-    
+    }
 
-        Timer autoTimer = new Timer();
+    public boolean isFinished(){
+        return (System.currentTimeMillis()/1000 - autoTimer) > 3;
+    }
 
-        addCommands(
-            //new InstantCommand(() -> m_swerve.drive(s_Swerve.getPose().getTranslation().plus(new Translation2d(1, 0)),
-            // 0, isFinished(), isScheduled()),
-            //new InstantCommand(() -> m_testMotor4.setVoltage(3))
-            );
+    public void end(boolean interrupted){
+        m_swerve.drive(
+            new Translation2d(0, 0),
+            0.0,
+            false,
+            false
+        );
     }
 }
