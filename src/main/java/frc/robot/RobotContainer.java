@@ -35,7 +35,7 @@ public class RobotContainer {
 	private final int strafeAxis = 0;
     private final int triggerLeft = 4; //was 2
     private final int triggerRight = 3; //was 3
-	private final int rotationAxis = 2;
+	private final int rotationAxis = 4;
 
     private final int aButton = 1;
     private final int bButton = 2;
@@ -152,11 +152,13 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
+
+     //Below is Autocommand as of 3:05 pm,, 3/1/2025
+    /*public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         //return autoChooser.getSelected();
       return new AutonomousCommand(s_Swerve);
-    }
+    }*/
 
   private void configureBindings() {
     /*new JoystickButton(driver, 1)

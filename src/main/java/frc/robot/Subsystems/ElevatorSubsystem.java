@@ -81,7 +81,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void stop(){
-    // eMotorPosition = m_leftMotor.getPosition().getValue().in(Degrees)/360;
+    eMotorPosition = m_leftMotor.getPosition().getValue().in(Degrees)/360;
   }
 
   @Override
