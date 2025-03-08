@@ -36,11 +36,11 @@ public class SwerveMod{
     public int moduleNumber;
 
     /** Offset from your absolute encoder to "zero" the angle */
-    private Rotation2d angleOffset;
+    public Rotation2d angleOffset;
 
     /** SparkMax for the steering (angle) NEO */
     public SparkMax mAngleMotor;
-    private RelativeEncoder relAngleEncoder;
+    public RelativeEncoder relAngleEncoder;
 
     /** TalonFX for the drive */
     public TalonFX mDriveMotor;
@@ -176,7 +176,12 @@ public class SwerveMod{
 
     /** Absolute angle from the CANcoder, always in the [0,360) domain if you convert rotations → degrees. */
     public Rotation2d getCANcoder() {
-        double absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
+        int attempts = 0;
+        double absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble();
+        while(attempts < 5 && Math.abs(absPositionRot) < 0.001){
+            absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble();
+            attempts++;
+        } // 0..1 rotations
         double absPositionDeg = absPositionRot * 360.0;
         return Rotation2d.fromDegrees(absPositionDeg);
     }
@@ -188,7 +193,10 @@ public class SwerveMod{
     public void resetToAbsolute() {
         double absAngleDeg   = getCANcoder().getDegrees();
         double adjustedAngle = absAngleDeg - angleOffset.getDegrees();
-
+        while(moduleNumber == 1 && false){
+            System.out.println("INIT "+absAngleDeg + "-" + angleOffset.getDegrees());
+        }
+        
         // If your SparkMax is set to a 1:1 factor in rotations (the default),
         // then calling setPosition(X) is in rotations. So if we want to store
         // everything in degrees, we must setPosition(X / 360).
@@ -198,14 +206,15 @@ public class SwerveMod{
         // For example:
         // relAngleEncoder.setPositionConversionFactor(360.0); // 1 rotation = 360 degrees
         // => setPosition in degrees:
+        
         relAngleEncoder.setPosition(adjustedAngle);
 
-        SparkClosedLoopController angleController = mAngleMotor.getClosedLoopController();
-        angleController.setReference(
-            adjustedAngle,         // setpoint
-            ControlType.kPosition,  // position closed-loop
-            ClosedLoopSlot.kSlot0   // uses PID slot 0
-        );
+        //SparkClosedLoopController angleController = mAngleMotor.getClosedLoopController();
+        //angleController.setReference(
+        //    adjustedAngle,         // setpoint
+         //   ControlType.kPosition,  // position closed-loop
+        //    ClosedLoopSlot.kSlot0   // uses PID slot 0
+        //);
 
         // If you do NOT set that conversion factor, you’d do:
         // relAngleEncoder.setPosition(adjustedAngle / 360.0);

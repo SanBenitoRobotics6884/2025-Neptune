@@ -2,6 +2,7 @@ package frc.robot.Commands;
 
 import frc.robot.Constants;
 import frc.robot.Subsystems.Swerve;
+import frc.robot.SwerveMod;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -35,15 +36,22 @@ public class DebugSwerveCommand extends Command {
             DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
             driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
             //s_Swerve.mSwerveMods[i].mDriveMotor.setControl(driveDutyCycle);
-            System.out.println("setting speed to " + speedMps);
+            //System.out.println("setting speed to " + speedMps);
 
+            double angle = (System.currentTimeMillis() / 2000 ) % 4;
+            angle *= 90;
+            SwerveMod mod = s_Swerve.mSwerveMods[i];
+            //System.out.println("Using relangle " + mod.relAngleEncoder.getPosition());
+            System.out.println("CAN "+ mod.getCANcoder().getDegrees() + "-" + mod.angleOffset.getDegrees());
+
+            //angle += mod.angleOffset.getDegrees();
             SparkClosedLoopController angleController =  s_Swerve.mSwerveMods[i].mAngleMotor.getClosedLoopController();
             angleController.setReference(
-                speedMps * 20,         // setpoint
+                angle,         // setpoint
                 ControlType.kPosition,  // position closed-loop
                 ClosedLoopSlot.kSlot0   // uses PID slot 0
             );
-            System.out.println("setting angle to " + speedMps * 10);
+            System.out.println("setting angle to " + angle);
         }
    }
 }
