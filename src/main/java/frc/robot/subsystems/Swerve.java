@@ -61,7 +61,7 @@ public class Swerve extends SubsystemBase {
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
-
+        
 
         AutoBuilder.configure(
             this::getPose, // Robot pose supplier
