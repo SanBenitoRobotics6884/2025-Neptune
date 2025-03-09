@@ -201,8 +201,8 @@ public class Swerve extends SubsystemBase {
 
     public void driveForward(double speedMps) {
         for (int i=0; i <= 3; i++){
-            DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
-            driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
+            //DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
+            //driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
             //s_Swerve.mSwerveMods[i].mDriveMotor.setControl(driveDutyCycle);
             System.out.println("setting speed to " + speedMps);
 
@@ -216,7 +216,7 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    public Command driveForwardCommand() {
+    /*public Command driveForwardCommand() {
         return new FunctionalCommand(
             this::driveForward,
             () -> {},
@@ -224,5 +224,5 @@ public class Swerve extends SubsystemBase {
             () -> {return false;},
             this
         );
-    }
+    } */
 }

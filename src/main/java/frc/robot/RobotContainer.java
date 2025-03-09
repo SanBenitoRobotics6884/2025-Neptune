@@ -103,14 +103,14 @@ public class RobotContainer {
         //     )
         // );
 
-        // s_ElevatorSubsystem.setDefaultCommand(
-        //     new ElevatorCommand(
-        //         s_ElevatorSubsystem,
-        //         () -> operator.getLeftY(),
-        //         () -> operator.getRightY(),
-        //         () -> operator.getLeftBumper()
-        //    )
-        // );
+        s_ElevatorSubsystem.setDefaultCommand(
+             new ElevatorCommand(
+                 s_ElevatorSubsystem,
+                 () -> operator.getLeftY(),
+                 () -> operator.getRightY(),
+                 () -> operator.getLeftBumper()
+            )
+         );
 
         // Configure the button bindings
         configureButtonBindings();
