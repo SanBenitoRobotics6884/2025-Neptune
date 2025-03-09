@@ -108,7 +108,8 @@ public class RobotContainer {
                  s_ElevatorSubsystem,
                  () -> operator.getLeftY(),
                  () -> operator.getRightY(),
-                 () -> operator.getLeftBumper()
+                 () -> operator.getLeftBumper(),
+                 () -> operator.getAButtonPressed()
             )
          );
 

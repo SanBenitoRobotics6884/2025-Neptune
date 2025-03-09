@@ -18,14 +18,17 @@ public class ElevatorCommand extends Command {
     private DoubleSupplier m_extendSup;
     private DoubleSupplier m_retractSup;
     private BooleanSupplier m_dampenSup;
+    private BooleanSupplier m_debugSup;
+    private Boolean m_debugMode;
 
-    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup, BooleanSupplier dampenSup) {
+    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup, BooleanSupplier dampenSup, BooleanSupplier debugSup) {
         m_subsystem = s_subsystem;
         addRequirements(m_subsystem);
 
         m_extendSup = extendSup;
         m_retractSup = retractSup;
         m_dampenSup = dampenSup;
+        m_debugSup = debugSup;
     }
 
     @Override
@@ -38,12 +41,21 @@ public class ElevatorCommand extends Command {
 
         // current
 
-        if(extendVal > 0){
-          m_subsystem.extend(extendVal);
-        } else if (retractVal > 0){
-          m_subsystem.retract(retractVal);
+        //enables debug mode for elevator (turns off normal inputs); bound to A button
+        if (m_debugSup.getAsBoolean()) {
+          m_debugMode = true;
+        }
+
+        if (!m_debugMode) {
+          if(extendVal > 0){
+            m_subsystem.extend(extendVal);
+          } else if (retractVal > 0){
+            m_subsystem.retract(retractVal);
+          } else {
+            m_subsystem.stop();
+          }
         } else {
-          m_subsystem.stop();
+          m_subsystem.cycle();
         }
     }
 

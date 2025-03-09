@@ -63,39 +63,50 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void extend(double val){
-    if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
+    /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
       return;
     }
     lastAction = System.currentTimeMillis();
     setEMotorPosition(eMotorPosition + val);
-    m_leftMotor.set(speed);
+    m_leftMotor.set(speed);*/
     // m_rightMotor.set(-speed);
 
-    //m_leftMotor.setVoltage(9);
+    m_leftMotor.setVoltage(9);
   }
 
   public void retract(double val){
-    if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
+    /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
       return;
     }
     lastAction = System.currentTimeMillis();
     setEMotorPosition(eMotorPosition - val);
-    m_leftMotor.set(-speed);
+    m_leftMotor.set(-speed);*/
     //m_rightMotor.set(speed);
 
     m_leftMotor.setVoltage(-9);
   }
 
   public void stop(){
-    setEMotorPosition(m_leftMotor.getPosition().getValue().in(Degrees)/360);
-    //m_leftMotor.setVoltage(0.2);
+    //setEMotorPosition(m_leftMotor.getPosition().getValue().in(Degrees)/360);
+    m_leftMotor.setVoltage(0.2);
+  }
+
+  public void cycle(){
+    if (m_leftMotor.getPosition().getValue().in(Degrees)/360 == LOWER_LIMIT) {
+      m_leftMotor.setPosition(UPPPER_LIMIT);
+      m_leftMotor.set(speed);
+    } else if (m_leftMotor.getPosition().getValue().in(Degrees)/360 == LOWER_LIMIT) {
+      m_leftMotor.setPosition(LOWER_LIMIT);
+      m_leftMotor.set(-speed);
+    }
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Elevator actual", m_leftMotor.getPosition().getValue().in(Degrees)/360);
     SmartDashboard.putNumber("Elevator target", eMotorPosition);
-    if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)/360) > THRESHOLD)
-      m_leftMotor.setPosition(eMotorPosition);
+    System.out.println(eMotorPosition);
+    //if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)/360) > THRESHOLD)
+    //  m_leftMotor.setPosition(eMotorPosition);
   }
 }
