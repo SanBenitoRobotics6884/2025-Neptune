@@ -84,7 +84,7 @@ public class RobotContainer {
                 () -> zeroGyro.getAsBoolean()
             )
         );
-
+/*
         s_ClimbSubsystem.setDefaultCommand(
             new ClimbCommand(
               s_ClimbSubsystem, 
@@ -92,7 +92,7 @@ public class RobotContainer {
               ()->climbEngage.getAsBoolean()
             )
         );
-
+*/
         // s_CoralOutIntakeSubsystem.setDefaultCommand(
         //     new CoralOutIntakeCommand(
         //       s_CoralOutIntakeSubsystem,

@@ -192,7 +192,7 @@ public final class Constants {
             public static final int canCoderID = 4;
             public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.0876);
             public static final boolean driveInvert = true;
-            public static final boolean angleInvert = false;
+            public static final boolean angleInvert = false; //false
             public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(
