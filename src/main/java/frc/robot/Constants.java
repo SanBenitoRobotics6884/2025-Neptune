@@ -114,7 +114,7 @@ public final class Constants {
         /** Meters per Second */
         public static final double maxSpeed = 4.5; //TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 5.0; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final  IdleMode angleNuetralMode = IdleMode.kCoast;
@@ -122,12 +122,12 @@ public final class Constants {
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
-        public static final class Mod0 { //TODO: This must be tuned to specific robot
+        public static final class Mod3 { //TODO: This must be tuned to specific robot
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 1;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.3277);
-            public static final boolean driveInvert = false;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.8277);
+            public static final boolean driveInvert = true;
             public static final boolean angleInvert = false;
             public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 
@@ -186,12 +186,12 @@ public final class Constants {
         }
 
         /* Back Right Module - Module 3 */
-        public static final class Mod3 { //TODO: This must be tuned to specific robot
+        public static final class Mod0 { //TODO: This must be tuned to specific robot
             public static final int driveMotorID = 8;
             public static final int angleMotorID = 4;
             public static final int canCoderID = 4;
-            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.0876);
-            public static final boolean driveInvert = true;
+            public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.5876);
+            public static final boolean driveInvert = false;
             public static final boolean angleInvert = false; //false
             public static final double magnetOffset = 0;
             public static final SwerveModuleConstants constants = 

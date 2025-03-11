@@ -161,7 +161,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getHeading() {
-        return getPose().getRotation();
+        return Rotation2d.fromDegrees(-getPose().getRotation().getDegrees());
     }
 
     public Rotation2d getGyroYaw() {
