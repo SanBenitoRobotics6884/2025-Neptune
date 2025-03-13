@@ -224,9 +224,5 @@ public class Swerve extends SubsystemBase {
             () -> {return false;},
             this
         );
-<<<<<<< HEAD
     } */
-=======
-    }*/
->>>>>>> 4fef65dc42503c3f1d4b2e4321381b35dc096bda
 }
