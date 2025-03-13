@@ -54,14 +54,14 @@ public class Swerve extends SubsystemBase {
         gyro.setYaw(0);
 
         mSwerveMods = new SwerveMod[] {
-            new SwerveMod(0, Constants.Swerve.Mod1.constants),
-            new SwerveMod(1, Constants.Swerve.Mod0.constants),
-            new SwerveMod(2, Constants.Swerve.Mod3.constants),
-            new SwerveMod(3, Constants.Swerve.Mod2.constants)
+            new SwerveMod(0, Constants.Swerve.Mod0.constants),
+            new SwerveMod(1, Constants.Swerve.Mod1.constants),
+            new SwerveMod(2, Constants.Swerve.Mod2.constants),
+            new SwerveMod(3, Constants.Swerve.Mod3.constants)
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
-
+        
 
         AutoBuilder.configure(
             this::getPose, // Robot pose supplier
@@ -161,7 +161,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getHeading() {
-        return getPose().getRotation();
+        return Rotation2d.fromDegrees(-getPose().getRotation().getDegrees());
     }
 
     public Rotation2d getGyroYaw() {
@@ -204,7 +204,7 @@ public class Swerve extends SubsystemBase {
             //DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
             //driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
             //s_Swerve.mSwerveMods[i].mDriveMotor.setControl(driveDutyCycle);
-            System.out.println("setting speed to " + speedMps);
+            //System.out.println("setting speed to " + speedMps);
 
             // SparkClosedLoopController angleController =  s_Swerve.mSwerveMods[i].mAngleMotor.getClosedLoopController();
             // angleController.setReference(
@@ -224,5 +224,9 @@ public class Swerve extends SubsystemBase {
             () -> {return false;},
             this
         );
+<<<<<<< HEAD
     } */
+=======
+    }*/
+>>>>>>> 4fef65dc42503c3f1d4b2e4321381b35dc096bda
 }
