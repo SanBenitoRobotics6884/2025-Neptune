@@ -29,8 +29,6 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
 public class Swerve extends SubsystemBase {
 
-
-    
     private PoseEstimator s_PoseEstimator = new PoseEstimator();
 
     public SwerveDriveOdometry swerveOdometry;
