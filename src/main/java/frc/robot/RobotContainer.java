@@ -24,7 +24,7 @@ import frc.robot.Subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final ControllerInterface operator = new XboxController(0);
+    private final ControllerInterface operator = new LogitechController(0);
       //climb, elevator, and coral (control is blutooth)
     // private final ControllerInterface driver = new XboxController(1);
     private final ControllerInterface driver = new LogitechController(1);
@@ -80,10 +80,10 @@ public class RobotContainer {
         s_ElevatorSubsystem.setDefaultCommand(
              new ElevatorCommand(
                  s_ElevatorSubsystem,
-                () -> operator.getLeftXAxis(),
-                () -> operator.getLeftYAxis(),
+                () -> operator.getLeftTrigger(),
+                () -> operator.getRightTrigger(),
                 () -> operator.getLeftBumper(),
-                () -> operator.getButtonDPadDown()
+                () -> operator.getButtonA()
            )
         );
 

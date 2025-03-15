@@ -267,7 +267,8 @@ public final class Constants {
         public static final int LEFT_MOTOR_ID = 9;
         public static final int RIGHT_MOTOR_ID = 10;
         public static final double ERROR_TOLERANCE = 0.1;
-
+        public static final double MAX = 197.0;
+        public static final double MIN = 7;
         // get the position for the following //{
         public static final double FORTE_POSOTION = 0;
         public static final double MEZZO_POSOTION = 0;
