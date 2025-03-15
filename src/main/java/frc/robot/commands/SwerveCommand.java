@@ -46,51 +46,15 @@ public class SwerveCommand extends Command {
 
     @Override
     public void execute() {
-        /* Get Values, Deadband, Dampen */
         double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         double strafeVal = -MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
-        //TODO: Add code for dynamic heading- the supplier is a placeholder right now
 
         SmartDashboard.putNumber("S translation", translationSup.getAsDouble());
         SmartDashboard.putNumber("S strafe", strafeSup.getAsDouble());
         SmartDashboard.putNumber("S rotation", rotationSup.getAsDouble());
         SmartDashboard.putBoolean("S dampenSup", dampenSup.getAsBoolean());
         rotationVal = rotationVal * Constants.Swerve.maxAngularVelocity;
-    //  //heading direction state
-    //     switch(States.driveState){
-    //          case forwardHold:
-
-    //             //heading lock - forward
-    //            rotationVal = rotationController.calculate(s_Swerve.getHeading().getRadians(), Units.degreesToRadians(0));
-    //            System.out.println("HEADING LOCK little boi");
-    //             break;
-    //         case backwardHold:
-
-    //             //heading lock - backward
-    //             rotationVal = rotationController.calculate(s_Swerve.getHeading().getRadians(), Units.degreesToRadians(180));
-    //             break;
-    //         case leftHold:
-
-    //             //heading lock - left
-    //             rotationVal = rotationController.calculate(s_Swerve.getHeading().getRadians(), Units.degreesToRadians(90));
-    //             break;
-    //         case rightHold:
-
-    //             //heading lock - right
-    //             rotationVal = rotationController.calculate(s_Swerve.getHeading().getRadians(), Units.degreesToRadians(270));
-    //             break;
-    //         case DynamicLock:
-        
-    //             //heading lock - dynamic
-    //             rotationVal = rotationController.calculate(s_Swerve.getHeading().getRadians(), Units.degreesToRadians(dynamicHeading));
-    //             break; 
-    //         case standard:
-            
-    //             //normal
-    //             rotationVal = rotationVal * Constants.Swerve.maxAngularVelocity;
-    //             break;
-    //     }
 
         if(zeroGyro.getAsBoolean()){
             s_Swerve.zeroHeading();
