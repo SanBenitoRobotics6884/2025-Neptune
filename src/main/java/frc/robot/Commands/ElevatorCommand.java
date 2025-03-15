@@ -19,9 +19,11 @@ public class ElevatorCommand extends Command {
     private DoubleSupplier m_retractSup;
     private BooleanSupplier m_dampenSup;
     private BooleanSupplier m_debugSup;
+    private BooleanSupplier m_level1Sup;
     private Boolean m_debugMode;
+    private double LEVEL1_HEIGHT = 0.0;
 
-    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup, BooleanSupplier dampenSup, BooleanSupplier debugSup) {
+    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup, BooleanSupplier dampenSup, BooleanSupplier debugSup, BooleanSupplier level1Sup) {
         m_subsystem = s_subsystem;
         addRequirements(m_subsystem);
 
@@ -29,6 +31,7 @@ public class ElevatorCommand extends Command {
         m_retractSup = retractSup;
         m_dampenSup = dampenSup;
         m_debugSup = debugSup;
+        m_level1Sup = level1Sup;
     }
 
     @Override
@@ -46,6 +49,9 @@ public class ElevatorCommand extends Command {
         m_debugMode = m_debugSup.getAsBoolean();
 
         if (!m_debugMode) {
+          if (m_level1Sup.getAsBoolean()) {
+            m_subsystem.gotoLevel(LEVEL1_HEIGHT);
+          } else
           if(extendVal > 0){
             m_subsystem.extend(extendVal);
           } else if (retractVal > 0){

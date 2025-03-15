@@ -70,6 +70,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_leftMotor.setVoltage(val);
   }
 
+  public void gotoLevel(double val){
+    double position = m_leftMotor.getPosition().getValue().in(Degrees)/360;
+    if (position  == val){
+      this.stop();
+    } else if (position - val > 0){
+      this.setEMotorVoltage(9);  
+    } else {
+      this.setEMotorVoltage(-9);
+    }
+  }
+
   public void extend(double val){
     /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
       return;
