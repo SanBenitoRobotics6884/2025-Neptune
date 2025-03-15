@@ -1,11 +1,9 @@
-package frc.robot;
+package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
-public class XboxController implements ControllerInterface {
+public class Gulikit implements ControllerInterface {
     private Joystick joystick;
-
     // Controller Button Mappings
     public static final int BUTTON_A = 1;
     public static final int BUTTON_B = 2;
@@ -31,7 +29,7 @@ public class XboxController implements ControllerInterface {
     public static final int AXIS_LEFT_TRIGGER = 5;
     public static final int AXIS_RIGHT_TRIGGER = 4;
 
-    public XboxController(int port) {
+    public Gulikit(int port) {
         joystick = new Joystick(port);
     }
 

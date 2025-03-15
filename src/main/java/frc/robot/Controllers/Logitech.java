@@ -1,9 +1,8 @@
-package frc.robot;
+package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.ControllerInterface;
 
-public class LogitechController implements ControllerInterface {
+public class Logitech implements ControllerInterface {
     private Joystick joystick;
 
     // Logitech Controller Button Mappings
@@ -30,7 +29,7 @@ public class LogitechController implements ControllerInterface {
     public static final int AXIS_LEFT_TRIGGER = 7;
     public static final int AXIS_RIGHT_TRIGGER = 8;
 
-    public LogitechController(int port) {
+    public Logitech(int port) {
         joystick = new Joystick(port);
     }
 
