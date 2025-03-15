@@ -8,6 +8,10 @@ public interface ControllerInterface {
         return 0;
     }
 
+    public default int getPOV(){
+        return -1;
+    }
+
     public default  boolean getButtonA() {
         return getButton(1);
     }
