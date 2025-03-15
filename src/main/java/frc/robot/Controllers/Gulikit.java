@@ -7,27 +7,27 @@ public class Gulikit implements ControllerInterface {
     // Controller Button Mappings
     public static final int BUTTON_A = 1;
     public static final int BUTTON_B = 2;
-    public static final int BUTTON_X = 4;
-    public static final int BUTTON_Y = 5;
-    public static final int BUTTON_LEFT_BUMPER = 7;
-    public static final int BUTTON_RIGHT_BUMPER = 8;
-    public static final int BUTTON_BACK = 11;
-    public static final int BUTTON_START = 12;
-    public static final int BUTTON_LEFT_STICK = 14;
-    public static final int BUTTON_RIGHT_STICK = 15;
-    public static final int BUTTON_DPAD_UP = 0;
-    public static final int BUTTON_DPAD_DOWN = 90;
-    public static final int BUTTON_DPAD_LEFT = 180;
-    public static final int BUTTON_DPAD_RIGHT = 270;
+    public static final int BUTTON_X = 3;
+    public static final int BUTTON_Y = 4;
+    public static final int BUTTON_LEFT_BUMPER = 5;
+    public static final int BUTTON_RIGHT_BUMPER = 6;
+    public static final int BUTTON_BACK = 10;
+    public static final int BUTTON_START = 9;
+    public static final int BUTTON_LEFT_STICK = 7;
+    public static final int BUTTON_RIGHT_STICK = 8;
+    public static final int BUTTON_DPAD_UP = 12;
+    public static final int BUTTON_DPAD_DOWN = 13;
+    public static final int BUTTON_DPAD_LEFT = 14;
+    public static final int BUTTON_DPAD_RIGHT = 15;
 
 
     // Controller Axis Mappings
     public static final int AXIS_LEFT_X = 0;
     public static final int AXIS_LEFT_Y = 1;
-    public static final int AXIS_RIGHT_X = 2;
-    public static final int AXIS_RIGHT_Y = 3;
-    public static final int AXIS_LEFT_TRIGGER = 5;
-    public static final int AXIS_RIGHT_TRIGGER = 4;
+    public static final int AXIS_RIGHT_X = 3;
+    public static final int AXIS_RIGHT_Y = 4;
+    public static final int AXIS_LEFT_TRIGGER = 2;
+    public static final int AXIS_RIGHT_TRIGGER = 5;
 
     public Gulikit(int port) {
         joystick = new Joystick(port);
@@ -86,19 +86,19 @@ public class Gulikit implements ControllerInterface {
     }
 
     public boolean getButtonDPadUp() {
-        return getPOV() == BUTTON_DPAD_UP;
+        return getButton(BUTTON_DPAD_UP);
     }
 
     public boolean getButtonDPadDown() {
-        return getPOV() == BUTTON_DPAD_DOWN;
+        return getButton(BUTTON_DPAD_DOWN);
     }
 
     public boolean getButtonDPadLeft() {
-        return getPOV() == BUTTON_DPAD_LEFT;
+        return getButton(BUTTON_DPAD_LEFT);
     }
 
     public boolean getButtonDPadRight() {
-        return getPOV() == BUTTON_DPAD_RIGHT;
+        return getButton(BUTTON_DPAD_RIGHT);
     }
 
     public double getLeftXAxis() {
