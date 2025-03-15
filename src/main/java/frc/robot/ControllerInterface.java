@@ -48,6 +48,19 @@ public interface ControllerInterface {
         return getButton(10);
     }
 
+    public default  boolean getButtonDPadUp() {
+        return getButton(11);
+    }
+    public default  boolean getButtonDPadDown() {
+        return getButton(12);
+    }
+    public default  boolean getButtonDPadLeft() {
+        return getButton(13);
+    }
+    public default  boolean getButtonDPadRight() {
+        return getButton(14);
+    }
+
     public default  double getLeftXAxis() {
         return getAxis(0);
     }

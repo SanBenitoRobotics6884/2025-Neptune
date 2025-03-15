@@ -17,6 +17,11 @@ public class XboxController implements ControllerInterface {
     public static final int BUTTON_START = 8;
     public static final int BUTTON_LEFT_STICK = 9;
     public static final int BUTTON_RIGHT_STICK = 10;
+    public static final int BUTTON_DPAD_UP = 11;
+    public static final int BUTTON_DPAD_DOWN = 12;
+    public static final int BUTTON_DPAD_LEFT = 13;
+    public static final int BUTTON_DPAD_RIGHT = 14;
+
 
     // Controller Axis Mappings
     public static final int AXIS_LEFT_X = 0;
@@ -76,6 +81,22 @@ public class XboxController implements ControllerInterface {
 
     public boolean getRightStickButton() {
         return getButton(BUTTON_RIGHT_STICK);
+    }
+
+    public boolean getButtonDPadUp() {
+        return getButton(BUTTON_DPAD_UP);
+    }
+
+    public boolean getButtonDPadDown() {
+        return getButton(BUTTON_DPAD_DOWN);
+    }
+
+    public boolean getButtonDPadLeft() {
+        return getButton(BUTTON_DPAD_LEFT);
+    }
+
+    public boolean getButtonDPadRight() {
+        return getButton(BUTTON_DPAD_RIGHT);
     }
 
     public double getLeftXAxis() {
