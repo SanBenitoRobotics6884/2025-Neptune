@@ -28,11 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 
 public class Swerve extends SubsystemBase {
-
-
-    
     private PoseEstimator s_PoseEstimator = new PoseEstimator();
-
     public SwerveDriveOdometry swerveOdometry;
     public SwerveMod[] mSwerveMods;
     public Pigeon2 gyro;
@@ -62,7 +58,6 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
         
-
         AutoBuilder.configure(
             this::getPose, // Robot pose supplier
             this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
