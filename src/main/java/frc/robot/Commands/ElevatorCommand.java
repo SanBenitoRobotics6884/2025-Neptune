@@ -3,6 +3,8 @@ package frc.robot.Commands;
 import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 
+import static frc.robot.Constants.Elevator.L1_POSITION;
+
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -19,9 +21,17 @@ public class ElevatorCommand extends Command {
     private DoubleSupplier m_retractSup;
     private BooleanSupplier m_dampenSup;
     private BooleanSupplier m_debugSup;
+    private BooleanSupplier m_L1buttonSup;
+    private BooleanSupplier m_L2buttonSup;
+    private BooleanSupplier m_L3buttonSup;
+    private BooleanSupplier m_L4buttonSup;
+    private double LEVEL1_HEIGHT = 0.0;
+
     private Boolean m_debugMode;
 
-    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup, BooleanSupplier dampenSup, BooleanSupplier debugSup) {
+    public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup,
+     BooleanSupplier dampenSup, BooleanSupplier debugSup, BooleanSupplier L1buttonSup, BooleanSupplier L2buttonSup,
+     BooleanSupplier L3buttonSup, BooleanSupplier L4buttonSup) {
         m_subsystem = s_subsystem;
         addRequirements(m_subsystem);
 
@@ -29,6 +39,10 @@ public class ElevatorCommand extends Command {
         m_retractSup = retractSup;
         m_dampenSup = dampenSup;
         m_debugSup = debugSup;
+        m_L1buttonSup = L1buttonSup;
+        m_L2buttonSup = L2buttonSup;
+        m_L3buttonSup = L3buttonSup;
+        m_L4buttonSup = L4buttonSup;
     }
 
     @Override
@@ -42,10 +56,13 @@ public class ElevatorCommand extends Command {
 
         // current
 
-        //enables debug mode for elevator (turns off normal inputs); bound to A button
+        //enables debug mode for elevator while button held (turns off normal inputs); bound to A button
         m_debugMode = m_debugSup.getAsBoolean();
 
         if (!m_debugMode) {
+          if (m_L1buttonSup.getAsBoolean()){
+          m_subsystem.gotolevel(L1_POSITION);
+          }
           if(extendVal > 0){
             m_subsystem.extend(extendVal);
           } else if (retractVal > 0){

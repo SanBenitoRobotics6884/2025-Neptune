@@ -67,15 +67,15 @@ public class RobotContainer {
             )
         );
 */
-        // s_CoralOutIntakeSubsystem.setDefaultCommand(
-        //     new CoralOutIntakeCommand(
-        //       s_CoralOutIntakeSubsystem,
-        //       () -> operator.getXButtonPressed(),
-        //       () -> operator.getYButtonPressed(),
-        //       () -> operator.getAButtonPressed(),
-        //       () -> operator.getBButtonPressed()
-        //     )
-        // );
+         s_CoralOutIntakeSubsystem.setDefaultCommand(
+             new CoralOutIntakeCommand(
+               s_CoralOutIntakeSubsystem,
+               () -> operator.getButtonX(),
+               () -> operator.getButtonY()
+               //() -> operator.getButtonA(),
+               //() -> operator.getButtonB()
+             )
+         );
 
         s_ElevatorSubsystem.setDefaultCommand(
              new ElevatorCommand(
@@ -83,7 +83,12 @@ public class RobotContainer {
                 () -> operator.getLeftTrigger(),
                 () -> operator.getRightTrigger(),
                 () -> operator.getLeftBumper(),
-                () -> operator.getButtonA()
+               () -> operator.getButtonA(),
+                () -> operator.getButtonDPadDown(),
+                () -> operator.getButtonDPadLeft(),
+                () -> operator.getButtonDPadUp(),
+                () -> operator.getButtonDPadRight()
+
            )
         );
 

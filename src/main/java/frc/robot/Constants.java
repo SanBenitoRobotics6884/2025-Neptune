@@ -245,8 +245,8 @@ public final class Constants {
     public static final class CoralOutIntake{
         public static final int JOYSTICK_PORT_ID = 0;
 
-        public static final int PIVOTion_MOTOR_ID = 11;
-        public static final int ROTATION_MOTOR_ID = 12;
+        public static final int TOP_MOTOR_ID = 5;
+        public static final int BOTTOM_MOTOR_ID = 6;
 
         public static final int LIMITSWITCH_CHANNEL_ID = 6;
 
@@ -267,12 +267,13 @@ public final class Constants {
         public static final int LEFT_MOTOR_ID = 9;
         public static final int RIGHT_MOTOR_ID = 10;
         public static final double ERROR_TOLERANCE = 0.1;
-        public static final double MAX = 197.0;
+        public static final double MAX = 197.0; 
         public static final double MIN = 7;
         // get the position for the following //{
-        public static final double FORTE_POSOTION = 0;
-        public static final double MEZZO_POSOTION = 0;
-        public static final double PIANO_POSOTION = 0;
+        public static final double L1_POSITION = 30;
+        public static final double L2_POSITION = 85;
+        public static final double L3_POSITION = 140;
+        public static final double L4_POSITION = 180;
         //}
 
         public static final double KP = 0.5;

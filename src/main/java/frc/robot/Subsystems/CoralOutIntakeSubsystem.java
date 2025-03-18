@@ -5,73 +5,57 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import static frc.robot.Constants.CoralOutIntake.*;
 
-import java.util.function.BooleanSupplier;
-
 public class CoralOutIntakeSubsystem extends SubsystemBase {
-  Joystick m_joystick = new Joystick(JOYSTICK_PORT_ID);
-
-  SparkMax m_pivotMotor = new SparkMax(PIVOTion_MOTOR_ID, MotorType.kBrushless);
-  SparkMax m_stealOrNoStealMotor = new SparkMax(ROTATION_MOTOR_ID, MotorType.kBrushless);
+  SparkMax m_topMotor = new SparkMax(TOP_MOTOR_ID, MotorType.kBrushless);
+  SparkMax m_bottomMotor = new SparkMax(BOTTOM_MOTOR_ID, MotorType.kBrushless);
   SparkMaxConfig config = new SparkMaxConfig();
-
-  AbsoluteEncoder m_pivotEncoder;
-  AbsoluteEncoder m_rotationEncoder;
-
-  DigitalInput m_limitSwitch = new DigitalInput(LIMITSWITCH_CHANNEL_ID);
-
-  double m_pivotSetpoint;
-  double PIVOT_MOTOR_SPEED = 0.5;
-
-  PIDController m_PID = new PIDController(Kp, Ki, Kd);
+  SparkMaxConfig config1 = new SparkMaxConfig();
+  // UNUSED FOR NOW 3/17
+  ColorSensorV3 m_colorSensor = new ColorSensorV3(null);
+  double MOTOR_SPEED = 0.5 * (1/3);
   int STALL_CURRENT_THRESHOLD = 15; // amps
 
   /** Creates a new CoralIntakeOuttake. */
   public CoralOutIntakeSubsystem() {
     config.inverted(true);
-    m_pivotMotor.configure(config, null, null);
-    m_stealOrNoStealMotor.configure(config, null, null);
+    config1.inverted(false);
+    // m_pivotMotor.configure(config, null, null);
+    m_topMotor.configure(config, null, null);
+    m_bottomMotor.configure(config1, null, null);
+
   }
 
   public boolean pieceIsIn() {
-    return m_stealOrNoStealMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD;
+    // Update function to return results of Rev Color Sensor v3
+    return m_topMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD || m_bottomMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD;
   }
 
-  public void setSetpoint(double setpoint) {
-    m_pivotSetpoint = setpoint;
-  }
-
-  public void intake(Boolean intakePressed, Boolean outtakePressed, Boolean pivotUpPressed, Boolean pivotDownPressed) {
-    if (pivotUpPressed) {
-      m_pivotMotor.set(PIVOT_MOTOR_SPEED);
-    } else if (pivotDownPressed) {
-      m_pivotMotor.set(-PIVOT_MOTOR_SPEED);
-    } else {
-      m_pivotMotor.set(0);
-    }
-
-    if (intakePressed && !pieceIsIn()) {
-      m_stealOrNoStealMotor.set(-ROTATION_MOTOR_SPEED);
+  public void intakeOuttake(Boolean intakePressed, Boolean outtakePressed) {
+    if (intakePressed) {
+      m_topMotor.set(MOTOR_SPEED);
+      m_bottomMotor.set(MOTOR_SPEED);
     } else if (outtakePressed) {
-      m_stealOrNoStealMotor.set(ROTATION_MOTOR_SPEED);
+      m_topMotor.set(-MOTOR_SPEED);
+      m_bottomMotor.set(-MOTOR_SPEED);
     } else {
-      m_stealOrNoStealMotor.set(0);
+      m_topMotor.stopMotor();
+      m_bottomMotor.stopMotor();
     }
   }
 
   // Needs an outtake function using x button
 
+  /*
   public Command toHighPosotion() {
     return runOnce(() -> setSetpoint(HIGH_POSITION));
   }
@@ -83,12 +67,15 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   public Command toLowPosotion() {
     return runOnce(() -> setSetpoint(LOW_POSITION));
   }
+  */
 
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
     // Problem m_pivotEncoder is null
     // m_PID.setSetpoint(m_pivotSetpoint);
     // m_pivotMotor.set(m_PID.calculate(m_pivotEncoder.getPosition()));
+
   }
 }

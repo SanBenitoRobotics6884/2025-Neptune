@@ -58,17 +58,37 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
   }
 
-  private void setEMotorVoltage(double val){
+  private void setEMotorVoltage(double val, boolean isDirectInput){
+    // Checks current motor position in rotations (angles/360)
     double position = m_leftMotor.getPosition().getValue().in(Degrees)/360;
-    if(val > 0 && position > UPPER_LIMIT){
-      this.stop();
-      return;
-    } if(val < 0 && position < LOWER_LIMIT){
-      this.stop();
-      return;
+
+    if (isDirectInput) {
+      if(val > 0 && position > UPPER_LIMIT){
+        this.stop();
+        return;
+      } if(val < 0 && position < LOWER_LIMIT){
+        this.stop();
+        return;
+      }
+      m_leftMotor.setVoltage(val);
+    } else {
+      // Need to check for button presses
     }
-    m_leftMotor.setVoltage(val);
+   
   }
+  public void gotolevel(double val){
+    double position = m_leftMotor.getPosition().getValue().in(Degrees)/360;
+
+    if(position == val){
+      this.stop();
+    } else if  (position - val > 0){
+      this.setEMotorVoltage(9, ENABLECURRENTLIMIT);
+    }else{
+      this.setEMotorVoltage(-9, ENABLECURRENTLIMIT);
+    }
+
+  }
+
 
   public void extend(double val){
     /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
@@ -79,8 +99,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_leftMotor.set(speed);*/
     // m_rightMotor.set(-speed);
 
-    this.setEMotorVoltage(9);
+    this.setEMotorVoltage(9, true);
   }
+
+  
 
   public void retract(double val){
     /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
@@ -91,7 +113,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_leftMotor.set(-speed);*/
     //m_rightMotor.set(speed);
 
-    this.setEMotorVoltage(-9);
+    this.setEMotorVoltage(-9, true);
   }
 
   public void stop(){
