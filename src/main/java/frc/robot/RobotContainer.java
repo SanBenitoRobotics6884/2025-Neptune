@@ -85,7 +85,7 @@ public class RobotContainer {
                 () -> operator.getLeftTrigger(),
                 () -> operator.getRightTrigger(),
                 () -> operator.getLeftBumper(),
-               () -> operator.getButtonA(),
+                () -> operator.getButtonA(),
                 () -> operator.getButtonDPadDown(),
                 () -> operator.getButtonDPadLeft(),
                 () -> operator.getButtonDPadUp(),

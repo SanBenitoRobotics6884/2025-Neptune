@@ -248,7 +248,6 @@ public final class Constants {
         public static final int TOP_MOTOR_ID = 5;
         public static final int BOTTOM_MOTOR_ID = 6;
 
-        public static final int LIMITSWITCH_CHANNEL_ID = 6;
 
         //The following lines of code are needed to be tested to determine the setponts {//
             public static final double HIGH_POSITION = 0;

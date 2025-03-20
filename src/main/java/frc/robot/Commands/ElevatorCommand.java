@@ -4,6 +4,9 @@ import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 
 import static frc.robot.Constants.Elevator.L1_POSITION;
+import static frc.robot.Constants.Elevator.L2_POSITION;
+import static frc.robot.Constants.Elevator.L3_POSITION;
+import static frc.robot.Constants.Elevator.L4_POSITION;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -62,7 +65,16 @@ public class ElevatorCommand extends Command {
         if (!m_debugMode) {
           if (m_L1buttonSup.getAsBoolean()){
           m_subsystem.gotolevel(L1_POSITION);
-          }
+              }
+          if (m_L2buttonSup.getAsBoolean()){
+            m_subsystem.gotolevel(L2_POSITION);
+              }
+          if (m_L3buttonSup.getAsBoolean()){
+              m_subsystem.gotolevel(L3_POSITION);
+              }
+          if (m_L4buttonSup.getAsBoolean()){
+                m_subsystem.gotolevel(L4_POSITION);
+              }
           if(extendVal > 0){
             m_subsystem.extend(extendVal);
           } else if (retractVal > 0){
