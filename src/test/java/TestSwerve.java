@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.Constants;
-import frc.robot.SwerveMod;
+import frc.robot.Subsystems.SwerveMod;
 
 class TestSwerve {
     public static void main(String[] args) {

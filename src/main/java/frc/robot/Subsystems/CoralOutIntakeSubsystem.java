@@ -21,7 +21,7 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   SparkMaxConfig config = new SparkMaxConfig();
   SparkMaxConfig config1 = new SparkMaxConfig();
   // UNUSED FOR NOW 3/17
-  ColorSensorV3 m_colorSensor = new ColorSensorV3(null);
+  // ColorSensorV3 m_colorSensor = new ColorSensorV3(null);
   double MOTOR_SPEED = 0.5 * (1/3);
   int STALL_CURRENT_THRESHOLD = 15; // amps
 
