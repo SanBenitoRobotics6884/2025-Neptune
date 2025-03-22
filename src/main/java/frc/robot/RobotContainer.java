@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.Commands.*;
+import frc.robot.Controllers.ControllerInterface;
+import frc.robot.Controllers.Logitech;
+import frc.robot.Controllers.Xbox;
 import frc.robot.Subsystems.*;
 
 /**
@@ -23,9 +26,10 @@ import frc.robot.Subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final ControllerInterface operator = new XboxController(0);
+    private final ControllerInterface operator = new Logitech(0);
       //climb, elevator, and coral (control is blutooth)
-    private final ControllerInterface driver = new XboxController(1);
+    // private final ControllerInterface driver = new XboxController(1);
+    private final ControllerInterface driver = new Logitech(1);
       // Controller in port 1 is driving (controll is cable)
     //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
@@ -65,24 +69,30 @@ public class RobotContainer {
             )
         );
 */
-        // s_CoralOutIntakeSubsystem.setDefaultCommand(
-        //     new CoralOutIntakeCommand(
-        //       s_CoralOutIntakeSubsystem,
-        //       () -> operator.getXButtonPressed(),
-        //       () -> operator.getYButtonPressed(),
-        //       () -> operator.getAButtonPressed(),
-        //       () -> operator.getBButtonPressed()
-        //     )
-        // );
+         s_CoralOutIntakeSubsystem.setDefaultCommand(
+             new CoralOutIntakeCommand(
+               s_CoralOutIntakeSubsystem,
+               () -> operator.getButtonX(),
+               () -> operator.getButtonY()
+               //() -> operator.getButtonA(),
+               //() -> operator.getButtonB()
+             )
+         );
 
-        // s_ElevatorSubsystem.setDefaultCommand(
-        //     new ElevatorCommand(
-        //         s_ElevatorSubsystem,
-        //         () -> operator.getLeftY(),
-        //         () -> operator.getRightY(),
-        //         () -> operator.getLeftBumper()
-        //    )
-        // );
+        s_ElevatorSubsystem.setDefaultCommand(
+             new ElevatorCommand(
+                 s_ElevatorSubsystem,
+                () -> operator.getLeftTrigger(),
+                () -> operator.getRightTrigger(),
+                () -> operator.getLeftBumper(),
+                () -> operator.getButtonA(),
+                () -> operator.getButtonDPadDown(),
+                () -> operator.getButtonDPadLeft(),
+                () -> operator.getButtonDPadUp(),
+                () -> operator.getButtonDPadRight()
+
+           )
+        );
 
         // Configure the button bindings
         configureButtonBindings();
@@ -95,7 +105,7 @@ public class RobotContainer {
     /**
      * Use this method to define your button->command mappings. Buttons can be created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link Xbox}), and then passing it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {

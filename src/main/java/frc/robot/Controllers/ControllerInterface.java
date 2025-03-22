@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.Controllers;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public interface ControllerInterface {
@@ -6,6 +6,10 @@ public interface ControllerInterface {
 
     public default  double getAxis(int axis) {
         return 0;
+    }
+
+    public default int getPOV(){
+        return -1;
     }
 
     public default  boolean getButtonA() {
@@ -46,6 +50,19 @@ public interface ControllerInterface {
 
     public default  boolean getButtonRightStick() {
         return getButton(10);
+    }
+
+    public default  boolean getButtonDPadUp() {
+        return getButton(11);
+    }
+    public default  boolean getButtonDPadDown() {
+        return getButton(12);
+    }
+    public default  boolean getButtonDPadLeft() {
+        return getButton(13);
+    }
+    public default  boolean getButtonDPadRight() {
+        return getButton(14);
     }
 
     public default  double getLeftXAxis() {

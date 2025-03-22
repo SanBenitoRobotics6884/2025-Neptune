@@ -18,15 +18,14 @@ public class CoralOutIntakeCommand extends Command {
   BooleanSupplier m_pivotUpButton;
   BooleanSupplier m_pivotDownButton;
 
-
   /** Creates a new CoralOutIntakeCommand. */
-  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake, BooleanSupplier intakeButton, BooleanSupplier outtakeButton, BooleanSupplier pivotUpButton, BooleanSupplier pivotDownButton) {
+  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake, BooleanSupplier intakeButton, BooleanSupplier outtakeButton) {
     m_coralOutIntake = coralOutIntake;
     addRequirements(coralOutIntake);
     m_intakeButton = intakeButton;
     m_outtakeButton = outtakeButton;
-    m_pivotUpButton = pivotUpButton;
-    m_pivotDownButton = pivotDownButton;
+    //m_pivotUpButton = pivotUpButton;
+    //m_pivotDownButton = pivotDownButton;
 
   }
 
@@ -37,11 +36,9 @@ public class CoralOutIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_coralOutIntake.intake(
+    m_coralOutIntake.intakeOuttake(
       m_intakeButton.getAsBoolean(),
-      m_outtakeButton.getAsBoolean(),
-      m_pivotUpButton.getAsBoolean(),
-      m_pivotDownButton.getAsBoolean()
+      m_outtakeButton.getAsBoolean()
     );
   }
 

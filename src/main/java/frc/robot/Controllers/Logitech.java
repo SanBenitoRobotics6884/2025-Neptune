@@ -1,11 +1,10 @@
-package frc.robot;
+package frc.robot.Controllers;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.ControllerInterface;
 
-public class LogitechController implements ControllerInterface {
+public class Logitech implements ControllerInterface {
     private Joystick joystick;
-
+    
     // Logitech Controller Button Mappings
     public static final int BUTTON_A = 1;
     public static final int BUTTON_B = 2;
@@ -13,20 +12,24 @@ public class LogitechController implements ControllerInterface {
     public static final int BUTTON_Y = 4;
     public static final int BUTTON_LEFT_BUMPER = 5;
     public static final int BUTTON_RIGHT_BUMPER = 6;
-    public static final int BUTTON_BACK = 7;
-    public static final int BUTTON_START = 8;
-    public static final int BUTTON_LEFT_STICK = 9;
-    public static final int BUTTON_RIGHT_STICK = 10;
+    public static final int BUTTON_BACK = 9;
+    public static final int BUTTON_START = 10;
+    public static final int BUTTON_LEFT_STICK = 11;
+    public static final int BUTTON_RIGHT_STICK = 12;
+    public static final int BUTTON_DPAD_UP = 0;
+    public static final int BUTTON_DPAD_DOWN = 180;
+    public static final int BUTTON_DPAD_LEFT = 270;
+    public static final int BUTTON_DPAD_RIGHT = 90;
 
     // Logitech Controller Axis Mappings
     public static final int AXIS_LEFT_X = 0;
     public static final int AXIS_LEFT_Y = 1;
-    public static final int AXIS_RIGHT_X = 4;
-    public static final int AXIS_RIGHT_Y = 5;
-    public static final int AXIS_LEFT_TRIGGER = 2;
-    public static final int AXIS_RIGHT_TRIGGER = 3;
+    public static final int AXIS_RIGHT_X = 2;
+    public static final int AXIS_RIGHT_Y = 3;
+    public static final int AXIS_LEFT_TRIGGER = 7;
+    public static final int AXIS_RIGHT_TRIGGER = 8;
 
-    public LogitechController(int port) {
+    public Logitech(int port) {
         joystick = new Joystick(port);
     }
 
@@ -36,6 +39,10 @@ public class LogitechController implements ControllerInterface {
 
     public double getAxis(int axis) {
         return joystick.getRawAxis(axis);
+    }
+
+    public int getPOV(){
+        return joystick.getPOV();
     }
 
     public boolean getButtonA() {
@@ -78,6 +85,22 @@ public class LogitechController implements ControllerInterface {
         return getButton(BUTTON_RIGHT_STICK);
     }
 
+    public boolean getButtonDPadUp() {
+        return getPOV() == BUTTON_DPAD_UP;
+    }
+
+    public boolean getButtonDPadDown() {
+        return getPOV() == BUTTON_DPAD_DOWN;
+    }
+
+    public boolean getButtonDPadLeft() {
+        return getPOV() == BUTTON_DPAD_LEFT;
+    }
+
+    public boolean getButtonDPadRight() {
+        return getPOV() == BUTTON_DPAD_RIGHT;
+    }
+
     public double getLeftXAxis() {
         return getAxis(AXIS_LEFT_X);
     }
@@ -95,10 +118,18 @@ public class LogitechController implements ControllerInterface {
     }
 
     public double getLeftTriggerAxis() {
-        return getAxis(AXIS_LEFT_TRIGGER);
+        if (getButton(AXIS_LEFT_TRIGGER)){
+            return 1.0;
+        } else {
+            return 0.0;
+        }
     }
 
     public double getRightTriggerAxis() {
-        return getAxis(AXIS_RIGHT_TRIGGER);
+        if (getButton(AXIS_RIGHT_TRIGGER)){
+            return 1.0;
+        } else {
+            return 0.0;
+        }
     }
 }
