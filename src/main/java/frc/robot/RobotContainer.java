@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.Commands.*;
 import frc.robot.Controllers.ControllerInterface;
+import frc.robot.Controllers.Gulikit;
 import frc.robot.Controllers.Logitech;
 import frc.robot.Controllers.Xbox;
 import frc.robot.Subsystems.*;
@@ -29,7 +30,7 @@ public class RobotContainer {
     private final ControllerInterface operator = new Logitech(0);
       //climb, elevator, and coral (control is blutooth)
     // private final ControllerInterface driver = new XboxController(1);
-    private final ControllerInterface driver = new Logitech(1);
+    private final ControllerInterface driver = new Gulikit(1);
       // Controller in port 1 is driving (controll is cable)
     //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
