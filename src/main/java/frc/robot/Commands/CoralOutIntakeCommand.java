@@ -13,22 +13,21 @@ import frc.robot.Subsystems.CoralOutIntakeSubsystem;
 public class CoralOutIntakeCommand extends Command {
   CoralOutIntakeSubsystem m_coralOutIntake;
 
-  BooleanSupplier m_xButtonPressed;
-  BooleanSupplier m_xButtonReleased;
-  BooleanSupplier m_bButtonPressed;
-  BooleanSupplier m_bButtonReleased;
+  BooleanSupplier m_intakeButton;
+  BooleanSupplier m_outtakeButton;
+  BooleanSupplier m_pivotUpButton;
+  BooleanSupplier m_pivotDownButton;
 
 
   /** Creates a new CoralOutIntakeCommand. */
-  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake, BooleanSupplier xButtonPressed, 
-  BooleanSupplier xButtonReleased, BooleanSupplier bButtonPressed, BooleanSupplier bButtonReleased) {
+  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake, BooleanSupplier intakeButton, BooleanSupplier outtakeButton, BooleanSupplier pivotUpButton, BooleanSupplier pivotDownButton) {
     m_coralOutIntake = coralOutIntake;
     addRequirements(coralOutIntake);
+    m_intakeButton = intakeButton;
+    m_outtakeButton = outtakeButton;
+    m_pivotUpButton = pivotUpButton;
+    m_pivotDownButton = pivotDownButton;
 
-    m_xButtonPressed = xButtonPressed;
-    m_xButtonReleased = xButtonReleased;
-    m_bButtonPressed = bButtonPressed;
-    m_bButtonReleased = bButtonReleased;
   }
 
   // Called when the command is initially scheduled.
@@ -38,11 +37,12 @@ public class CoralOutIntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    Boolean bButtonIsPressed = m_bButtonPressed.getAsBoolean();
-    Boolean bButtonIsReleased = m_bButtonPressed.getAsBoolean();
-
-    m_coralOutIntake.intake(bButtonIsPressed, bButtonIsReleased);
+    m_coralOutIntake.intake(
+      m_intakeButton.getAsBoolean(),
+      m_outtakeButton.getAsBoolean(),
+      m_pivotUpButton.getAsBoolean(),
+      m_pivotDownButton.getAsBoolean()
+    );
   }
 
 

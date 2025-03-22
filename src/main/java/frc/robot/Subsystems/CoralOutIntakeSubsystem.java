@@ -32,8 +32,10 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   DigitalInput m_limitSwitch = new DigitalInput(LIMITSWITCH_CHANNEL_ID);
 
   double m_pivotSetpoint;
+  double PIVOT_MOTOR_SPEED = 0.5;
 
   PIDController m_PID = new PIDController(Kp, Ki, Kd);
+  int STALL_CURRENT_THRESHOLD = 15; // amps
 
   /** Creates a new CoralIntakeOuttake. */
   public CoralOutIntakeSubsystem() {
@@ -42,19 +44,29 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
     m_stealOrNoStealMotor.configure(config, null, null);
   }
 
-  boolean pieceIsIn() {
-    return m_limitSwitch.get();
+  public boolean pieceIsIn() {
+    return m_stealOrNoStealMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD;
   }
 
   public void setSetpoint(double setpoint) {
     m_pivotSetpoint = setpoint;
   }
 
-  public void intake(Boolean bButtonPressed, Boolean bButtonReleased) {
-    if (bButtonPressed) {
+  public void intake(Boolean intakePressed, Boolean outtakePressed, Boolean pivotUpPressed, Boolean pivotDownPressed) {
+    if (pivotUpPressed) {
+      m_pivotMotor.set(PIVOT_MOTOR_SPEED);
+    } else if (pivotDownPressed) {
+      m_pivotMotor.set(-PIVOT_MOTOR_SPEED);
+    } else {
+      m_pivotMotor.set(0);
+    }
+
+    if (intakePressed && !pieceIsIn()) {
       m_stealOrNoStealMotor.set(-ROTATION_MOTOR_SPEED);
-    } else if (bButtonReleased) {
+    } else if (outtakePressed) {
       m_stealOrNoStealMotor.set(ROTATION_MOTOR_SPEED);
+    } else {
+      m_stealOrNoStealMotor.set(0);
     }
   }
 

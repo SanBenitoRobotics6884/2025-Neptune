@@ -21,7 +21,7 @@ public class ClimbSubsystem extends SubsystemBase {
   PIDController pidController;
   /** Creates a new ClimbSubsystem. */
   public ClimbSubsystem() {
-    m_climbMotor = new TalonFX(5, "Galigma");
+    m_climbMotor = new TalonFX(15, "Galigma");
     m_climbMotor.getConfigurator().setPosition(0.0);
     m_climbMotor.optimizeBusUtilization();
     // encoder = new Encoder(0, 0);
