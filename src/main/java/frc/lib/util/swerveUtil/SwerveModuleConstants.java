@@ -7,6 +7,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
 import frc.robot.Constants;
 
 public class SwerveModuleConstants {
@@ -64,7 +65,7 @@ public class SwerveModuleConstants {
         return config;
     }
 
-    public TalonFXConfiguration asTalonSteerConfig() {
+    public TalonFXSConfiguration asTalonSteerConfig() {
         TalonFXSConfiguration swerveSteerTalonConfig = new TalonFXSConfiguration();
         swerveSteerTalonConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
         swerveSteerTalonConfig.MotorOutput.Inverted = Constants.Swerve.angleMotorInvert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
@@ -72,7 +73,7 @@ public class SwerveModuleConstants {
         swerveSteerTalonConfig.Slot0.kP = Constants.Swerve.angleKP;
         swerveSteerTalonConfig.Slot0.kI = Constants.Swerve.angleKI;
         swerveSteerTalonConfig.Slot0.kD = Constants.Swerve.angleKD;
-        swerveSteerTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.angleGearRatio;
+        // swerveSteerTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.angleGearRatio;
 
         swerveSteerTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.angleEnableCurrentLimit;
         swerveSteerTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.angleCurrentLimit;
