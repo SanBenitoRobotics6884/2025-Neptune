@@ -64,15 +64,7 @@ public class SwerveMod {
         // Angle (steering) Motor – NEO w/ TalonFXS
         // -----------------------------------------------------
         mAngleMotor = new TalonFXS(moduleConstants.angleMotorID, CANIVOR_BUS);
-        TalonFXSConfiguration toConfigure = new TalonFXSConfiguration();
-        // toConfigure.primaryPID.kp = 0.1;
-        toConfigure.Slot0.kP = 0.05;
-        toConfigure.Slot0.kI = 0.0;
-        toConfigure.Slot0.kD = 0.0;
-        toConfigure.Slot0.kV = 0.0;
-
-        toConfigure.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
-        mAngleMotor.getConfigurator().apply(toConfigure);
+        mAngleMotor.getConfigurator().apply(moduleConstants.asTalonSteerConfig());
         mAngleMotor.getConfigurator().setPosition(0.0);
 
         // -----------------------------------------------------

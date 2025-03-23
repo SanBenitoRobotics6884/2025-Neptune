@@ -2,6 +2,7 @@ package frc.lib.util.swerveUtil;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -63,6 +64,26 @@ public class SwerveModuleConstants {
         return config;
     }
 
+    public TalonFXConfiguration asTalonSteerConfig() {
+        TalonFXSConfiguration swerveSteerTalonConfig = new TalonFXSConfiguration();
+        swerveSteerTalonConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
+        swerveSteerTalonConfig.MotorOutput.Inverted = Constants.Swerve.angleMotorInvert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        // toConfigure.primaryPID.kp = 0.1;
+        swerveSteerTalonConfig.Slot0.kP = Constants.Swerve.angleKP;
+        swerveSteerTalonConfig.Slot0.kI = Constants.Swerve.angleKI;
+        swerveSteerTalonConfig.Slot0.kD = Constants.Swerve.angleKD;
+        swerveSteerTalonConfig.Slot0.kV = Constants.Swerve.angleKV;
+        swerveSteerTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.angleGearRatio;
+
+        swerveSteerTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.angleEnableCurrentLimit;
+        swerveSteerTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.angleCurrentLimit;
+
+        swerveSteerTalonConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
+        swerveSteerTalonConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
+        swerveSteerTalonConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
+        swerveSteerTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
+        return swerveSteerTalonConfig;
+    }
     public TalonFXConfiguration asTalonConfig() {
         TalonFXConfiguration swerveDriveTalonConfig = new TalonFXConfiguration();
         /** Swerve Drive Motor Configuration */
