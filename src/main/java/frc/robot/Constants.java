@@ -33,7 +33,7 @@ public final class Constants {
     public static final String GALIGMA_BUS = "Galigma"; // Thanks, Julio for all the troubles. :( -Zach
 
     public static final class Swerve {
-        public static final int pigeonID = 9;
+        public static final int pigeonID = 60;
         public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         public static final COTSNeoSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
