@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import frc.lib.util.Arducam;
 import frc.lib.util.Limelight;
 
 //import org.littletonrobotics.junction.Logger;
@@ -11,12 +12,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
     private PoseEstimator s_PoseEstimator;
-    public Limelight leftLL;
-    public Limelight rightLL;
+    //public Limelight leftLL;
+    //public Limelight rightLL;
+    public Arducam frontPhoton;
+    public Arducam backPhoton;
 
     public Vision(PoseEstimator s_PoseEstimator) {
         this.s_PoseEstimator = s_PoseEstimator;
-        leftLL = new Limelight("LL");
+        frontPhoton = new Arducam("FP");
+        backPhoton = new Arducam("BP");
+    }
+
+    public boolean frontHasTarget() {
+        return (frontPhoton.hasTarget());
+    }
+
+    public boolean backHasTarget() {
+        return (backPhoton.hasTarget());
     }
 
     public boolean rightHasTarget(){
