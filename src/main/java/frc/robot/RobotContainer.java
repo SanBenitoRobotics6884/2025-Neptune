@@ -70,30 +70,30 @@ public class RobotContainer {
             )
         );
 */
-         s_CoralOutIntakeSubsystem.setDefaultCommand(
-             new CoralOutIntakeCommand(
-               s_CoralOutIntakeSubsystem,
-               () -> operator.getButtonX(),
-               () -> operator.getButtonY()
-               //() -> operator.getButtonA(),
-               //() -> operator.getButtonB()
-             )
-         );
+        //  s_CoralOutIntakeSubsystem.setDefaultCommand(
+        //      new CoralOutIntakeCommand(
+        //        s_CoralOutIntakeSubsystem,
+        //        () -> operator.getButtonX(),
+        //        () -> operator.getButtonY()
+        //        //() -> operator.getButtonA(),
+        //        //() -> operator.getButtonB()
+        //      )
+        //  );
 
-        s_ElevatorSubsystem.setDefaultCommand(
-             new ElevatorCommand(
-                 s_ElevatorSubsystem,
-                () -> operator.getLeftTrigger(),
-                () -> operator.getRightTrigger(),
-                () -> operator.getLeftBumper(),
-                () -> operator.getButtonA(),
-                () -> operator.getButtonDPadDown(),
-                () -> operator.getButtonDPadLeft(),
-                () -> operator.getButtonDPadUp(),
-                () -> operator.getButtonDPadRight()
+        // s_ElevatorSubsystem.setDefaultCommand(
+        //      new ElevatorCommand(
+        //          s_ElevatorSubsystem,
+        //         () -> operator.getLeftTrigger(),
+        //         () -> operator.getRightTrigger(),
+        //         () -> operator.getLeftBumper(),
+        //         () -> operator.getButtonA(),
+        //         () -> operator.getButtonDPadDown(),
+        //         () -> operator.getButtonDPadLeft(),
+        //         () -> operator.getButtonDPadUp(),
+        //         () -> operator.getButtonDPadRight()
 
-           )
-        );
+        //    )
+        // );
 
         // Configure the button bindings
         configureButtonBindings();

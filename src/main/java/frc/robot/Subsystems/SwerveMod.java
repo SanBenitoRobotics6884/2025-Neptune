@@ -4,9 +4,11 @@ import frc.robot.Constants;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -17,11 +19,11 @@ import frc.lib.math.Conversions;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
 import com.ctre.phoenix6.controls.PositionVoltage;
 
-
 /**
- * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder absolute encoders.
+ * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder
+ * absolute encoders.
  */
-public class SwerveMod{
+public class SwerveMod {
 
     private String CANIVOR_BUS = "Galigma";
 
@@ -41,18 +43,19 @@ public class SwerveMod{
     private CANcoder angleEncoder;
     private final DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
     private final VelocityVoltage driveVelocity = new VelocityVoltage(0);
-    private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
+    private final SimpleMotorFeedforward driveFeedForward = new SimpleMotorFeedforward(Constants.Swerve.driveKS,
+            Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
     public SwerveMod(int moduleNumber, SwerveModuleConstants moduleConstants) {
-        this.moduleNumber    = moduleNumber;
-        this.angleOffset     = moduleConstants.angleOffset;
+        this.moduleNumber = moduleNumber;
+        this.angleOffset = moduleConstants.angleOffset;
 
         // -----------------------------------------------------
         // Absolute angle encoder (CTRE CANcoder)
         // -----------------------------------------------------
         // Apply your CANcoder config (sensorCoefficient, magnetOffset, etc.)
         angleEncoder = new CANcoder(moduleConstants.cancoderID, CANIVOR_BUS);
-        //config.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        // config.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         angleEncoder.getAbsolutePosition().setUpdateFrequency(10);
         angleEncoder.optimizeBusUtilization();
         angleEncoder.getConfigurator().apply(moduleConstants.asMagnetSensorConfig());
@@ -62,7 +65,15 @@ public class SwerveMod{
         // -----------------------------------------------------
         mAngleMotor = new TalonFXS(moduleConstants.angleMotorID, CANIVOR_BUS);
         TalonFXSConfiguration toConfigure = new TalonFXSConfiguration();
+        // toConfigure.primaryPID.kp = 0.1;
+        toConfigure.Slot0.kP = 0.05;
+        toConfigure.Slot0.kI = 0.0;
+        toConfigure.Slot0.kD = 0.0;
+        toConfigure.Slot0.kV = 0.0;
+
         toConfigure.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
+        mAngleMotor.getConfigurator().apply(toConfigure);
+        mAngleMotor.getConfigurator().setPosition(0.0);
 
         // -----------------------------------------------------
         // Drive Motor – TalonFX
@@ -80,15 +91,18 @@ public class SwerveMod{
         // For drive motor (TalonFX), start integrated sensor at 0
         mDriveMotor.setPosition(0.0);
 
-        // For angle motor (TalonFXS Motor Controller), we will zero to the absolute CANcoder reading
+        // For angle motor (TalonFXS Motor Controller), we will zero to the absolute
+        // CANcoder reading
         resetToAbsolute();
     }
 
     /**
      * Called every cycle to command the swerve module.
      *
-     * @param desiredState The target angle (in SwerveModuleState.angle) and speed (in speedMetersPerSecond)
-     * @param isOpenLoop   If true, run drive motor in simple duty cycle mode; otherwise run velocity closed-loop.
+     * @param desiredState The target angle (in SwerveModuleState.angle) and speed
+     *                     (in speedMetersPerSecond)
+     * @param isOpenLoop   If true, run drive motor in simple duty cycle mode;
+     *                     otherwise run velocity closed-loop.
      */
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
         // 1) Optimize the commanded angle to avoid unnecessary rotation
@@ -102,14 +116,14 @@ public class SwerveMod{
         setSpeed(desiredState, isOpenLoop);
     }
 
-    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
+    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
         double speedMps = desiredState.speedMetersPerSecond;
-        if(isOpenLoop){
+        if (isOpenLoop) {
             driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
             mDriveMotor.setControl(driveDutyCycle);
-        }
-        else {
-            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference);
+        } else {
+            driveVelocity.Velocity = Conversions.MPSToRPS(desiredState.speedMetersPerSecond,
+                    Constants.Swerve.wheelCircumference);
             driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
             mDriveMotor.setControl(driveVelocity.withSlot(0));
         }
@@ -120,16 +134,23 @@ public class SwerveMod{
     // -----------------------------------------------------
     private void setAngle(SwerveModuleState desiredState) {
         // If the module is barely driving, don’t waste time spinning the angle
-        if (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) {
-            // Optionally hold position or just stop sending commands:
-            mAngleMotor.stopMotor();
-            return;
-        }
+        // if (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed
+        // * 0.01)) {
+        // // Optionally hold position or just stop sending commands:
+        // mAngleMotor.stopMotor();
+        // return;
+        // }
 
         // We want to steer the module to the desired angle in degrees
-        double targetAngleDeg = desiredState.angle.getDegrees();
+        double targetAngleDeg = desiredState.angle.getRotations() * 20;
         PositionVoltage positionVoltage = new PositionVoltage(targetAngleDeg);
-        mAngleMotor.setControl(positionVoltage);
+        PositionDutyCycle pos = new PositionDutyCycle(targetAngleDeg);
+        // mAngleMotor.setPosition(targetAngleDeg);
+        mAngleMotor.setControl(pos.withSlot(0));
+        SmartDashboard.putNumber("S Ang" + moduleNumber, pos.Velocity);
+        driveDutyCycle.Output = targetAngleDeg / Constants.Swerve.maxSpeed;
+        // mAngleMotor.setControl(driveDutyCycle);
+
     }
 
     // -----------------------------------------------------
@@ -137,10 +158,14 @@ public class SwerveMod{
     // -----------------------------------------------------
     /** Current angle from the angle relative encoder, as a Rotation2d. */
     private Rotation2d getAngle() {
+        SmartDashboard.putNumber("SgetAng" + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());
         return Rotation2d.fromRotations(mAngleMotor.getPosition().getValueAsDouble());
     }
 
-    /** Absolute angle from the CANcoder, always in the [0,360) domain if you convert rotations → degrees. */
+    /**
+     * Absolute angle from the CANcoder, always in the [0,360) domain if you convert
+     * rotations → degrees.
+     */
     public Rotation2d getCANcoder() {
         double absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
         double absPositionDeg = absPositionRot * 360.0;
@@ -148,36 +173,37 @@ public class SwerveMod{
     }
 
     /**
-     * Resets the TalonFXS Motor Controller’s integrated steering encoder to the absolute angle, minus the known offset.
+     * Resets the TalonFXS Motor Controller’s integrated steering encoder to the
+     * absolute angle, minus the known offset.
      * This is typically called once at robot init.
      */
     public void resetToAbsolute() {
-        double absAngleDeg   = getCANcoder().getDegrees();
+        double absAngleDeg = getCANcoder().getDegrees();
         double adjustedAngle = absAngleDeg - angleOffset.getDegrees();
         mAngleMotor.setPosition(adjustedAngle);
     }
 
     /**
      * Returns the module’s overall state:
-     *  - Speed (m/s) read from the TalonFX
-     *  - Angle read from the TalonFXS Motor Controller
+     * - Speed (m/s) read from the TalonFX
+     * - Angle read from the TalonFXS Motor Controller
      */
-    public SwerveModuleState getState(){
+    public SwerveModuleState getState() {
         return new SwerveModuleState(
-            Conversions.RPSToMPS(mDriveMotor.getVelocity().getValueAsDouble(), Constants.Swerve.wheelCircumference),
-            getAngle()
-        );
+                Conversions.RPSToMPS(mDriveMotor.getVelocity().getValueAsDouble(), Constants.Swerve.wheelCircumference),
+                getAngle());
     }
+
     /**
      * Returns the module’s position:
-     *  - Drive distance (meters) from the TalonFX integrated sensor
-     *  - Angle from TalonFXS Motor Controller
+     * - Drive distance (meters) from the TalonFX integrated sensor
+     * - Angle from TalonFXS Motor Controller
      */
-    public SwerveModulePosition getPosition(){
+    public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            Conversions.rotationsToMeters(mDriveMotor.getPosition().getValueAsDouble(), Constants.Swerve.wheelCircumference),
-            getAngle()
-        );
+                Conversions.rotationsToMeters(mDriveMotor.getPosition().getValueAsDouble(),
+                        Constants.Swerve.wheelCircumference),
+                getAngle());
     }
 
     // -----------------------------------------------------

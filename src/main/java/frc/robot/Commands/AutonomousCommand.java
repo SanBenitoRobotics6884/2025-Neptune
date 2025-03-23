@@ -41,21 +41,22 @@ SparkMax m_pivotMotor = new SparkMax(PIVOTion_MOTOR_ID, MotorType.kBrushless);
 
 public class AutonomousCommand  extends Command {
     private final Swerve m_swerve;
-    double autoTimer = System.currentTimeMillis()/1000;
+    Timer timer = new Timer();
+    double autoTimer = timer.get();
 
     public AutonomousCommand(Swerve s_Swerve){
         addRequirements(s_Swerve);
         m_swerve = s_Swerve;
     }
     public void init (){
-        autoTimer = System.currentTimeMillis()/1000;
+        autoTimer = timer.get();
     }
     public void execute(){
         m_swerve.driveForward(0.5);
     }
 
     public boolean isFinished(){
-        return (System.currentTimeMillis()/1000 - autoTimer) > 3;
+        return (timer.get() - autoTimer) > 3;
     }
 
     public void end(boolean interrupted){

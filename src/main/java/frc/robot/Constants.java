@@ -122,7 +122,7 @@ public final class Constants {
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
-        public static final class Mod3 { //TODO: This must be tuned to specific robot
+        public static final class Mod0 { //TODO: This must be tuned to specific robot
             public static final int canCoderID = 1;
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 3;
@@ -145,8 +145,8 @@ public final class Constants {
         /* Front Right Module - Module 1 */
         public static final class Mod1 { //TODO: This must be tuned to specific robot
             public static final int canCoderID = 9;
-            public static final int driveMotorID = 11;
-            public static final int angleMotorID = 10;
+            public static final int driveMotorID = 10;
+            public static final int angleMotorID = 11;
             public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.052);
             public static final boolean driveInvert = true;
             public static final boolean angleInvert = false;
@@ -186,7 +186,7 @@ public final class Constants {
         }
 
         /* Back Right Module - Module 3 */
-        public static final class Mod0 { //TODO: This must be tuned to specific robot
+        public static final class Mod3 { //TODO: This must be tuned to specific robot
             public static final int canCoderID = 25;
             public static final int driveMotorID = 26;
             public static final int angleMotorID = 27;
@@ -245,8 +245,8 @@ public final class Constants {
     public static final class CoralOutIntake{
         public static final int JOYSTICK_PORT_ID = 0;
 
-        public static final int TOP_MOTOR_ID = 5;
-        public static final int BOTTOM_MOTOR_ID = 6;
+        public static final int TOP_MOTOR_ID = 61;
+        public static final int BOTTOM_MOTOR_ID = 62;
 
 
         //The following lines of code are needed to be tested to determine the setponts {//
@@ -264,7 +264,7 @@ public final class Constants {
 
     public class Elevator {
         public static final int LEFT_MOTOR_ID = 9;
-        public static final int RIGHT_MOTOR_ID = 10;
+        public static final int RIGHT_MOTOR_ID = 60;
         public static final double ERROR_TOLERANCE = 0.1;
         public static final double MAX = 197.0; 
         public static final double MIN = 7;
