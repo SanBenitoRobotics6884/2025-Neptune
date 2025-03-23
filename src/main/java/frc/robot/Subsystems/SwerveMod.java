@@ -142,15 +142,10 @@ public class SwerveMod {
         // }
 
         // We want to steer the module to the desired angle in degrees
-        double targetAngleDeg = desiredState.angle.getRotations() * 20;
-        PositionVoltage positionVoltage = new PositionVoltage(targetAngleDeg);
-        PositionDutyCycle pos = new PositionDutyCycle(targetAngleDeg);
-        // mAngleMotor.setPosition(targetAngleDeg);
-        mAngleMotor.setControl(pos.withSlot(0));
-        SmartDashboard.putNumber("S Ang" + moduleNumber, pos.Velocity);
-        driveDutyCycle.Output = targetAngleDeg / Constants.Swerve.maxSpeed;
-        // mAngleMotor.setControl(driveDutyCycle);
-
+        double targetAngleDeg = desiredState.angle.getDegrees();
+        PositionDutyCycle position = new PositionDutyCycle(targetAngleDeg);
+        mAngleMotor.setControl(position.withSlot(0));
+        SmartDashboard.putNumber("S Ang" + moduleNumber, targetAngleDeg);
     }
 
     // -----------------------------------------------------
@@ -178,8 +173,8 @@ public class SwerveMod {
      * This is typically called once at robot init.
      */
     public void resetToAbsolute() {
-        double absAngleDeg = getCANcoder().getDegrees();
-        double adjustedAngle = absAngleDeg - angleOffset.getDegrees();
+        double absAngle = getCANcoder().getRotations();
+        double adjustedAngle = absAngle - angleOffset.getRotations();
         mAngleMotor.setPosition(adjustedAngle);
     }
 
