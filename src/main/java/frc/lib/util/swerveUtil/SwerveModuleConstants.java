@@ -72,7 +72,6 @@ public class SwerveModuleConstants {
         swerveSteerTalonConfig.Slot0.kP = Constants.Swerve.angleKP;
         swerveSteerTalonConfig.Slot0.kI = Constants.Swerve.angleKI;
         swerveSteerTalonConfig.Slot0.kD = Constants.Swerve.angleKD;
-        swerveSteerTalonConfig.Slot0.kV = Constants.Swerve.angleKV;
         swerveSteerTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.angleGearRatio;
 
         swerveSteerTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.angleEnableCurrentLimit;
@@ -84,6 +83,7 @@ public class SwerveModuleConstants {
         swerveSteerTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
         return swerveSteerTalonConfig;
     }
+
     public TalonFXConfiguration asTalonConfig() {
         TalonFXConfiguration swerveDriveTalonConfig = new TalonFXConfiguration();
         /** Swerve Drive Motor Configuration */
