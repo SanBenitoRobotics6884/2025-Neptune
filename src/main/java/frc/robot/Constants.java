@@ -22,6 +22,7 @@ import frc.lib.util.swerveUtil.COTSTalonFXSwerveConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
 import frc.lib.util.swerveUtil.COTSNeoSwerveConstants.driveGearRatios;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import static edu.wpi.first.units.Units.Meters;
 
@@ -117,6 +118,7 @@ public final class Constants {
         public static final double maxAngularVelocity = 5.0; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
+        public static final NeutralModeValue talonAngleNeutralMode = NeutralModeValue.Coast;
         public static final  IdleMode angleNuetralMode = IdleMode.kCoast;
         public static final  IdleMode driveNuetralMode = IdleMode.kBrake;
 
