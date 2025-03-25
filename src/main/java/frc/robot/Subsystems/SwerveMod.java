@@ -160,9 +160,14 @@ public class SwerveMod {
      * rotations → degrees.
      */
     public Rotation2d getCANcoder() {
-        double absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
-        double absPositionDeg = absPositionRot * 360.0;
-        return Rotation2d.fromDegrees(absPositionDeg);
+        double absPositionRot = 0;
+        for(int i = 0; i < 5; i++){
+            absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
+            if(Math.abs(absPositionRot) > 0.01){
+                break;
+            }
+        }
+        return Rotation2d.fromRotations(absPositionRot);
     }
 
     /**
@@ -173,13 +178,7 @@ public class SwerveMod {
     public void resetToAbsolute() {
         // This is where you can find the real absolute angles for the CanCoder.
         // During Swerve tuning, you can use this to find the offset.
-        double absAngle = 0;
-        for(int i = 0; i < 5; i++){
-            absAngle = getCANcoder().getRotations();
-            if(Math.abs(absAngle) > 0.01){
-                break;
-            }
-        }
+        double absAngle = getCANcoder().getRotations();
         double adjustedAngle = absAngle - angleOffset.getRotations();
         mAngleMotor.setPosition(adjustedAngle);
     }
