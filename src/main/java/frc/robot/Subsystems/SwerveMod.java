@@ -168,7 +168,13 @@ public class SwerveMod {
     public void resetToAbsolute() {
         // This is where you can find the real absolute angles for the CanCoder.
         // During Swerve tuning, you can use this to find the offset.
-        double absAngle = getCANcoder().getRotations();
+        double absAngle = 0;
+        for(int i = 0; i < 5; i++){
+            absAngle = getCANcoder().getRotations();
+            if(Math.abs(absAngle) > 0.01){
+                break;
+            }
+        }
         double adjustedAngle = absAngle - angleOffset.getRotations();
         mAngleMotor.setPosition(adjustedAngle);
     }
