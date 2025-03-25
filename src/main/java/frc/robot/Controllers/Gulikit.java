@@ -11,10 +11,10 @@ public class Gulikit implements ControllerInterface {
     public static final int BUTTON_Y = 4;
     public static final int BUTTON_LEFT_BUMPER = 5;
     public static final int BUTTON_RIGHT_BUMPER = 6;
-    public static final int BUTTON_BACK = 10;
-    public static final int BUTTON_START = 9;
-    public static final int BUTTON_LEFT_STICK = 7;
-    public static final int BUTTON_RIGHT_STICK = 8;
+    public static final int BUTTON_BACK = 7;
+    public static final int BUTTON_START = 8;
+    public static final int BUTTON_LEFT_STICK = 9;
+    public static final int BUTTON_RIGHT_STICK = 10;
     public static final int BUTTON_DPAD_UP = 12;
     public static final int BUTTON_DPAD_DOWN = 13;
     public static final int BUTTON_DPAD_LEFT = 14;
