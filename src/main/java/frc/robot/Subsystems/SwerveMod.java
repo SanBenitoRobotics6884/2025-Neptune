@@ -135,7 +135,8 @@ public class SwerveMod {
 
         // We want to steer the module to the desired angle in degrees
         //double targetAngle = desiredState.angle.getDegrees();
-        double targetAngle = desiredState.angle.getRotations()*150.0/7;
+        double gearRatio = 150.0 / 7;
+        double targetAngle = desiredState.angle.getRotations() * gearRatio;
         PositionDutyCycle position = new PositionDutyCycle(targetAngle);
         mAngleMotor.setControl(position.withSlot(0));
         SmartDashboard.putNumber("S Ang" + moduleNumber, targetAngle);
