@@ -34,10 +34,10 @@ public class SwerveMod {
     private Rotation2d angleOffset;
 
     /** TalonFXS Motor Controller for the steering (angle) NEO */
-    private TalonFXS mAngleMotor;
+    public TalonFXS mAngleMotor;
 
     /** TalonFX for the drive */
-    private TalonFX mDriveMotor;
+    public TalonFX mDriveMotor;
 
     /** CTRE CANcoder for absolute angle measurement */
     private CANcoder angleEncoder;

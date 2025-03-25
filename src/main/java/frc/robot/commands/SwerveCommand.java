@@ -2,6 +2,7 @@ package frc.robot.Commands;
 
 import frc.robot.Constants;
 import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.SwerveMod;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -14,6 +15,25 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
+import frc.lib.math.Conversions;
+import frc.lib.util.swerveUtil.SwerveModuleConstants;
+import com.ctre.phoenix6.controls.PositionVoltage;
+
+
 public class SwerveCommand extends Command {    
     private Swerve s_Swerve;    
     private DoubleSupplier translationSup;
@@ -21,12 +41,14 @@ public class SwerveCommand extends Command {
     private DoubleSupplier rotationSup;
     private DoubleSupplier dynamicHeadingSup;
     private BooleanSupplier robotCentricSup;
+    private BooleanSupplier debugDirectSup;
+    private BooleanSupplier debugSup;
     private BooleanSupplier dampenSup;
     private BooleanSupplier zeroGyro;
     private PIDController rotationController;
     
 
-    public SwerveCommand(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier dampen, DoubleSupplier dynamicHeadingSup, BooleanSupplier zeroGyro) {
+    public SwerveCommand(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier dampen, DoubleSupplier dynamicHeadingSup, BooleanSupplier zeroGyro, BooleanSupplier debugSup, BooleanSupplier debugDirectSup) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
@@ -42,10 +64,29 @@ public class SwerveCommand extends Command {
         this.dampenSup = dampen;
         this.dynamicHeadingSup = dynamicHeadingSup;
         this.zeroGyro = zeroGyro;
+        this.debugSup = debugSup;
+        this.debugDirectSup = debugDirectSup;
     }
 
     @Override
     public void execute() {
+        if(zeroGyro.getAsBoolean()){
+            s_Swerve.zeroHeading();
+        }
+        /* Drive */
+        if (!DriverStation.isAutonomous()){
+            if (debugSup.getAsBoolean()){
+                debugModules();
+            }
+            else if(debugDirectSup.getAsBoolean()){
+                debugModulesDirect();
+            } else {
+                drive();
+            }
+        }
+    }
+
+    public void drive() {
         double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         double strafeVal = -MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
@@ -55,18 +96,45 @@ public class SwerveCommand extends Command {
         SmartDashboard.putNumber("S rotation", rotationVal);
         SmartDashboard.putBoolean("S dampenSup", dampenSup.getAsBoolean());
         rotationVal = rotationVal * Constants.Swerve.maxAngularVelocity;
+        s_Swerve.drive(
+            new Translation2d(translationVal, strafeVal).times(Constants.Swerve./**Swerve*/maxSpeed),
+            rotationVal,
+            !robotCentricSup.getAsBoolean(), 
+            true
+        );    
+    }
 
-        if(zeroGyro.getAsBoolean()){
-            s_Swerve.zeroHeading();
+    public void debugModules() {
+        double speedMps = (System.currentTimeMillis() / 1000 ) % 5;
+        double angle = ((System.currentTimeMillis() / 2000 ) % 8)*45;
+
+        for (int i=0; i <= 3; i++){
+            SwerveMod mod = s_Swerve.mSwerveMods[i];
+            SwerveModuleState state = new SwerveModuleState(speedMps, Rotation2d.fromDegrees(angle));
+            mod.setDesiredState(state, true);
+            System.out.println("debugSwerveDirect (" + i + ") - " + speedMps + " - " + angle);
         }
-        /* Drive */
-        if (!DriverStation.isAutonomous()){
-            s_Swerve.drive(
-                new Translation2d(translationVal, strafeVal).times(Constants.Swerve./**Swerve*/maxSpeed),
-                rotationVal,
-                !robotCentricSup.getAsBoolean(), 
-                true
-            );    
+    }
+
+    public void debugModulesDirect() {
+        for (int i=0; i <= 3; i++){
+            SwerveMod mod = s_Swerve.mSwerveMods[i];
+
+            double speedMps = (System.currentTimeMillis() / 1000 ) % 5;
+            DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
+            driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
+            mod.mDriveMotor.setControl(driveDutyCycle);
+
+
+            double angle = (System.currentTimeMillis() / 2000 ) % 4;
+            angle *= 90;
+
+            double gearRatio = 150.0 / 7;
+            double targetAngle = Rotation2d.fromDegrees(angle).getRotations() * gearRatio;
+            PositionDutyCycle position = new PositionDutyCycle(targetAngle);
+            mod.mAngleMotor.setControl(position.withSlot(0));
+
+            System.out.println("debugSwerveDirect (" + i + ") - " + speedMps + " - " + angle);
         }
     }
 }
