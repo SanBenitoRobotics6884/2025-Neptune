@@ -71,11 +71,11 @@ public class Xbox implements ControllerInterface {
         return getButton(BUTTON_RIGHT_BUMPER);
     }
 
-    public boolean getBackButton() {
+    public boolean getButtonBack() {
         return getButton(BUTTON_BACK);
     }
 
-    public boolean getStartButton() {
+    public boolean getButtonStart() {
         return getButton(BUTTON_START);
     }
 
