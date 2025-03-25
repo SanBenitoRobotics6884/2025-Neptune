@@ -266,7 +266,7 @@ public final class Constants {
 
     public class Elevator {
         public static final int LEFT_MOTOR_ID = 9;
-        public static final int RIGHT_MOTOR_ID = 60;
+        public static final int RIGHT_MOTOR_ID = 59;
         public static final double ERROR_TOLERANCE = 0.1;
         public static final double MAX = 197.0; 
         public static final double MIN = 7;
