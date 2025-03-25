@@ -59,7 +59,7 @@ public class SwerveModuleConstants {
 
     public MagnetSensorConfigs asMagnetSensorConfig() {
         MagnetSensorConfigs config = new MagnetSensorConfigs();
-        config.MagnetOffset = this.magnetOffset;
+        // config.MagnetOffset = this.magnetOffset;
         config.SensorDirection = this.steerInvert ?
             SensorDirectionValue.CounterClockwise_Positive : SensorDirectionValue.Clockwise_Positive;
         return config;

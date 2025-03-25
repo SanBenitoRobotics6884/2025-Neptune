@@ -65,7 +65,7 @@ public class SwerveMod {
         // -----------------------------------------------------
         mAngleMotor = new TalonFXS(moduleConstants.angleMotorID, CANIVOR_BUS);
         mAngleMotor.getConfigurator().apply(moduleConstants.asTalonSteerConfig());
-        mAngleMotor.getConfigurator().setPosition(0.0);
+        // mAngleMotor.getConfigurator().setPosition(0.0);
 
         // -----------------------------------------------------
         // Drive Motor – TalonFX
