@@ -84,6 +84,7 @@ public class SwerveModuleConstants {
         swerveSteerTalonConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
         swerveSteerTalonConfig.MotorOutput.NeutralMode = Constants.Swerve.talonAngleNeutralMode;
 
+        swerveSteerTalonConfig.ClosedLoopGeneral.ContinuousWrap = true;
         return swerveSteerTalonConfig;
     }
 
