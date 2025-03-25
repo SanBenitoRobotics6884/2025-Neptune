@@ -106,7 +106,8 @@ public class SwerveCommand extends Command {
 
     public void debugModules() {
         double speedMps = (System.currentTimeMillis() / 1000 ) % 5;
-        double angle = ((System.currentTimeMillis() / 2000 ) % 8)*45;
+        double angle = ((System.currentTimeMillis() / 1000 ) % 8);
+        angle *= 45;
 
         for (int i=0; i <= 3; i++){
             SwerveMod mod = s_Swerve.mSwerveMods[i];
@@ -126,8 +127,8 @@ public class SwerveCommand extends Command {
             mod.mDriveMotor.setControl(driveDutyCycle);
 
 
-            double angle = (System.currentTimeMillis() / 2000 ) % 4;
-            angle *= 90;
+            double angle = (System.currentTimeMillis() / 1000 ) % 8;
+            angle *= 45;
 
             double gearRatio = 150.0 / 7;
             double targetAngle = Rotation2d.fromDegrees(angle).getRotations() * gearRatio;
