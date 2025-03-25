@@ -86,6 +86,10 @@ public class SwerveMod {
         // For angle motor (TalonFXS Motor Controller), we will zero to the absolute
         // CANcoder reading
         resetToAbsolute();
+
+        // On startup. rotate the module to the zero position.
+        SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(0));
+        setDesiredState(idleState, true);
     }
 
     /**
