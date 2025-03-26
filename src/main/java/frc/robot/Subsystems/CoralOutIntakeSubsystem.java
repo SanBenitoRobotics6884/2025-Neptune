@@ -9,47 +9,79 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
+import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import static frc.robot.Constants.CoralOutIntake.*;
 
 public class CoralOutIntakeSubsystem extends SubsystemBase {
-  SparkMax m_topMotor = new SparkMax(TOP_MOTOR_ID, MotorType.kBrushless);
-  SparkMax m_bottomMotor = new SparkMax(BOTTOM_MOTOR_ID, MotorType.kBrushless);
-  SparkMaxConfig config = new SparkMaxConfig();
-  SparkMaxConfig config1 = new SparkMaxConfig();
+  public TalonFXS m_topMotor = new TalonFXS(TOP_MOTOR_ID);
+  public TalonFXS m_bottomMotor = new TalonFXS(BOTTOM_MOTOR_ID);
+  String CANIVOR_BUS = "Galigma";
+
   // UNUSED FOR NOW 3/17
   // ColorSensorV3 m_colorSensor = new ColorSensorV3(null);
+  boolean topMotorInvert = false;
+  boolean bottomMotorInvert = false;
   double MOTOR_SPEED = 0.5 * (1.0/3);
   int STALL_CURRENT_THRESHOLD = 15; // amps
 
   /** Creates a new CoralIntakeOuttake. */
   public CoralOutIntakeSubsystem() {
-    config.inverted(true);
-    config1.inverted(false);
-    // m_pivotMotor.configure(config, null, null);
-    m_topMotor.configure(config, null, null);
-    m_bottomMotor.configure(config1, null, null);
+    m_topMotor = new TalonFXS(TOP_MOTOR_ID, CANIVOR_BUS);
+    m_topMotor.getConfigurator().apply(getTalonFXSConfiguration(topMotorInvert));
+
+    m_bottomMotor = new TalonFXS(BOTTOM_MOTOR_ID, CANIVOR_BUS);
+    m_bottomMotor.getConfigurator().apply(getTalonFXSConfiguration(bottomMotorInvert));
+  }
+
+  public TalonFXSConfiguration getTalonFXSConfiguration(boolean invertMotor) {
+        TalonFXSConfiguration talonFXSConfig = new TalonFXSConfiguration();
+        talonFXSConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO550_JST;
+        talonFXSConfig.MotorOutput.Inverted = invertMotor ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        // toConfigure.primaryPID.kp = 0.1;
+        talonFXSConfig.Slot0.kP = Constants.Swerve.angleKP;
+        talonFXSConfig.Slot0.kI = Constants.Swerve.angleKI;
+        talonFXSConfig.Slot0.kD = Constants.Swerve.angleKD;
+        // talonFXSConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.angleGearRatio;
+
+        talonFXSConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.angleEnableCurrentLimit;
+        talonFXSConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.angleCurrentLimit;
+
+        talonFXSConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
+        talonFXSConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = Constants.Swerve.openLoopRamp;
+        talonFXSConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
+        talonFXSConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
+        talonFXSConfig.MotorOutput.NeutralMode = Constants.Swerve.talonAngleNeutralMode;
+
+        // When we try to do continuousWrap, the motors are unresponsive.
+        talonFXSConfig.ClosedLoopGeneral.ContinuousWrap = false;
+        return talonFXSConfig;
 
   }
 
   public boolean pieceIsIn() {
     // Update function to return results of Rev Color Sensor v3
-    return m_topMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD || m_bottomMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD;
+    return false; // m_topMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD || m_bottomMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD;
   }
 
   public void intakeOuttake(Boolean intakePressed, Boolean outtakePressed) {
     if (intakePressed) {
-      m_topMotor.set(MOTOR_SPEED);
-      m_bottomMotor.set(MOTOR_SPEED);
+      m_topMotor.setVoltage(MOTOR_SPEED);
+      m_bottomMotor.setVoltage(MOTOR_SPEED);
     } else if (outtakePressed) {
-      m_topMotor.set(-MOTOR_SPEED);
-      m_bottomMotor.set(-MOTOR_SPEED);
+      m_topMotor.setVoltage(-MOTOR_SPEED);
+      m_bottomMotor.setVoltage(-MOTOR_SPEED);
     } else {
-      m_topMotor.stopMotor();
-      m_bottomMotor.stopMotor();
+      m_topMotor.setVoltage(0);
+      m_bottomMotor.setVoltage(0);
     }
   }
 
