@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
@@ -32,6 +33,8 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   boolean bottomMotorInvert = false;
   double MOTOR_SPEED = 0.5 * (1.0/3);
   int STALL_CURRENT_THRESHOLD = 15; // amps
+  private final DutyCycleOut dutyCycle = new DutyCycleOut(0);
+
 
   /** Creates a new CoralIntakeOuttake. */
   public CoralOutIntakeSubsystem() {
@@ -72,17 +75,23 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
     return false; // m_topMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD || m_bottomMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD;
   }
 
+  public void setSpeed(TalonFXS motor, double speed){
+    motor.setControl(dutyCycle.withOutput(speed));      
+  }
+
+
   public void intakeOuttake(Boolean intakePressed, Boolean outtakePressed) {
+    double speed = 0;
     if (intakePressed) {
-      m_topMotor.setVoltage(MOTOR_SPEED);
-      m_bottomMotor.setVoltage(MOTOR_SPEED);
+      speed = MOTOR_SPEED;
     } else if (outtakePressed) {
-      m_topMotor.setVoltage(-MOTOR_SPEED);
-      m_bottomMotor.setVoltage(-MOTOR_SPEED);
+      speed = -MOTOR_SPEED;
     } else {
-      m_topMotor.setVoltage(0);
-      m_bottomMotor.setVoltage(0);
+      speed = 0;
     }
+    setSpeed(m_topMotor, speed);
+    setSpeed(m_bottomMotor, speed);
+
   }
 
   // Needs an outtake function using x button
