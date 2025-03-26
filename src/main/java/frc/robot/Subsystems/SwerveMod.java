@@ -35,6 +35,8 @@ public class SwerveMod {
 
     /** TalonFXS Motor Controller for the steering (angle) NEO */
     public TalonFXS mAngleMotor;
+    private double gearRatio;
+    private double motorOffset = 0;
 
     /** TalonFX for the drive */
     public TalonFX mDriveMotor;
@@ -59,6 +61,7 @@ public class SwerveMod {
         angleEncoder.getAbsolutePosition().setUpdateFrequency(10);
         angleEncoder.optimizeBusUtilization();
         angleEncoder.getConfigurator().apply(moduleConstants.asMagnetSensorConfig());
+        gearRatio = 150.0 / 7;
 
         // -----------------------------------------------------
         // Angle (steering) Motor – NEO w/ TalonFXS
@@ -85,11 +88,21 @@ public class SwerveMod {
 
         // For angle motor (TalonFXS Motor Controller), we will zero to the absolute
         // CANcoder reading
-        resetToAbsolute();
-
-        // On startup. rotate the module to the zero position.
-        SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(0));
+        new Thread(()->{
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            resetToAbsolute();
+                    // On startup. rotate the module to the zero position.
+        SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(180));
         setDesiredState(idleState, true);
+
+        }).start();
+        //resetToAbsolute();
+
     }
 
     /**
@@ -139,11 +152,11 @@ public class SwerveMod {
 
         // We want to steer the module to the desired angle in degrees
         //double targetAngle = desiredState.angle.getDegrees();
-        double gearRatio = 150.0 / 7;
-        double targetAngle = desiredState.angle.getRotations() * gearRatio;
-        PositionDutyCycle position = new PositionDutyCycle(targetAngle);
+        double rots = desiredState.angle.getRotations();
+        double targetAngle = rots * gearRatio;
+        PositionDutyCycle position = new PositionDutyCycle(targetAngle + motorOffset);
         mAngleMotor.setControl(position.withSlot(0));
-        SmartDashboard.putNumber("S Ang" + moduleNumber, targetAngle);
+        SmartDashboard.putNumber("S Ang" + moduleNumber, rots);
     }
 
     // -----------------------------------------------------
@@ -163,7 +176,7 @@ public class SwerveMod {
         double absPositionRot = 0;
         for(int i = 0; i < 5; i++){
             absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
-            if(Math.abs(absPositionRot) > 0.01){
+            if(Math.abs(absPositionRot) > 0.001){
                 break;
             }
         }
@@ -180,7 +193,19 @@ public class SwerveMod {
         // During Swerve tuning, you can use this to find the offset.
         double absAngle = getCANcoder().getRotations();
         double adjustedAngle = absAngle - angleOffset.getRotations();
-        mAngleMotor.setPosition(adjustedAngle);
+        motorOffset = (adjustedAngle * gearRatio) - mAngleMotor.getPosition().getValueAsDouble();
+        if(moduleNumber == 0){
+            SmartDashboard.putNumber("abs " + moduleNumber, absAngle);
+            SmartDashboard.putNumber("offset " + moduleNumber, angleOffset.getRotations());
+            SmartDashboard.putNumber("adj " + moduleNumber, adjustedAngle);
+            SmartDashboard.putNumber("cur " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());    
+        }
+        double newPosition = adjustedAngle * gearRatio;
+        //mAngleMotor.setPosition(newPosition, 10);
+        if(moduleNumber == 0){
+            SmartDashboard.putNumber("new " + moduleNumber, newPosition);
+            SmartDashboard.putNumber("aft " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());
+        }
     }
 
     /**

@@ -6,6 +6,8 @@ import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.ctre.phoenix6.hardware.CANcoder;
+
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import frc.robot.Constants;
@@ -17,6 +19,7 @@ public class SwerveModuleConstants {
     public final Rotation2d angleOffset;
     public final boolean driveInvert;
     public final boolean steerInvert;
+    public final boolean angleMotorInvert;
     public final double magnetOffset;
 
 
@@ -28,11 +31,12 @@ public class SwerveModuleConstants {
      * @param angleOffset
      * @param canBus
      */
-    public SwerveModuleConstants(int driveMotorID, int angleMotorID, int canCoderID, Rotation2d angleOffset, boolean driveInvert, boolean steerInvert, double magnetOffset) {
+    public SwerveModuleConstants(int driveMotorID, int angleMotorID, int canCoderID, Rotation2d angleOffset, boolean driveInvert, boolean steerInvert, boolean angleMotorInvert, double magnetOffset) {
         this.driveMotorID = driveMotorID;
         this.angleMotorID = angleMotorID;
         this.cancoderID = canCoderID;
         this.angleOffset = angleOffset;
+        this.angleMotorInvert = angleMotorInvert;
         this.driveInvert = driveInvert;
         this.steerInvert = steerInvert;
         this.magnetOffset = magnetOffset;
@@ -60,15 +64,15 @@ public class SwerveModuleConstants {
     public MagnetSensorConfigs asMagnetSensorConfig() {
         MagnetSensorConfigs config = new MagnetSensorConfigs();
         // config.MagnetOffset = this.magnetOffset;
-        config.SensorDirection = this.steerInvert ?
-            SensorDirectionValue.CounterClockwise_Positive : SensorDirectionValue.Clockwise_Positive;
+        //config.SensorDirection = this.steerInvert ?
+        //    SensorDirectionValue.CounterClockwise_Positive : SensorDirectionValue.Clockwise_Positive;
         return config;
     }
 
     public TalonFXSConfiguration asTalonSteerConfig() {
         TalonFXSConfiguration swerveSteerTalonConfig = new TalonFXSConfiguration();
         swerveSteerTalonConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
-        swerveSteerTalonConfig.MotorOutput.Inverted = Constants.Swerve.angleMotorInvert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        swerveSteerTalonConfig.MotorOutput.Inverted = angleMotorInvert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         // toConfigure.primaryPID.kp = 0.1;
         swerveSteerTalonConfig.Slot0.kP = Constants.Swerve.angleKP;
         swerveSteerTalonConfig.Slot0.kI = Constants.Swerve.angleKI;

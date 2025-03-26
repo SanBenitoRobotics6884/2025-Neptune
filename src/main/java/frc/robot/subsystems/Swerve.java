@@ -50,10 +50,10 @@ public class Swerve extends SubsystemBase {
         gyro.setYaw(0);
 
         mSwerveMods = new SwerveMod[] {
-            new SwerveMod(0, Constants.Swerve.Mod0.constants),
+            new SwerveMod(0, Constants.Swerve.Mod3.constants),
             new SwerveMod(1, Constants.Swerve.Mod1.constants),
             new SwerveMod(2, Constants.Swerve.Mod2.constants),
-            new SwerveMod(3, Constants.Swerve.Mod3.constants)
+            new SwerveMod(3, Constants.Swerve.Mod0.constants)
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
@@ -189,8 +189,8 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Get Gyro", getGyroYaw().getDegrees());
         SmartDashboard.putNumber("Get Heading", getHeading().getDegrees());
         for(SwerveMod mod : mSwerveMods){
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCANcoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getDegrees());
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCANcoder().getRotations());
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getPosition().angle.getRotations());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond); 
         }
     }

@@ -111,7 +111,7 @@ public class SwerveCommand extends Command {
 
         for (int i=0; i <= 3; i++){
             SwerveMod mod = s_Swerve.mSwerveMods[i];
-            SwerveModuleState state = new SwerveModuleState(speedMps, Rotation2d.fromDegrees(angle));
+            SwerveModuleState state = new SwerveModuleState(0.5, Rotation2d.fromDegrees(180));
             mod.setDesiredState(state, true);
             System.out.println("debugSwerveDirect (" + i + ") - " + speedMps + " - " + angle);
         }
