@@ -85,17 +85,17 @@ public class SwerveMod {
     private void configEncoders() {
         // For drive motor (TalonFX), start integrated sensor at 0
         mDriveMotor.setPosition(0.0);
-
+        resetToAbsolute();
         // For angle motor (TalonFXS Motor Controller), we will zero to the absolute
         // CANcoder reading
         new Thread(()->{
             try {
-                Thread.sleep(5000);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            resetToAbsolute();
+            
                     // On startup. rotate the module to the zero position.
         SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(180));
         setDesiredState(idleState, true);
