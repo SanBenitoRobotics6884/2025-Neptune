@@ -129,7 +129,7 @@ public final class Constants {
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 3;
             public static final Rotation2d angleOffset = Rotation2d.fromRotations(0.1760);
-            public static final boolean driveInvert = false;
+            public static final boolean driveInvert = true;
             public static final boolean angleInvert = false;
             public static final boolean angleMotorInvert = false;
             public static final double magnetOffset = 0;
@@ -176,7 +176,7 @@ public final class Constants {
             public static final int driveMotorID = 18;
             public static final int angleMotorID = 19;
             public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.2649);
-            public static final boolean driveInvert = true;
+            public static final boolean driveInvert = false;
             public static final boolean angleInvert = false;
             public static final boolean angleMotorInvert = false;
             public static final double magnetOffset = 0;
