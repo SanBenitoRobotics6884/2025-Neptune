@@ -86,6 +86,7 @@ public class SwerveMod {
     private void configEncoders() {
         // For drive motor (TalonFX), start integrated sensor at 0
         mDriveMotor.setPosition(0.0);
+
         resetToAbsolute();
         // For angle motor (TalonFXS Motor Controller), we will zero to the absolute
         // CANcoder reading
@@ -96,11 +97,9 @@ public class SwerveMod {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            
                     // On startup. rotate the module to the zero position.
-        SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(180));
-        setDesiredState(idleState, true);
-
+            SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(180));
+            setDesiredState(idleState, true);
         }).start();
         //resetToAbsolute();
 
@@ -154,7 +153,18 @@ public class SwerveMod {
         // We want to steer the module to the desired angle in degrees
         //double targetAngle = desiredState.angle.getDegrees();
         double rots = desiredState.angle.getRotations();
-        double targetAngle = rots * gearRatio;
+        double curRots = mAngleMotor.getPosition().getValueAsDouble() / gearRatio;
+        double diff = rots - curRots;
+        if(Math.abs(diff) > 0.5){
+            if(diff > 0){
+                rots -= 1;
+            } else {
+                rots += 1;
+            }
+        }
+
+        double targetAngle = diff * gearRatio;
+
         PositionDutyCycle position = new PositionDutyCycle(targetAngle + motorOffset);
         mAngleMotor.setControl(position.withSlot(0));
         SmartDashboard.putNumber("S Ang" + moduleNumber, rots);
