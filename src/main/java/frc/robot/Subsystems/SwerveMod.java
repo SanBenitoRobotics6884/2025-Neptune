@@ -55,7 +55,7 @@ public class SwerveMod {
         // Apply your CANcoder config (sensorCoefficient, magnetOffset, etc.)
         angleEncoder = new CANcoder(moduleConstants.cancoderID, CANIVOR_BUS);
         // config.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        angleEncoder.getAbsolutePosition().setUpdateFrequency(10);
+        angleEncoder.getAbsolutePosition().setUpdateFrequency(100);
         angleEncoder.optimizeBusUtilization();
         angleEncoder.getConfigurator().apply(moduleConstants.asMagnetSensorConfig());
 
@@ -138,13 +138,13 @@ public class SwerveMod {
         double curRots = mAngleMotor.getPosition().getValueAsDouble();
 
         double diff = rots - curRots;
-        if(Math.abs(diff) > 0.5){
-            if(diff > 0){
-                rots -= 1;
-            } else {
-                rots += 1;
-            }
-        }
+        // if(Math.abs(diff) > 0.5){
+        //     if(diff > 0){
+        //         rots -= 1;
+        //     } else {
+        //         rots += 1;
+        //     }
+        // }
 
         double targetAngle = rots;
 
@@ -187,16 +187,17 @@ public class SwerveMod {
         // During Swerve tuning, you can use this to find the offset.
         double absAngle = getCANcoder().getRotations();
         double adjustedAngle = absAngle - angleOffset.getRotations();
-        if(moduleNumber == 0){
+        if(moduleNumber == 3){
             SmartDashboard.putNumber("abs " + moduleNumber, absAngle);
             SmartDashboard.putNumber("offset " + moduleNumber, angleOffset.getRotations());
             SmartDashboard.putNumber("adj " + moduleNumber, adjustedAngle);
             SmartDashboard.putNumber("cur " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());    
         }
-        double newPosition = adjustedAngle;
+        double newPosition = -adjustedAngle;
         StatusCode sc = mAngleMotor.setPosition(newPosition, 10);
+        mAngleMotor.getPosition().waitForUpdate(10.0);
 
-        if(moduleNumber == 0){
+        if(moduleNumber == 3){
             SmartDashboard.putString("statusCode " + moduleNumber, sc.getName());
             SmartDashboard.putString("statusCode2 " + moduleNumber, sc.getDescription());
             SmartDashboard.putNumber("new " + moduleNumber, newPosition);
