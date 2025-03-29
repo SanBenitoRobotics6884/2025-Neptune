@@ -60,14 +60,14 @@ public class SwerveMod {
         angleEncoder.getConfigurator().apply(moduleConstants.asMagnetSensorConfig());
 
         // -----------------------------------------------------
-        // Angle (steering) Motor – NEO w/ TalonFX
+        // Angle (steering) Motor – Kraken
         // -----------------------------------------------------
         mAngleMotor = new TalonFX(moduleConstants.angleMotorID, CANIVOR_BUS);
         mAngleMotor.getConfigurator().apply(moduleConstants.asTalonSteerConfig());
         // mAngleMotor.getConfigurator().setPosition(0.0);
 
         // -----------------------------------------------------
-        // Drive Motor – TalonFX
+        // Drive Motor – Kraken
         // -----------------------------------------------------
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID, CANIVOR_BUS);
         // Load your TalonFX drive config (PID, current limit, etc.)
@@ -83,21 +83,8 @@ public class SwerveMod {
         mDriveMotor.setPosition(0.0);
 
         resetToAbsolute();
-        // For angle motor (TalonFX Motor Controller), we will zero to the absolute
-        // CANcoder reading
-        new Thread(()->{
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-                    // On startup. rotate the module to the zero position.
-            SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(180));
-            setDesiredState(idleState, true);
-        }).start();
-        //resetToAbsolute();
-
+        SwerveModuleState idleState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(180));
+        setDesiredState(idleState, true);
     }
 
     /**
@@ -149,6 +136,7 @@ public class SwerveMod {
         //double targetAngle = desiredState.angle.getDegrees();
         double rots = desiredState.angle.getRotations();
         double curRots = mAngleMotor.getPosition().getValueAsDouble();
+
         double diff = rots - curRots;
         if(Math.abs(diff) > 0.5){
             if(diff > 0){
