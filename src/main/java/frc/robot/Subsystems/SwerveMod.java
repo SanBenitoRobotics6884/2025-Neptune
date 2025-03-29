@@ -146,7 +146,7 @@ public class SwerveMod {
             }
         }
 
-        double targetAngle = diff;
+        double targetAngle = rots;
 
         PositionDutyCycle position = new PositionDutyCycle(targetAngle);
         mAngleMotor.setControl(position.withSlot(0));
