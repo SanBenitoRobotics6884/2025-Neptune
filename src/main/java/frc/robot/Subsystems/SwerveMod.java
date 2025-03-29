@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
+import com.ctre.phoenix6.controls.StatusCode;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
@@ -23,8 +24,8 @@ import com.ctre.phoenix6.controls.PositionVoltage;
  * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder
  * absolute encoders.
  */
-public class SwerveMod {
 
+public class SwerveMod {
     private String CANIVOR_BUS = "Galigma";
 
     /** Which module # is this? (0,1,2,3...) */
@@ -201,8 +202,11 @@ public class SwerveMod {
             SmartDashboard.putNumber("cur " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());    
         }
         double newPosition = adjustedAngle * gearRatio;
-        //mAngleMotor.setPosition(newPosition, 10);
+        StatusCode sc = mAngleMotor.setPosition(newPosition, 10);
+
         if(moduleNumber == 0){
+            SmartDashboard.putString("statusCode " + moduleNumber, sc.getName());
+            SmartDashboard.putString("statusCode2 " + moduleNumber, sc.getDesription());
             SmartDashboard.putNumber("new " + moduleNumber, newPosition);
             SmartDashboard.putNumber("aft " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());
         }
