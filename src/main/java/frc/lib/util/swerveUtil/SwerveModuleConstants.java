@@ -2,7 +2,6 @@ package frc.lib.util.swerveUtil;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -69,9 +68,8 @@ public class SwerveModuleConstants {
         return config;
     }
 
-    public TalonFXSConfiguration asTalonSteerConfig() {
-        TalonFXSConfiguration swerveSteerTalonConfig = new TalonFXSConfiguration();
-        swerveSteerTalonConfig.Commutation.MotorArrangement = MotorArrangementValue.NEO_JST;
+    public TalonFXConfiguration asTalonSteerConfig() {
+        TalonFXConfiguration swerveSteerTalonConfig = new TalonFXConfiguration();
         swerveSteerTalonConfig.MotorOutput.Inverted = angleMotorInvert ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         // toConfigure.primaryPID.kp = 0.1;
         swerveSteerTalonConfig.Slot0.kP = Constants.Swerve.angleKP;

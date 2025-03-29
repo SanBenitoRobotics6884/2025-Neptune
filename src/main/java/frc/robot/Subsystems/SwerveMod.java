@@ -10,11 +10,9 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.hardware.TalonFXS;
 import com.ctre.phoenix6.signals.MotorArrangementValue;
 import frc.lib.math.Conversions;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
@@ -34,8 +32,8 @@ public class SwerveMod {
     /** Offset from your absolute encoder to "zero" the angle */
     private Rotation2d angleOffset;
 
-    /** TalonFXS Motor Controller for the steering (angle) NEO */
-    public TalonFXS mAngleMotor;
+    /** TalonFX Motor Controller for the steering (angle) NEO */
+    public TalonFX mAngleMotor;
     private double gearRatio;
     private double motorOffset = 0;
 
@@ -65,9 +63,9 @@ public class SwerveMod {
         gearRatio = 150.0 / 7;
 
         // -----------------------------------------------------
-        // Angle (steering) Motor – NEO w/ TalonFXS
+        // Angle (steering) Motor – NEO w/ TalonFX
         // -----------------------------------------------------
-        mAngleMotor = new TalonFXS(moduleConstants.angleMotorID, CANIVOR_BUS);
+        mAngleMotor = new TalonFX(moduleConstants.angleMotorID, CANIVOR_BUS);
         mAngleMotor.getConfigurator().apply(moduleConstants.asTalonSteerConfig());
         // mAngleMotor.getConfigurator().setPosition(0.0);
 
@@ -88,7 +86,7 @@ public class SwerveMod {
         mDriveMotor.setPosition(0.0);
 
         resetToAbsolute();
-        // For angle motor (TalonFXS Motor Controller), we will zero to the absolute
+        // For angle motor (TalonFX Motor Controller), we will zero to the absolute
         // CANcoder reading
         new Thread(()->{
             try {
@@ -118,7 +116,7 @@ public class SwerveMod {
         // desiredState = CTREModuleState.optimize(desiredState, getState().angle);
         // desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
 
-        // 2) Set the steering angle (TalonFXS Motor Controller)
+        // 2) Set the steering angle (TalonFX Motor Controller)
         setAngle(desiredState);
 
         // 3) Set the drive speed (TalonFX)
@@ -195,7 +193,7 @@ public class SwerveMod {
     }
 
     /**
-     * Resets the TalonFXS Motor Controller’s integrated steering encoder to the
+     * Resets the TalonFX Motor Controller’s integrated steering encoder to the
      * absolute angle, minus the known offset.
      * This is typically called once at robot init.
      */
@@ -225,7 +223,7 @@ public class SwerveMod {
     /**
      * Returns the module’s overall state:
      * - Speed (m/s) read from the TalonFX
-     * - Angle read from the TalonFXS Motor Controller
+     * - Angle read from the TalonFX Motor Controller
      */
     public SwerveModuleState getState() {
         return new SwerveModuleState(
@@ -236,7 +234,7 @@ public class SwerveMod {
     /**
      * Returns the module’s position:
      * - Drive distance (meters) from the TalonFX integrated sensor
-     * - Angle from TalonFXS Motor Controller
+     * - Angle from TalonFX Motor Controller
      */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
