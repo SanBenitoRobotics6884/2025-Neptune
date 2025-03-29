@@ -199,6 +199,9 @@ public class Swerve extends SubsystemBase {
 
     public void driveForward(double speedMps) {
         for (int i=0; i <= 3; i++){
+            SwerveModuleState state = new SwerveModuleState(speedMps, Rotation2d.fromDegrees(0));
+            mSwerveMods[i].setDesiredState(state, true);
+    
             //DutyCycleOut driveDutyCycle = new DutyCycleOut(0);
             //driveDutyCycle.Output = speedMps / Constants.Swerve.maxSpeed;
             //s_Swerve.mSwerveMods[i].mDriveMotor.setControl(driveDutyCycle);
