@@ -7,7 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
-import com.ctre.phoenix6.controls.StatusCode;
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.configs.TalonFXSConfiguration;
@@ -206,7 +206,7 @@ public class SwerveMod {
 
         if(moduleNumber == 0){
             SmartDashboard.putString("statusCode " + moduleNumber, sc.getName());
-            SmartDashboard.putString("statusCode2 " + moduleNumber, sc.getDesription());
+            SmartDashboard.putString("statusCode2 " + moduleNumber, sc.getDescription());
             SmartDashboard.putNumber("new " + moduleNumber, newPosition);
             SmartDashboard.putNumber("aft " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());
         }

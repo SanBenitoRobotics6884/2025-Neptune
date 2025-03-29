@@ -19,6 +19,26 @@ import frc.robot.Controllers.Logitech;
 import frc.robot.Controllers.Xbox;
 import frc.robot.Subsystems.*;
 
+import frc.robot.Constants;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFXS;
+import com.ctre.phoenix6.signals.MotorArrangementValue;
+import frc.lib.math.Conversions;
+import frc.lib.util.swerveUtil.SwerveModuleConstants;
+import com.ctre.phoenix6.controls.PositionVoltage;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -41,6 +61,7 @@ public class RobotContainer {
     //private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
     private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
+    private final DebugSubsystem s_DebugSubsystem = new DebugSubsystem(); // For testing/debugging purposes
     // private final Camera s_Camera = new Camera();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
@@ -49,20 +70,30 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-        s_Swerve.setDefaultCommand(
-            new SwerveCommand(
-                s_Swerve, 
-                () -> driver.getLeftYAxis(),
-                () -> driver.getLeftXAxis(),
-                () -> -driver.getRightXAxis(), 
-                () -> false,
-                () -> driver.getLeftBumper(),
-                () -> 0.0, // Dynamic heading placeholder,
-                () -> driver.getButtonY(),
-                () -> driver.getButtonBack(),
-                () -> driver.getButtonStart()
-            )
-        );
+
+      s_DebugSubsystem.setDefaultCommand(
+          new DebugCommand(
+              s_DebugSubsystem,
+              () -> driver.getButtonY(), // Reset button
+              () -> driver.getButtonA(), // Set angle to 2 rotations
+              () -> driver.getButtonB() // Set angle to -2 rotations
+          )
+      );
+
+        // s_Swerve.setDefaultCommand(
+        //     new SwerveCommand(
+        //         s_Swerve,
+        //         () -> driver.getLeftYAxis(),
+        //         () -> driver.getLeftXAxis(),
+        //         () -> -driver.getRightXAxis(),
+        //         () -> false,
+        //         () -> driver.getLeftBumper(),
+        //         () -> 0.0, // Dynamic heading placeholder,
+        //         () -> driver.getButtonY(),
+        //         () -> driver.getButtonBack(),
+        //         () -> driver.getButtonStart()
+        //     )
+        // );
 /*
         s_ClimbSubsystem.setDefaultCommand(
             new ClimbCommand(
@@ -72,30 +103,30 @@ public class RobotContainer {
             )
         );
 */
-         s_CoralOutIntakeSubsystem.setDefaultCommand(
-             new CoralOutIntakeCommand(
-               s_CoralOutIntakeSubsystem,
-               () -> driver.getButtonX(),
-               () -> driver.getButtonB()
-               //() -> operator.getButtonA(),
-               //() -> operator.getButtonB()
-             )
-         );
+        //  s_CoralOutIntakeSubsystem.setDefaultCommand(
+        //      new CoralOutIntakeCommand(
+        //        s_CoralOutIntakeSubsystem,
+        //        () -> driver.getButtonX(),
+        //        () -> driver.getButtonB()
+        //        //() -> operator.getButtonA(),
+        //        //() -> operator.getButtonB()
+        //      )
+        //  );
 
-        s_ElevatorSubsystem.setDefaultCommand(
-             new ElevatorCommand(
-                 s_ElevatorSubsystem,
-                () -> driver.getLeftTrigger(),
-                () -> driver.getRightTrigger(),
-                () -> driver.getLeftBumper(),
-                () -> operator.getButtonA(),
-                () -> operator.getButtonDPadDown(),
-                () -> operator.getButtonDPadLeft(),
-                () -> operator.getButtonDPadUp(),
-                () -> operator.getButtonDPadRight()
+        // s_ElevatorSubsystem.setDefaultCommand(
+        //      new ElevatorCommand(
+        //          s_ElevatorSubsystem,
+        //         () -> driver.getLeftTrigger(),
+        //         () -> driver.getRightTrigger(),
+        //         () -> driver.getLeftBumper(),
+        //         () -> operator.getButtonA(),
+        //         () -> operator.getButtonDPadDown(),
+        //         () -> operator.getButtonDPadLeft(),
+        //         () -> operator.getButtonDPadUp(),
+        //         () -> operator.getButtonDPadRight()
 
-           )
-        );
+        //    )
+        // );
 
         // Configure the button bindings
         configureButtonBindings();
