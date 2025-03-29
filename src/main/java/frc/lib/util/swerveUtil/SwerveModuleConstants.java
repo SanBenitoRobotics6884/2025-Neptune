@@ -87,7 +87,7 @@ public class SwerveModuleConstants {
         swerveSteerTalonConfig.MotorOutput.NeutralMode = Constants.Swerve.talonAngleNeutralMode;
 
         // When we try to do continuousWrap, the motors are unresponsive.
-        swerveSteerTalonConfig.ClosedLoopGeneral.ContinuousWrap = false;
+        swerveSteerTalonConfig.ClosedLoopGeneral.ContinuousWrap = true;
         return swerveSteerTalonConfig;
     }
 
