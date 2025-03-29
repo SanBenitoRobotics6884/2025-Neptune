@@ -34,8 +34,6 @@ public class SwerveMod {
 
     /** TalonFX Motor Controller for the steering (angle) NEO */
     public TalonFX mAngleMotor;
-    private double gearRatio;
-    private double motorOffset = 0;
 
     /** TalonFX for the drive */
     public TalonFX mDriveMotor;
@@ -60,7 +58,6 @@ public class SwerveMod {
         angleEncoder.getAbsolutePosition().setUpdateFrequency(10);
         angleEncoder.optimizeBusUtilization();
         angleEncoder.getConfigurator().apply(moduleConstants.asMagnetSensorConfig());
-        gearRatio = 150.0 / 7;
 
         // -----------------------------------------------------
         // Angle (steering) Motor – NEO w/ TalonFX
@@ -151,7 +148,7 @@ public class SwerveMod {
         // We want to steer the module to the desired angle in degrees
         //double targetAngle = desiredState.angle.getDegrees();
         double rots = desiredState.angle.getRotations();
-        double curRots = mAngleMotor.getPosition().getValueAsDouble() / gearRatio;
+        double curRots = mAngleMotor.getPosition().getValueAsDouble();
         double diff = rots - curRots;
         if(Math.abs(diff) > 0.5){
             if(diff > 0){
@@ -161,9 +158,9 @@ public class SwerveMod {
             }
         }
 
-        double targetAngle = diff * gearRatio;
+        double targetAngle = diff;
 
-        PositionDutyCycle position = new PositionDutyCycle(targetAngle + motorOffset);
+        PositionDutyCycle position = new PositionDutyCycle(targetAngle);
         mAngleMotor.setControl(position.withSlot(0));
         SmartDashboard.putNumber("S Ang" + moduleNumber, rots);
     }
@@ -202,14 +199,13 @@ public class SwerveMod {
         // During Swerve tuning, you can use this to find the offset.
         double absAngle = getCANcoder().getRotations();
         double adjustedAngle = absAngle - angleOffset.getRotations();
-        motorOffset = (adjustedAngle * gearRatio) - mAngleMotor.getPosition().getValueAsDouble();
         if(moduleNumber == 0){
             SmartDashboard.putNumber("abs " + moduleNumber, absAngle);
             SmartDashboard.putNumber("offset " + moduleNumber, angleOffset.getRotations());
             SmartDashboard.putNumber("adj " + moduleNumber, adjustedAngle);
             SmartDashboard.putNumber("cur " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());    
         }
-        double newPosition = adjustedAngle * gearRatio;
+        double newPosition = adjustedAngle;
         StatusCode sc = mAngleMotor.setPosition(newPosition, 10);
 
         if(moduleNumber == 0){

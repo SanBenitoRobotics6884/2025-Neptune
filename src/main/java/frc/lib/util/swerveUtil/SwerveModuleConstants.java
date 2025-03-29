@@ -75,7 +75,7 @@ public class SwerveModuleConstants {
         swerveSteerTalonConfig.Slot0.kP = Constants.Swerve.angleKP;
         swerveSteerTalonConfig.Slot0.kI = Constants.Swerve.angleKI;
         swerveSteerTalonConfig.Slot0.kD = Constants.Swerve.angleKD;
-        // swerveSteerTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.angleGearRatio;
+        swerveSteerTalonConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.angleGearRatio;
 
         swerveSteerTalonConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Swerve.angleEnableCurrentLimit;
         swerveSteerTalonConfig.CurrentLimits.SupplyCurrentLimit = Constants.Swerve.angleCurrentLimit;
