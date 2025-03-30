@@ -27,7 +27,7 @@ import frc.robot.Subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final ControllerInterface operator = new Logitech(0);
+    private final Logitech operator = new Logitech(0);
       //climb, elevator, and coral (control is blutooth)
     // private final ControllerInterface driver = new XboxController(1);
     private final ControllerInterface driver = new Gulikit(1);

@@ -18,9 +18,9 @@ public class Xbox implements ControllerInterface {
     public static final int BUTTON_LEFT_STICK = 14;
     public static final int BUTTON_RIGHT_STICK = 15;
     public static final int BUTTON_DPAD_UP = 0;
-    public static final int BUTTON_DPAD_DOWN = 90;
-    public static final int BUTTON_DPAD_LEFT = 180;
-    public static final int BUTTON_DPAD_RIGHT = 270;
+    public static final int BUTTON_DPAD_DOWN = 180;
+    public static final int BUTTON_DPAD_LEFT = 270;
+    public static final int BUTTON_DPAD_RIGHT = 90;
 
 
     // Controller Axis Mappings
