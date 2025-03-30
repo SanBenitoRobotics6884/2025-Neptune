@@ -76,12 +76,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
    
   }
+
+  public double getMotorPosition(){
+    return m_leftMotor.getPosition().getValue().in(Degrees)/360;
+  }
+
   public void gotolevel(double val){
     double position = m_leftMotor.getPosition().getValue().in(Degrees)/360;
-
-    if(position == val){
+    // 3/29: Replaced position with getMotorPosition()
+    if(getMotorPosition() == val){
       this.stop();
-    } else if  (position - val > 0){
+    } else if  (val - position > 0){
       this.setEMotorVoltage(9, ENABLECURRENTLIMIT);
     }else{
       this.setEMotorVoltage(-9, ENABLECURRENTLIMIT);
