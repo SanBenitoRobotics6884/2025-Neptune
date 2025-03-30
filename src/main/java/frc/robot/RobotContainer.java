@@ -52,6 +52,7 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new SwerveCommand(
                 s_Swerve, 
+                s_CoralOutIntakeSubsystem,
                 () -> driver.getLeftYAxis(),
                 () -> driver.getLeftXAxis(),
                 () -> -driver.getRightXAxis(), 

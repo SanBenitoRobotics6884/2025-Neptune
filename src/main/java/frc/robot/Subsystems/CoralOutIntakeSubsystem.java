@@ -31,6 +31,7 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   // ColorSensorV3 m_colorSensor = new ColorSensorV3(null);
   boolean topMotorInvert = false;
   boolean bottomMotorInvert = false;
+  double currentSpeed = 0;
   double MOTOR_SPEED = 0.5 * (1.0/3);
   int STALL_CURRENT_THRESHOLD = 15; // amps
   private final DutyCycleOut dutyCycle = new DutyCycleOut(0);
@@ -70,15 +71,19 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
 
   }
 
+  public double getSpeed() {
+    return currentSpeed;
+  }
+
   public boolean pieceIsIn() {
     // Update function to return results of Rev Color Sensor v3
     return false; // m_topMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD || m_bottomMotor.getAppliedOutput() > STALL_CURRENT_THRESHOLD;
   }
 
   public void setSpeed(TalonFXS motor, double speed){
-    motor.setControl(dutyCycle.withOutput(speed));      
+    currentSpeed = speed;
+    motor.setControl(dutyCycle.withOutput(speed));
   }
-
 
   public void intakeOuttake(Boolean intakePressed, Boolean outtakePressed) {
     double speed = 0;
@@ -91,7 +96,6 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
     }
     setSpeed(m_topMotor, speed);
     setSpeed(m_bottomMotor, speed);
-
   }
 
   // Needs an outtake function using x button

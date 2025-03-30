@@ -2,6 +2,7 @@ package frc.robot.Commands;
 
 import frc.robot.Constants;
 import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.CoralOutIntakeSubsystem;
 import frc.robot.Subsystems.SwerveMod;
 
 import java.util.function.BooleanSupplier;
@@ -36,6 +37,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 
 public class SwerveCommand extends Command {    
     private Swerve s_Swerve;    
+    private CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem;
     private DoubleSupplier translationSup;
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
@@ -48,9 +50,11 @@ public class SwerveCommand extends Command {
     private PIDController rotationController;
     
 
-    public SwerveCommand(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier dampen, DoubleSupplier dynamicHeadingSup, BooleanSupplier zeroGyro, BooleanSupplier debugSup, BooleanSupplier debugDirectSup) {
+    public SwerveCommand(Swerve s_Swerve, CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier dampen, DoubleSupplier dynamicHeadingSup, BooleanSupplier zeroGyro, BooleanSupplier debugSup, BooleanSupplier debugDirectSup) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
+        this.s_CoralOutIntakeSubsystem = s_CoralOutIntakeSubsystem;
+        addRequirements(s_CoralOutIntakeSubsystem);
 
         //TODO: Tune heading PID
         rotationController = new PIDController(Constants.Swerve.HeadingKP, Constants.Swerve.HeadingKI, Constants.Swerve.HeadingKD );
@@ -96,12 +100,14 @@ public class SwerveCommand extends Command {
         SmartDashboard.putNumber("S rotation", rotationVal);
         SmartDashboard.putBoolean("S dampenSup", dampenSup.getAsBoolean());
         rotationVal = rotationVal * Constants.Swerve.maxAngularVelocity;
-        s_Swerve.drive(
-            new Translation2d(translationVal, strafeVal).times(Constants.Swerve./**Swerve*/maxSpeed),
-            rotationVal,
-            !robotCentricSup.getAsBoolean(), 
-            true
-        );    
+        if(s_CoralOutIntakeSubsystem.getSpeed() > 0.1){
+            s_Swerve.drive(
+                new Translation2d(translationVal, strafeVal).times(Constants.Swerve./**Swerve*/maxSpeed),
+                rotationVal,
+                !robotCentricSup.getAsBoolean(), 
+                true
+            );        
+        }
     }
 
     public void debugModules() {
