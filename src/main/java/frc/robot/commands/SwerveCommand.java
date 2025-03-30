@@ -90,11 +90,6 @@ public class SwerveCommand extends Command {
         double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         double strafeVal = -MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
-
-        SmartDashboard.putNumber("S translation", translationVal);
-        SmartDashboard.putNumber("S strafe", strafeVal);
-        SmartDashboard.putNumber("S rotation", rotationVal);
-        SmartDashboard.putBoolean("S dampenSup", dampenSup.getAsBoolean());
         rotationVal = rotationVal * Constants.Swerve.maxAngularVelocity;
         s_Swerve.drive(
             new Translation2d(translationVal, strafeVal).times(Constants.Swerve./**Swerve*/maxSpeed),
