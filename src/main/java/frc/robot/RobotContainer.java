@@ -27,10 +27,10 @@ import frc.robot.Subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Logitech operator = new Logitech(0);
+    private final ControllerInterface driver = new Gulikit(0);
       //climb, elevator, and coral (control is blutooth)
     // private final ControllerInterface driver = new XboxController(1);
-    private final ControllerInterface driver = new Gulikit(1);
+    //private final ControllerInterface driver = new Gulikit(1);
       // Controller in port 1 is driving (controll is cable)
     //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
@@ -88,11 +88,11 @@ public class RobotContainer {
                 () -> driver.getLeftTrigger(),
                 () -> driver.getRightTrigger(),
                 () -> driver.getLeftBumper(),
-                () -> operator.getButtonA(),
-                () -> operator.getButtonDPadDown(),
-                () -> operator.getButtonDPadLeft(),
-                () -> operator.getButtonDPadUp(),
-                () -> operator.getButtonDPadRight()
+                () -> driver.getButtonA(),
+                () -> driver.getButtonDPadDown(),
+                () -> driver.getButtonDPadLeft(),
+                () -> driver.getButtonDPadUp(),
+                () -> driver.getButtonDPadRight()
 
            )
         );
