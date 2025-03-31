@@ -41,6 +41,7 @@ public class RobotContainer {
     //private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
     private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
+    private final PhotonVisionSubsystem s_PhotonVisionSubsystem = new PhotonVisionSubsystem();
     // private final Camera s_Camera = new Camera();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
@@ -53,9 +54,9 @@ public class RobotContainer {
             new SwerveCommand(
                 s_Swerve, 
                 () -> driver.getLeftYAxis(),
-                () -> driver.getLeftXAxis(),
+                () -> driver.getRightBumper() ? s_PhotonVisionSubsystem.getStrafe() : driver.getLeftXAxis(),
                 () -> -driver.getRightXAxis(), 
-                () -> false,
+                () -> driver.getRightBumper(),
                 () -> driver.getLeftBumper(),
                 () -> 0.0, // Dynamic heading placeholder,
                 () -> driver.getButtonY(),
