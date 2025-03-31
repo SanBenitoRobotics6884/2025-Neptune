@@ -80,7 +80,7 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
   }
 
 
-  public void intakeOuttake(Boolean intakePressed, Boolean outtakePressed) {
+  public void intakeOuttake(Boolean dampen, Boolean intakePressed, Boolean outtakePressed) {
     double speed = 0;
     if (intakePressed) {
       speed = MOTOR_SPEED;
@@ -89,9 +89,12 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
     } else {
       speed = 0;
     }
+
+    if(dampen){
+      speed *= 0.6;
+    }
     setSpeed(m_topMotor, speed);
     setSpeed(m_bottomMotor, speed);
-
   }
 
   // Needs an outtake function using x button
