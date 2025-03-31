@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.AbsoluteEncoder;
 
@@ -25,6 +26,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   //private Follower m_follower = new Follower(LEFT_MOTOR_ID, true);
   private double speed = 13; // in volts
   private double debugSpeed = 9; // in volts
+  private double offset = 0;
   private double THRESHOLD = 5.0;
   private double LOWER_LIMIT = Constants.Elevator.MIN;
   private double UPPER_LIMIT = Constants.Elevator.MAX;
@@ -83,16 +85,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void gotolevel(double val){
-    double position = m_leftMotor.getPosition().getValue().in(Degrees)/360;
-    // 3/29: Replaced position with getMotorPosition()
-    if(getMotorPosition() == val){
-      this.stop();
-    } else if  (val - position > 0){
-      this.setEMotorVoltage(9, ENABLECURRENTLIMIT);
-    }else{
-      this.setEMotorVoltage(-9, ENABLECURRENTLIMIT);
-    }
-
+    PositionDutyCycle targetPosition = new PositionDutyCycle(val + offset);
+    m_leftMotor.setControl(targetPosition.withSlot(0));
   }
 
 
@@ -125,6 +119,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void stop(){
     //setEMotorPosition(m_leftMotor.getPosition().getValue().in(Degrees)/360);
     m_leftMotor.setVoltage(0.2);
+  }
+
+  public void resetOffset(){
+    offset = m_leftMotor.getPosition().getValueAsDouble();
   }
 
   public void cycle(){
