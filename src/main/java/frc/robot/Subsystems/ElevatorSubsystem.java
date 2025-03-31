@@ -23,7 +23,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private PIDController pidController;
   //private Follower m_follower = new Follower(LEFT_MOTOR_ID, true);
-  private double speed = 0.5;
+  private double speed = 13; // in volts
+  private double debugSpeed = 9; // in volts
   private double THRESHOLD = 5.0;
   private double LOWER_LIMIT = Constants.Elevator.MIN;
   private double UPPER_LIMIT = Constants.Elevator.MAX;
@@ -104,7 +105,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_leftMotor.set(speed);*/
     // m_rightMotor.set(-speed);
 
-    this.setEMotorVoltage(9, true);
+    this.setEMotorVoltage(val * speed, true);
   }
 
   
@@ -118,7 +119,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_leftMotor.set(-speed);*/
     //m_rightMotor.set(speed);
 
-    this.setEMotorVoltage(-9, true);
+    this.setEMotorVoltage(-val * speed, true);
   }
 
   public void stop(){
@@ -129,10 +130,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void cycle(){
     if (m_leftMotor.getPosition().getValue().in(Degrees)/360 == LOWER_LIMIT) {
       m_leftMotor.setPosition(UPPER_LIMIT);
-      m_leftMotor.set(speed);
+      m_leftMotor.set(debugSpeed);
     } else if (m_leftMotor.getPosition().getValue().in(Degrees)/360 == LOWER_LIMIT) {
       m_leftMotor.setPosition(LOWER_LIMIT);
-      m_leftMotor.set(-speed);
+      m_leftMotor.set(-debugSpeed);
     }
   }
 
