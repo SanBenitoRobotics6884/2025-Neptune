@@ -75,6 +75,7 @@ public class RobotContainer {
          s_CoralOutIntakeSubsystem.setDefaultCommand(
              new CoralOutIntakeCommand(
                s_CoralOutIntakeSubsystem,
+               () -> driver.getLeftBumper(),
                () -> driver.getButtonX(),
                () -> driver.getButtonB()
                //() -> operator.getButtonA(),
