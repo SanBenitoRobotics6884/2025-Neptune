@@ -85,7 +85,7 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
     motor.setControl(dutyCycle.withOutput(speed));
   }
 
-  public void intakeOuttake(Boolean intakePressed, Boolean outtakePressed) {
+  public void intakeOuttake(Boolean dampen, Boolean intakePressed, Boolean outtakePressed) {
     double speed = 0;
     if (intakePressed) {
       speed = MOTOR_SPEED;
@@ -93,6 +93,10 @@ public class CoralOutIntakeSubsystem extends SubsystemBase {
       speed = -MOTOR_SPEED;
     } else {
       speed = 0;
+    }
+
+    if(dampen){
+      speed *= 0.6;
     }
     setSpeed(m_topMotor, speed);
     setSpeed(m_bottomMotor, speed);

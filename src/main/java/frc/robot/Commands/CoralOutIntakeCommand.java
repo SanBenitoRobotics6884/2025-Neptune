@@ -13,15 +13,17 @@ import frc.robot.Subsystems.CoralOutIntakeSubsystem;
 public class CoralOutIntakeCommand extends Command {
   CoralOutIntakeSubsystem m_coralOutIntake;
 
+  BooleanSupplier m_dampenSup;
   BooleanSupplier m_intakeButton;
   BooleanSupplier m_outtakeButton;
   BooleanSupplier m_pivotUpButton;
   BooleanSupplier m_pivotDownButton;
 
   /** Creates a new CoralOutIntakeCommand. */
-  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake, BooleanSupplier intakeButton, BooleanSupplier outtakeButton) {
+  public CoralOutIntakeCommand(CoralOutIntakeSubsystem coralOutIntake, BooleanSupplier dampenSup, BooleanSupplier intakeButton, BooleanSupplier outtakeButton) {
     m_coralOutIntake = coralOutIntake;
     addRequirements(coralOutIntake);
+    m_dampenSup = dampenSup;
     m_intakeButton = intakeButton;
     m_outtakeButton = outtakeButton;
     //m_pivotUpButton = pivotUpButton;
@@ -37,6 +39,7 @@ public class CoralOutIntakeCommand extends Command {
   @Override
   public void execute() {
     m_coralOutIntake.intakeOuttake(
+      m_dampenSup.getAsBoolean(),
       m_intakeButton.getAsBoolean(),
       m_outtakeButton.getAsBoolean()
     );

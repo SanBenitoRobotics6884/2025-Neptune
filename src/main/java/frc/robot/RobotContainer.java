@@ -27,10 +27,10 @@ import frc.robot.Subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final ControllerInterface operator = new Logitech(0);
+    private final ControllerInterface driver = new Gulikit(0);
       //climb, elevator, and coral (control is blutooth)
     // private final ControllerInterface driver = new XboxController(1);
-    private final ControllerInterface driver = new Gulikit(1);
+    //private final ControllerInterface driver = new Gulikit(1);
       // Controller in port 1 is driving (controll is cable)
     //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
     //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
@@ -41,6 +41,7 @@ public class RobotContainer {
     //private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
     private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
     private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
+    private final PhotonVisionSubsystem s_PhotonVisionSubsystem = new PhotonVisionSubsystem();
     // private final Camera s_Camera = new Camera();
     //private final Vision s_Vision = new Vision(s_PoseEstimator);
 
@@ -54,14 +55,14 @@ public class RobotContainer {
                 s_Swerve, 
                 s_CoralOutIntakeSubsystem,
                 () -> driver.getLeftYAxis(),
-                () -> driver.getLeftXAxis(),
+                () -> driver.getRightBumper() ? s_PhotonVisionSubsystem.getStrafe() : driver.getLeftXAxis(),
                 () -> -driver.getRightXAxis(), 
-                () -> false,
+                () -> driver.getRightBumper(),
                 () -> driver.getLeftBumper(),
                 () -> 0.0, // Dynamic heading placeholder,
                 () -> driver.getButtonY(),
                 () -> driver.getButtonBack(),
-                () -> driver.getButtonStart()
+                () -> false
             )
         );
 /*
@@ -76,6 +77,7 @@ public class RobotContainer {
          s_CoralOutIntakeSubsystem.setDefaultCommand(
              new CoralOutIntakeCommand(
                s_CoralOutIntakeSubsystem,
+               () -> driver.getLeftBumper(),
                () -> driver.getButtonX(),
                () -> driver.getButtonB()
                //() -> operator.getButtonA(),
@@ -89,11 +91,12 @@ public class RobotContainer {
                 () -> driver.getLeftTrigger(),
                 () -> driver.getRightTrigger(),
                 () -> driver.getLeftBumper(),
-                () -> operator.getButtonA(),
-                () -> operator.getButtonDPadDown(),
-                () -> operator.getButtonDPadLeft(),
-                () -> operator.getButtonDPadUp(),
-                () -> operator.getButtonDPadRight()
+                () -> driver.getButtonA(),
+                () -> driver.getButtonDPadDown(),
+                () -> driver.getButtonDPadLeft(),
+                () -> driver.getButtonDPadUp(),
+                () -> driver.getButtonDPadRight(),
+                () -> driver.getButtonStart()
 
            )
         );

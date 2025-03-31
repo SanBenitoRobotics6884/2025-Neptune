@@ -150,7 +150,7 @@ public class SwerveMod {
 
         PositionDutyCycle position = new PositionDutyCycle(targetAngle);
         mAngleMotor.setControl(position.withSlot(0));
-        SmartDashboard.putNumber("S Ang" + moduleNumber, rots);
+
     }
 
     // -----------------------------------------------------
@@ -158,7 +158,6 @@ public class SwerveMod {
     // -----------------------------------------------------
     /** Current angle from the angle relative encoder, as a Rotation2d. */
     private Rotation2d getAngle() {
-        SmartDashboard.putNumber("SgetAng" + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());
         return Rotation2d.fromRotations(mAngleMotor.getPosition().getValueAsDouble());
     }
 
@@ -168,7 +167,7 @@ public class SwerveMod {
      */
     public Rotation2d getCANcoder() {
         double absPositionRot = 0;
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 3; i++){
             absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
             if(Math.abs(absPositionRot) > 0.001){
                 break;
@@ -187,22 +186,9 @@ public class SwerveMod {
         // During Swerve tuning, you can use this to find the offset.
         double absAngle = getCANcoder().getRotations();
         double adjustedAngle = absAngle - angleOffset.getRotations();
-        if(moduleNumber == 3){
-            SmartDashboard.putNumber("abs " + moduleNumber, absAngle);
-            SmartDashboard.putNumber("offset " + moduleNumber, angleOffset.getRotations());
-            SmartDashboard.putNumber("adj " + moduleNumber, adjustedAngle);
-            SmartDashboard.putNumber("cur " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());    
-        }
         double newPosition = -adjustedAngle;
         StatusCode sc = mAngleMotor.setPosition(newPosition, 10);
         mAngleMotor.getPosition().waitForUpdate(10.0);
-
-        if(moduleNumber == 3){
-            SmartDashboard.putString("statusCode " + moduleNumber, sc.getName());
-            SmartDashboard.putString("statusCode2 " + moduleNumber, sc.getDescription());
-            SmartDashboard.putNumber("new " + moduleNumber, newPosition);
-            SmartDashboard.putNumber("aft " + moduleNumber, mAngleMotor.getPosition().getValueAsDouble());
-        }
     }
 
     /**
