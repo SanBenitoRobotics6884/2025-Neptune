@@ -15,10 +15,10 @@ public class Gulikit implements ControllerInterface {
     public static final int BUTTON_START = 8;
     public static final int BUTTON_LEFT_STICK = 9;
     public static final int BUTTON_RIGHT_STICK = 10;
-    public static final int BUTTON_DPAD_UP = 12;
-    public static final int BUTTON_DPAD_DOWN = 13;
-    public static final int BUTTON_DPAD_LEFT = 14;
-    public static final int BUTTON_DPAD_RIGHT = 15;
+    public static final int BUTTON_DPAD_UP = 0;
+    public static final int BUTTON_DPAD_DOWN = 180;
+    public static final int BUTTON_DPAD_LEFT = 270;
+    public static final int BUTTON_DPAD_RIGHT = 90;
 
 
     // Controller Axis Mappings
@@ -86,19 +86,19 @@ public class Gulikit implements ControllerInterface {
     }
 
     public boolean getButtonDPadUp() {
-        return getButton(BUTTON_DPAD_UP);
+        return getPOV() == BUTTON_DPAD_UP;
     }
 
     public boolean getButtonDPadDown() {
-        return getButton(BUTTON_DPAD_DOWN);
+        return getPOV() == BUTTON_DPAD_DOWN;
     }
 
     public boolean getButtonDPadLeft() {
-        return getButton(BUTTON_DPAD_LEFT);
+        return getPOV() == BUTTON_DPAD_LEFT;
     }
 
     public boolean getButtonDPadRight() {
-        return getButton(BUTTON_DPAD_RIGHT);
+        return getPOV() == BUTTON_DPAD_RIGHT;
     }
 
     public double getLeftXAxis() {
