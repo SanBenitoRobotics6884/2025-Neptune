@@ -54,7 +54,7 @@ public class SwerveCommand extends Command {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
         this.s_CoralOutIntakeSubsystem = s_CoralOutIntakeSubsystem;
-        addRequirements(s_CoralOutIntakeSubsystem);
+        //addRequirements(s_CoralOutIntakeSubsystem);
 
         //TODO: Tune heading PID
         rotationController = new PIDController(Constants.Swerve.HeadingKP, Constants.Swerve.HeadingKI, Constants.Swerve.HeadingKD );
