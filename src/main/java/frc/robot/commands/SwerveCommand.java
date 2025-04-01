@@ -95,7 +95,7 @@ public class SwerveCommand extends Command {
         double strafeVal = -MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampenSup.getAsBoolean() ? 0.2 : 1);
         rotationVal = rotationVal * Constants.Swerve.maxAngularVelocity;
-        if(s_CoralOutIntakeSubsystem.getSpeed() < 0.1){
+        if(s_CoralOutIntakeSubsystem.getSpeed() > 0.1){
             s_Swerve.drive(
                 new Translation2d(translationVal, strafeVal).times(Constants.Swerve./**Swerve*/maxSpeed),
                 rotationVal,
