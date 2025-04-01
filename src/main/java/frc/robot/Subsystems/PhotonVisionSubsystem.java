@@ -29,5 +29,10 @@ public class PhotonVisionSubsystem extends SubsystemBase {
     
     @Override
     public void periodic(){
+        PhotonPipelineResult result = camera.getLatestResult();
+        if(result.hasTargets()){
+            PhotonTrackedTarget target = result.getBestTarget();
+            SmartDashboard.putNumber("PV-yaw", target.getYaw());
+        }
     }
 }
