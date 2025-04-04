@@ -61,7 +61,8 @@ public class RobotContainer {
                 () -> driver.getLeftBumper(),
                 () -> 0.0, // Dynamic heading placeholder,
                 () -> driver.getButtonY(),
-                () -> driver.getButtonBack(),
+                () -> false,
+                //() -> driver.getButtonBack(),
                 () -> false
             )
         );
@@ -96,6 +97,8 @@ public class RobotContainer {
                 () -> driver.getButtonDPadLeft(),
                 () -> driver.getButtonDPadUp(),
                 () -> driver.getButtonDPadRight(),
+                () -> driver.getButtonBack(),
+                //() -> driver.getButtonDPadDownRight(),
                 () -> driver.getButtonStart()
 
            )

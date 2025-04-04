@@ -7,6 +7,7 @@ import static frc.robot.Constants.Elevator.L1_POSITION;
 import static frc.robot.Constants.Elevator.L2_POSITION;
 import static frc.robot.Constants.Elevator.L3_POSITION;
 import static frc.robot.Constants.Elevator.L4_POSITION;
+import static frc.robot.Constants.Elevator.L5_POSITION;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -28,13 +29,14 @@ public class ElevatorCommand extends Command {
     private BooleanSupplier m_L2buttonSup;
     private BooleanSupplier m_L3buttonSup;
     private BooleanSupplier m_L4buttonSup;
+    private BooleanSupplier m_L5buttonSup;
     private BooleanSupplier m_offsetSup;
 
-    private Boolean m_debugMode;
+    private Boolean m_debugMode = false;
 
     public ElevatorCommand(ElevatorSubsystem s_subsystem, DoubleSupplier extendSup, DoubleSupplier retractSup,
      BooleanSupplier dampenSup, BooleanSupplier debugSup, BooleanSupplier L1buttonSup, BooleanSupplier L2buttonSup,
-     BooleanSupplier L3buttonSup, BooleanSupplier L4buttonSup, BooleanSupplier offsetSup) {
+     BooleanSupplier L3buttonSup, BooleanSupplier L4buttonSup, BooleanSupplier L5buttonSup,BooleanSupplier offsetSup) {
         m_subsystem = s_subsystem;
         addRequirements(m_subsystem);
 
@@ -46,6 +48,7 @@ public class ElevatorCommand extends Command {
         m_L2buttonSup = L2buttonSup;
         m_L3buttonSup = L3buttonSup;
         m_L4buttonSup = L4buttonSup;
+        m_L5buttonSup = L5buttonSup;
         m_offsetSup = offsetSup;
     }
 
@@ -61,7 +64,7 @@ public class ElevatorCommand extends Command {
         // current
 
         //enables debug mode for elevator while button held (turns off normal inputs); bound to A button
-        m_debugMode = m_debugSup.getAsBoolean();
+        // m_debugMode = m_debugSup.getAsBoolean();
 
         if (!m_debugMode) {
           if (m_offsetSup.getAsBoolean()){
@@ -79,6 +82,9 @@ public class ElevatorCommand extends Command {
           else if (m_L4buttonSup.getAsBoolean()){
                 m_subsystem.gotolevel(L4_POSITION);
           }
+          else if (m_L5buttonSup.getAsBoolean()){
+            m_subsystem.gotolevel(L5_POSITION);
+      }
           else if(extendVal > 0){
             m_subsystem.extend(extendVal);
           } else if (retractVal > 0){

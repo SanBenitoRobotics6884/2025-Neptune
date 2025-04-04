@@ -284,9 +284,10 @@ public final class Constants {
         //public static final double L3_POSITION = 90;
         //public static final double L4_POSITION = 130;
         public static final double L1_POSITION = 0;
-        public static final double L2_POSITION = 10;
-        public static final double L3_POSITION = 20;
-        public static final double L4_POSITION = 55;
+        public static final double L2_POSITION = 42.9;
+        public static final double L3_POSITION = 89;
+        public static final double L4_POSITION = 142;
+        public static final double L5_POSITION = 147;
         //}
 
         public static final double KP = 0.5;

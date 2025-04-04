@@ -52,7 +52,7 @@ public class AutonomousCommand  extends Command {
         autoTimer = timer.get();
     }
     public void execute(){
-        m_swerve.driveForward(0.5);
+        m_swerve.driveForward(-0.5);
     }
 
     public boolean isFinished(){

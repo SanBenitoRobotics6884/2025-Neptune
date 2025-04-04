@@ -99,6 +99,16 @@ public interface ControllerInterface {
         }
         */
     }
+    public default  boolean getButtonDPadDownRight() {
+        return getButton(14);
+        /*
+        if (getPOV() == 90) {
+            return true;
+        } else {
+            return false;
+        }
+        */
+    }
 
     public default  double getLeftXAxis() {
         return getAxis(0);

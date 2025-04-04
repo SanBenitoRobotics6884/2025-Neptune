@@ -22,7 +22,7 @@ public class PhotonVisionSubsystem extends SubsystemBase {
             // SmartDashboard.putNumber("PV-area", target.getArea());
             // SmartDashboard.putNumber("PV-skew", target.getSkew());
             // SmartDashboard.putNumber("PV-val", target.fiducialId);
-            return -target.getYaw() / 45;
+            return -(target.getYaw()+21) / 45;
         }
         return 0.0;
     }
