@@ -167,7 +167,8 @@ public class SwerveMod {
      */
     public Rotation2d getCANcoder() {
         double absPositionRot = 0;
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 10; i++){
+           // angleEncoder.waitForUpdate(10);
             absPositionRot = angleEncoder.getAbsolutePosition().getValueAsDouble(); // 0..1 rotations
             if(Math.abs(absPositionRot) > 0.001){
                 break;

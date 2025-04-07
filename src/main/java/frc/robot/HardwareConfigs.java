@@ -59,4 +59,9 @@ public final class HardwareConfigs {
         return elevatorTalonConfig;
     }
 
+    public Object setVoltage(int i) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setVoltage'");
+    }
+
 }

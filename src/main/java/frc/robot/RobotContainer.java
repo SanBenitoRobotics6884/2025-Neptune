@@ -95,8 +95,8 @@ public class RobotContainer {
                 () -> driver.getButtonA(),
                 () -> driver.getButtonDPadDown(),
                 () -> driver.getButtonDPadLeft(),
-                () -> driver.getButtonDPadUp(),
                 () -> driver.getButtonDPadRight(),
+                () -> driver.getButtonDPadUp(),
                 () -> driver.getButtonBack(),
                 //() -> driver.getButtonDPadDownRight(),
                 () -> driver.getButtonStart()
@@ -149,7 +149,7 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         //return autoChooser.getSelected();
-      return new AutonomousCommand(s_Swerve);
+      return new AutonomousCommand(s_Swerve, s_CoralOutIntakeSubsystem, s_ElevatorSubsystem);
     }
 
   private void configureBindings() {

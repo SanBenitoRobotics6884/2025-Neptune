@@ -1,5 +1,7 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -103,8 +105,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     this.setEMotorVoltage(val * speed, true);
   }
 
-  
-
   public void retract(double val){
     /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
       return;
@@ -126,6 +126,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     offset = m_leftMotor.getPosition().getValueAsDouble();
   }
 
+ public void ElevatorDownAuto(){
+ TalonFXConfiguration elevatorTalonConfig = new TalonFXConfiguration();
+ elevatorTalonConfig.CurrentLimits.SupplyCurrentLimit = 20.0;
+ var m_leftMotorConfigurator = m_leftMotor.getConfigurator();
+ m_leftMotorConfigurator.apply(elevatorTalonConfig, 0);
+}
+
+public void ElevatorResetAuto(){
+  TalonFXConfiguration elevatorTalonConfig = new TalonFXConfiguration();
+  elevatorTalonConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+  var m_leftMotorConfigurator = m_leftMotor.getConfigurator();
+  m_leftMotorConfigurator.apply(elevatorTalonConfig, 0);
+ }
+  
   public void cycle(){
     if (m_leftMotor.getPosition().getValue().in(Degrees)/360 == LOWER_LIMIT) {
       m_leftMotor.setPosition(UPPER_LIMIT);
