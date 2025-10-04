@@ -23,7 +23,7 @@ import static frc.robot.Constants.Elevator.*;
 public class ElevatorSubsystem extends SubsystemBase {
  /* Left and Right Motors */
   private TalonFX m_leftMotor;
-  //private TalonFX m_rightMotor;
+  private TalonFX m_rightMotor;
 
   private PIDController pidController;
   //private Follower m_follower = new Follower(LEFT_MOTOR_ID, true);
@@ -94,31 +94,30 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
   public void extend(double val){
-    /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
+    if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
       return;
     }
     lastAction = System.currentTimeMillis();
     setEMotorPosition(eMotorPosition + val);
-    m_leftMotor.set(speed);*/
-    // m_rightMotor.set(-speed);
+    m_rightMotor.set(-speed);
 
     this.setEMotorVoltage(val * speed, true);
   }
 
   public void retract(double val){
-    /*if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
+    if (System.currentTimeMillis() - lastAction < 100){ // every 100ms
       return;
     }
     lastAction = System.currentTimeMillis();
     setEMotorPosition(eMotorPosition - val);
-    m_leftMotor.set(-speed);*/
-    //m_rightMotor.set(speed);
+    m_leftMotor.set(-speed);
+    m_rightMotor.set(speed);
 
     this.setEMotorVoltage(-val * speed, true);
   }
 
   public void stop(){
-    //setEMotorPosition(m_leftMotor.getPosition().getValue().in(Degrees)/360);
+    setEMotorPosition(m_leftMotor.getPosition().getValue().in(Degrees)/360);
     m_leftMotor.setVoltage(0.2);
   }
 
@@ -154,7 +153,7 @@ public void ElevatorResetAuto(){
   public void periodic() {
     SmartDashboard.putNumber("Elevator actual", m_leftMotor.getPosition().getValue().in(Degrees)/360);
     SmartDashboard.putNumber("Elevator target", eMotorPosition);
-    //if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)/360) > THRESHOLD)
-    //  m_leftMotor.setPosition(eMotorPosition);
+    if(Math.abs(eMotorPosition - m_leftMotor.getPosition().getValue().in(Degrees)/360) > THRESHOLD)
+      m_leftMotor.setPosition(eMotorPosition);
   }
 }

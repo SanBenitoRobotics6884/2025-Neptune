@@ -3,11 +3,11 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.Swerve;
 import frc.robot.HardwareConfigs;
 import frc.robot.Subsystems.CoralOutIntakeSubsystem;
 import frc.robot.Subsystems.ElevatorSubsystem;
-import frc.robot.Subsystems.Swerve;
-
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import static frc.robot.Constants.Elevator.L1_POSITION;
@@ -48,14 +48,14 @@ SparkMax m_pivotMotor = new SparkMax(PIVOTion_MOTOR_ID, MotorType.kBrushless);
   }
  */
 
-public class AutonomousCommand  extends Command {
-    private final Swerve m_swerve;
+/*public class AutonomousCommand  extends Command {
+    private final Subsystem[] m_swerve;
     private final CoralOutIntakeSubsystem m_CoralOutIntakeSubsystem;
     private final ElevatorSubsystem m_ElevatorSubsystem;
     Timer timer = new Timer();
     double autoTimer = timer.get();
 
-    public AutonomousCommand(Swerve s_Swerve, CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem, ElevatorSubsystem s_ElevatorSubsystem){
+    public AutonomousCommand(Subsystem[] s_Swerve, CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem, ElevatorSubsystem s_ElevatorSubsystem){
         addRequirements(s_Swerve);
         addRequirements(s_CoralOutIntakeSubsystem);
         addRequirements(s_ElevatorSubsystem);
@@ -73,7 +73,7 @@ public class AutonomousCommand  extends Command {
     public void execute(){
         
         timer.start();
-       m_swerve.driveForward(-1);
+       //m_swerve.driveForward(-1);
 
         SmartDashboard.putNumber("a", timer.get());
         if(timer.get() > 6){
@@ -103,4 +103,4 @@ public class AutonomousCommand  extends Command {
     public void end(boolean interrupted){
         m_swerve.driveForward(0);
     }
-}
+} */

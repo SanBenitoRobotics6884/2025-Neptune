@@ -4,162 +4,79 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.generated.TunerConstants;
 
-import frc.robot.Commands.*;
-import frc.robot.Controllers.ControllerInterface;
-import frc.robot.Controllers.Gulikit;
-import frc.robot.Controllers.Logitech;
-import frc.robot.Controllers.Xbox;
-import frc.robot.Subsystems.*;
+public class RobotContainer{
+    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and button mappings) should be declared here.
- */
-public class RobotContainer {
-    /* Controllers */
-    private final ControllerInterface driver = new Gulikit(0);
-      //climb, elevator, and coral (control is blutooth)
-    // private final ControllerInterface driver = new XboxController(1);
-    //private final ControllerInterface driver = new Gulikit(1);
-      // Controller in port 1 is driving (controll is cable)
-    //private final CoralOutIntakeSybsystem m_coralOutIntakeSybsystem = new CoralOutIntakeSybsystem();
-    //private final CoralOutIntakeCommand m_CoralOutIntakeCommand = new CoralOutIntakeCommand(m_coralOutIntakeSybsystem);
+    /* Setting up bindings for necessary control of the swerve drive platform */
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-    /* Subsystems */
-    private final PoseEstimator s_PoseEstimator = new PoseEstimator();
-    private final Swerve s_Swerve = new Swerve(s_PoseEstimator);
-    //private final ClimbSubsystem s_ClimbSubsystem = new ClimbSubsystem();
-    private final CoralOutIntakeSubsystem s_CoralOutIntakeSubsystem = new CoralOutIntakeSubsystem();
-    private final ElevatorSubsystem s_ElevatorSubsystem = new ElevatorSubsystem();
-    private final PhotonVisionSubsystem s_PhotonVisionSubsystem = new PhotonVisionSubsystem();
-    // private final Camera s_Camera = new Camera();
-    //private final Vision s_Vision = new Vision(s_PoseEstimator);
+    private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    /* AutoChooser */
-    //private final SendableChooser<Command> autoChooser;
+    private final CommandXboxController joystick = new CommandXboxController(0);
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
     public RobotContainer() {
-        s_Swerve.setDefaultCommand(
-            new SwerveCommand(
-                s_Swerve, 
-                s_CoralOutIntakeSubsystem,
-                () -> driver.getLeftYAxis(),
-                () -> driver.getRightBumper() ? s_PhotonVisionSubsystem.getStrafe() : driver.getLeftXAxis(),
-                () -> -driver.getRightXAxis(), 
-                () -> driver.getRightBumper(),
-                () -> driver.getLeftBumper(),
-                () -> 0.0, // Dynamic heading placeholder,
-                () -> driver.getButtonY(),
-                () -> false,
-                //() -> driver.getButtonBack(),
-                () -> false
-            )
-        );
-/*
-        s_ClimbSubsystem.setDefaultCommand(
-            new ClimbCommand(
-              s_ClimbSubsystem, 
-              ()->climbDisengage.getAsBoolean(),
-              ()->climbEngage.getAsBoolean()
-            )
-        );
-*/
-         s_CoralOutIntakeSubsystem.setDefaultCommand(
-             new CoralOutIntakeCommand(
-               s_CoralOutIntakeSubsystem,
-               () -> driver.getLeftBumper(),
-               () -> driver.getButtonX(),
-               () -> driver.getButtonB()
-               //() -> operator.getButtonA(),
-               //() -> operator.getButtonB()
-             )
-         );
-
-        s_ElevatorSubsystem.setDefaultCommand(
-             new ElevatorCommand(
-                 s_ElevatorSubsystem,
-                () -> driver.getLeftTrigger(),
-                () -> driver.getRightTrigger(),
-                () -> driver.getLeftBumper(),
-                () -> driver.getButtonA(),
-                () -> driver.getButtonDPadDown(),
-                () -> driver.getButtonDPadLeft(),
-                () -> driver.getButtonDPadRight(),
-                () -> driver.getButtonDPadUp(),
-                () -> driver.getButtonBack(),
-                //() -> driver.getButtonDPadDownRight(),
-                () -> driver.getButtonStart()
-
-           )
-        );
-
-        // Configure the button bindings
-        configureButtonBindings();
-
-        //Auto chooser
-        //autoChooser = AutoBuilder.buildAutoChooser("New Auto"); // Default auto will be `Commands.none()`
-        //SmartDashboard.putData("Auto Mode", autoChooser);
+        configureBindings();
     }
 
-    /**
-     * Use this method to define your button->command mappings. Buttons can be created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link Xbox}), and then passing it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        /* Driver Buttons */
-        // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+    private void configureBindings() {
+        // Note that X is defined as forward according to WPILib convention,
+        // and Y is defined as to the left according to WPILib convention.
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
 
-    //Heading lock bindings
-      /**
-        // forwardHold.onTrue(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.forwardHold)).onFalse(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        // );
-        // backwardHold.onTrue(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.backwardHold)).onFalse(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        // );
-        // DynamicLock.onTrue(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.DynamicLock)).onFalse(
-        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-        // );
-      */
-    } 
+        // Idle while the robot is disabled. This ensures the configured
+        // neutral mode is applied to the drive motors while disabled.
+        final var idle = new SwerveRequest.Idle();
+        RobotModeTriggers.disabled().whileTrue(
+            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
+        );
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
+        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.b().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        ));
 
-     //Below is Autocommand as of 3:05 pm,, 3/1/2025
+        // Run SysId routines when holding back/start and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+
+        // reset the field-centric heading on left bumper press
+        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
     public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        //return autoChooser.getSelected();
-      return new AutonomousCommand(s_Swerve, s_CoralOutIntakeSubsystem, s_ElevatorSubsystem);
+        return Commands.print("No autonomous command configured");
     }
-
-  private void configureBindings() {
-    /*new JoystickButton(driver, 1)
-      .whileTrue(m_CoralOutIntakeCommand);
-    new JoystickButton(driver, 10)
-      .onTrue(m_coralOutIntakeSybsystem.toHighPosotion());
-    new JoystickButton(driver, 11)
-      .onTrue(m_coralOutIntakeSybsystem.toMidPosotion());
-    new JoystickButton(driver, 12)
-      .onTrue(m_coralOutIntakeSybsystem.toLowPosotion());*/
-  }
 }
